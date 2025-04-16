@@ -16,7 +16,7 @@ import com.locked_in.model.UserModel;
 public class RegisterService {
 
 	private Connection dbConn;
-	private String final DEFAULT_CART_SIZE = 1
+	private final Integer DEFAULT_CART_SIZE = 1;
 
 	/**
 	 * Constructor initializes the database connection.
@@ -63,7 +63,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 				PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
 
 			// Fetch role ID
-			roleStmt.setString(1, userModel.getRole().getName());
+			roleStmt.setString(1, userModel.getRole().getRole());
 			ResultSet result = roleStmt.executeQuery();
 			int roleId = result.next() ? result.getInt("role_id") : 1;
 
@@ -76,7 +76,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setString(6, userModel.getContactNum());
 			insertStmt.setDate(7, Date.valueOf(userModel.getDateJoined()));
 			insertStmt.setString(8, userModel.getImageUrl());
-			insertStmt.setString(9, this.DEFAULT_CART_SIZE);
+			insertStmt.setInt(9, this.DEFAULT_CART_SIZE);
 			insertStmt.setInt(10, roleId);
 
 			return insertStmt.executeUpdate() > 0;
