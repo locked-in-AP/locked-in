@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import com.locked_in.config.DbConfig;
 import com.locked_in.model.UserModel;
@@ -74,7 +75,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setString(4, userModel.getEmail());
 			insertStmt.setString(5, userModel.getPassword());
 			insertStmt.setString(6, userModel.getContactNum());
-			insertStmt.setDate(7, Date.valueOf(userModel.getDateJoined()));
+			insertStmt.setDate(7, java.sql.Date.valueOf(LocalDate.now()));
 			insertStmt.setString(8, userModel.getImageUrl());
 			insertStmt.setInt(9, this.DEFAULT_CART_SIZE);
 			insertStmt.setInt(10, roleId);
