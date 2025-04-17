@@ -3,7 +3,6 @@ package com.locked_in.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import com.locked_in.model.RoleModel;
 import com.locked_in.model.UserModel;
 import com.locked_in.service.RegisterService;
 import com.locked_in.util.ImageUtil;
@@ -40,51 +39,55 @@ public class RegisterController extends HttpServlet {
 	/**
 	 * Handles GET requests and forwards the user to the registration page.
 	 *
-	 * @param req  the HttpServletRequest object that contains the request the client made to the servlet
-	 * @param resp the HttpServletResponse object that contains the response the servlet returns to the client
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(request, response);
 	}
 
 	/**
 	 * Handles POST requests for user registration, including validation, user creation, and image upload.
-	 *
-	 * @param req  the HttpServletRequest object that contains the request the client made to the servlet
-	 * @param resp the HttpServletResponse object that contains the response the servlet returns to the client
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// Validate and extract user model
-			String validationMessage = validateRegistrationForm(req);
+			String validationMessage = validateRegistrationForm(request);
 			if (validationMessage != null) {
-				handleError(req, resp, validationMessage);
+				handleError(request, response, validationMessage);
 				return;
 			}
 
-			UserModel userModel = extractUserModel(req);
+			UserModel userModel = extractUserModel(request);
 			Boolean isAdded = registerService.addUser(userModel);
 
 			if (isAdded == null) {
-				handleError(req, resp, "Our server is under maintenance. Please try again later!");
+				handleError(request, response, "Our server is under maintenance. Please try again later!");
 			} else if (isAdded) {
 				try {
-					if (uploadImage(req)) {
-						handleSuccess(req, resp, "Your account is successfully created!", "/WEB-INF/pages/login.jsp");
+					if (uploadImage(request)) {
+						handleSuccess(request, response, "Your account is successfully created!", "/WEB-INF/pages/login.jsp");
 					} else {
-						handleError(req, resp, "Could not upload the image. Please try again later!");
+						handleError(request, response, "Could not upload the image. Please try again later!");
 					}
 				} catch (IOException | ServletException e) {
-					handleError(req, resp, "An error occurred while uploading the image. Please try again later!");
+					handleError(request, response, "An error occurred while uploading the image. Please try again later!");
 					e.printStackTrace(); // Log the exception
 				}
 			} else {
-				handleError(req, resp, "Could not register your account. Please try again later!");
+				handleError(request, response, "Could not register your account. Please try again later!");
 			}
 		} catch (Exception e) {
-			handleError(req, resp, "An unexpected error occurred. Please try again later!");
+			handleError(request, response, "An unexpected error occurred. Please try again later!");
 			e.printStackTrace(); // Log the exception
 		}
 	}
@@ -92,18 +95,18 @@ public class RegisterController extends HttpServlet {
 	/**
 	 * Validates the registration form fields from the HTTP request.
 	 *
-	 * @param req the HttpServletRequest containing the registration form parameters
+	 * @param request the HttpServletRequest containing the registration form parameters
 	 * @return a validation error message if validation fails, or null if all validations pass
 	 */
-	private String validateRegistrationForm(HttpServletRequest req) {
-		String firstName = req.getParameter("firstName");
-		String middleName = req.getParameter("middleName");
-		String lastName = req.getParameter("lastName");
-		String email = req.getParameter("email");
-		String password = req.getParameter("password");
-		String retypePassword = req.getParameter("retypePassword");
-		String contactNum = req.getParameter("contactNum");
-		String dateJoinedStr = req.getParameter("dateJoined");
+	private String validateRegistrationForm(HttpServletRequest request) {
+		String firstName = request.getParameter("firstName");
+		String middleName = request.getParameter("middleName");
+		String lastName = request.getParameter("lastName");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		String retypePassword = request.getParameter("retypePassword");
+		String contactNum = request.getParameter("contactNum");
+		String dateJoinedStr = request.getParameter("dateJoined");
 
 		// Check for null or empty fields first
 		if (ValidationUtil.isNullOrEmpty(firstName)) {
@@ -149,7 +152,7 @@ public class RegisterController extends HttpServlet {
 		if (!ValidationUtil.doPasswordsMatch(password, retypePassword)) {
 			return "Passwords do not match.";
 		}
-		if (!ValidationUtil.isValidContactNum(contactNum)) {
+		if (!ValidationUtil.isValidPhoneNumber(contactNum)) {
 			return "Contact number must be 10 digits and start with 98.";
 		}
 		try {
@@ -158,7 +161,7 @@ public class RegisterController extends HttpServlet {
 			return "Invalid date format. Please use YYYY-MM-DD.";
 		}
 		try {
-			Part image = req.getPart("image");
+			Part image = request.getPart("image");
 			if (!ValidationUtil.isValidImageExtension(image)) {
 				return "Invalid image format. Only jpg, jpeg, png, and gif are allowed.";
 			}
@@ -171,19 +174,19 @@ public class RegisterController extends HttpServlet {
 	/**
 	 * Extracts user information from the HTTP request and constructs a UserModel.
 	 *
-	 * @param req the HttpServletRequest containing form parameters and image part
+	 * @param request the HttpServletRequest containing form parameters and image part
 	 * @return a populated UserModel instance
 	 * @throws Exception if an error occurs during parsing or image handling
 	 */
-	private UserModel extractUserModel(HttpServletRequest req) throws Exception {
-		String firstName = req.getParameter("firstName");
-		String middleName = req.getParameter("middleName");
-		String lastName = req.getParameter("lastName");
-		String email = req.getParameter("email");
-		String password = req.getParameter("password");
-		String contactNum = req.getParameter("contactNum");
-		LocalDate dateJoined = LocalDate.parse(req.getParameter("dateJoined"));
-		Part image = req.getPart("image");
+	private UserModel extractUserModel(HttpServletRequest request) throws Exception {
+		String firstName = request.getParameter("firstName");
+		String middleName = request.getParameter("middleName");
+		String lastName = request.getParameter("lastName");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		String contactNum = request.getParameter("contactNum");
+		LocalDate dateJoined = LocalDate.parse(request.getParameter("dateJoined"));
+		Part image = request.getPart("image");
 		String imageUrl = imageUtil.getImageNameFromPart(image);
 		Integer cartSize = 0;
 
@@ -195,49 +198,49 @@ public class RegisterController extends HttpServlet {
 	/**
 	 * Uploads the image file from the registration form to the server directory.
 	 *
-	 * @param req the HttpServletRequest containing the image file part
+	 * @param request the HttpServletRequest containing the image file part
 	 * @return true if the image upload succeeds, false otherwise
 	 * @throws IOException if an I/O error occurs during upload
 	 * @throws ServletException if the file part cannot be retrieved
 	 */
-	private boolean uploadImage(HttpServletRequest req) throws IOException, ServletException {
-		Part image = req.getPart("image");
-		return imageUtil.uploadImage(image, req.getServletContext().getRealPath("/"), "user");
+	private boolean uploadImage(HttpServletRequest request) throws IOException, ServletException {
+		Part image = request.getPart("image");
+		return imageUtil.uploadImage(image, request.getServletContext().getRealPath("/"), "user");
 	}
 
 	/**
 	 * Forwards the request to the success page with a success message.
 	 *
-	 * @param req the HttpServletRequest object
-	 * @param resp the HttpServletResponse object
+	 * @param request the HttpServletRequest object
+	 * @param response the HttpServletResponse object
 	 * @param message the success message to display
 	 * @param redirectPage the path to the page to forward to
 	 * @throws ServletException if the forwarding fails
 	 * @throws IOException if an I/O error occurs
 	 */
-	private void handleSuccess(HttpServletRequest req, HttpServletResponse resp, String message, String redirectPage)
+	private void handleSuccess(HttpServletRequest request, HttpServletResponse response, String message, String redirectPage)
 			throws ServletException, IOException {
-		req.setAttribute("success", message);
-		req.getRequestDispatcher(redirectPage).forward(req, resp);
+		request.setAttribute("success", message);
+		request.getRequestDispatcher(redirectPage).forward(request, response);
 	}
 
 	/**
 	 * Forwards the request to the registration page with an error message and preserves form data.
 	 *
-	 * @param req the HttpServletRequest object
-	 * @param resp the HttpServletResponse object
+	 * @param request the HttpServletRequest object
+	 * @param response the HttpServletResponse object
 	 * @param message the error message to display
 	 * @throws ServletException if the forwarding fails
 	 * @throws IOException if an I/O error occurs
 	 */
-	private void handleError(HttpServletRequest req, HttpServletResponse resp, String message)
+	private void handleError(HttpServletRequest request, HttpServletResponse response, String message)
 			throws ServletException, IOException {
-		req.setAttribute("error", message);
-		req.setAttribute("firstName", req.getParameter("firstName"));
-		req.setAttribute("middleName", req.getParameter("middleName"));
-		req.setAttribute("lastName", req.getParameter("lastName"));
-		req.setAttribute("email", req.getParameter("email"));
-		req.setAttribute("contactNum", req.getParameter("contactNum"));
-		req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
+		request.setAttribute("error", message);
+		request.setAttribute("firstName", request.getParameter("firstName"));
+		request.setAttribute("middleName", request.getParameter("middleName"));
+		request.setAttribute("lastName", request.getParameter("lastName"));
+		request.setAttribute("email", request.getParameter("email"));
+		request.setAttribute("contactNum", request.getParameter("contactNum"));
+		request.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(request, response);
 	}
 }

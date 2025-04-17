@@ -66,7 +66,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setDate  (7, java.sql.Date.valueOf(LocalDate.now()));
 			insertStmt.setString(8, userModel.getImageUrl());
 			insertStmt.setInt   (9, userModel.getCartSize());
-			insertStmt.setInt   (10, userModel.getRole());
+			insertStmt.setString(10, userModel.getRole());
 			// Execute statement
 			return insertStmt.executeUpdate() > 0;
 		} catch (SQLException e) {
