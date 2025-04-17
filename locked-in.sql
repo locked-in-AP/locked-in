@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2025 at 06:23 PM
+-- Generation Time: Apr 17, 2025 at 06:48 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,35 +18,24 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `LockedIN`
+-- Database: `locked-in`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `CATEGORY`
+-- Table structure for table `ORDER`
 --
 
-CREATE TABLE `CATEGORY` (
-  `categoryId` int(11) NOT NULL,
-  `category` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ORDERS`
---
-
-CREATE TABLE `ORDERS` (
+CREATE TABLE `ORDER` (
   `orderId` int(11) NOT NULL,
-  `orderDate` datetime NOT NULL DEFAULT current_timestamp(),
+  `orderDate` datetime NOT NULL,
   `totalPrice` decimal(12,2) NOT NULL,
   `paymentDate` datetime DEFAULT NULL,
   `paymentMethod` varchar(50) DEFAULT NULL,
   `paymentAmount` decimal(12,2) DEFAULT NULL,
-  `paymentStatus` varchar(50) NOT NULL DEFAULT 'Pending'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `paymentStatus` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -63,22 +52,11 @@ CREATE TABLE `PRODUCT` (
   `dimensions` varchar(100) DEFAULT NULL,
   `size` varchar(50) DEFAULT NULL,
   `color` varchar(50) DEFAULT NULL,
-  `stockQuantity` int(11) NOT NULL DEFAULT 0,
+  `stockQuantity` int(11) DEFAULT 0,
   `discountRate` decimal(5,2) DEFAULT 0.00,
   `imageUrl` varchar(255) DEFAULT NULL,
-  `categoryId` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ROLE`
---
-
-CREATE TABLE `ROLE` (
-  `roleId` int(11) NOT NULL,
-  `role` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `category` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -97,9 +75,8 @@ CREATE TABLE `USER` (
   `dateJoined` date DEFAULT NULL,
   `imageUrl` varchar(255) DEFAULT NULL,
   `cartSize` int(11) DEFAULT 0,
-  `discountRate` decimal(5,2) DEFAULT 0.00,
-  `roleId` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `role` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -110,9 +87,9 @@ CREATE TABLE `USER` (
 CREATE TABLE `USER_PRODUCT` (
   `userId` varchar(36) NOT NULL,
   `productId` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL DEFAULT 1 CHECK (`quantity` > 0),
+  `quantity` int(11) DEFAULT 1,
   `isCurrentlyInCart` tinyint(1) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -124,9 +101,8 @@ CREATE TABLE `USER_PRODUCT_ORDER` (
   `userId` varchar(36) NOT NULL,
   `productId` int(11) NOT NULL,
   `orderId` int(11) NOT NULL,
-  `orderQuantity` int(11) NOT NULL CHECK (`orderQuantity` > 0),
-  `priceAtOrder` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `orderQuantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -139,49 +115,33 @@ CREATE TABLE `USER_PRODUCT_ORDER_REVIEW` (
   `userId` varchar(36) NOT NULL,
   `productId` int(11) NOT NULL,
   `orderId` int(11) NOT NULL,
-  `reviewDate` datetime NOT NULL DEFAULT current_timestamp(),
+  `reviewDate` datetime NOT NULL,
   `review` text DEFAULT NULL,
   `rating` int(11) DEFAULT NULL CHECK (`rating` >= 1 and `rating` <= 5)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `CATEGORY`
+-- Indexes for table `ORDER`
 --
-ALTER TABLE `CATEGORY`
-  ADD PRIMARY KEY (`categoryId`),
-  ADD UNIQUE KEY `category` (`category`);
-
---
--- Indexes for table `ORDERS`
---
-ALTER TABLE `ORDERS`
+ALTER TABLE `ORDER`
   ADD PRIMARY KEY (`orderId`);
 
 --
 -- Indexes for table `PRODUCT`
 --
 ALTER TABLE `PRODUCT`
-  ADD PRIMARY KEY (`productId`),
-  ADD KEY `categoryId` (`categoryId`);
-
---
--- Indexes for table `ROLE`
---
-ALTER TABLE `ROLE`
-  ADD PRIMARY KEY (`roleId`),
-  ADD UNIQUE KEY `role` (`role`);
+  ADD PRIMARY KEY (`productId`);
 
 --
 -- Indexes for table `USER`
 --
 ALTER TABLE `USER`
   ADD PRIMARY KEY (`userId`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `roleId` (`roleId`);
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `USER_PRODUCT`
@@ -195,30 +155,23 @@ ALTER TABLE `USER_PRODUCT`
 --
 ALTER TABLE `USER_PRODUCT_ORDER`
   ADD PRIMARY KEY (`userId`,`productId`,`orderId`),
-  ADD KEY `productId` (`productId`),
   ADD KEY `orderId` (`orderId`);
 
 --
 -- Indexes for table `USER_PRODUCT_ORDER_REVIEW`
 --
 ALTER TABLE `USER_PRODUCT_ORDER_REVIEW`
-  ADD PRIMARY KEY (`reviewId`),
-  ADD UNIQUE KEY `uq_user_product_order` (`userId`,`productId`,`orderId`);
+  ADD PRIMARY KEY (`reviewId`,`userId`,`productId`,`orderId`),
+  ADD KEY `userId` (`userId`,`productId`,`orderId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `CATEGORY`
+-- AUTO_INCREMENT for table `ORDER`
 --
-ALTER TABLE `CATEGORY`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ORDERS`
---
-ALTER TABLE `ORDERS`
+ALTER TABLE `ORDER`
   MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -226,12 +179,6 @@ ALTER TABLE `ORDERS`
 --
 ALTER TABLE `PRODUCT`
   MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ROLE`
---
-ALTER TABLE `ROLE`
-  MODIFY `roleId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `USER_PRODUCT_ORDER_REVIEW`
@@ -244,37 +191,24 @@ ALTER TABLE `USER_PRODUCT_ORDER_REVIEW`
 --
 
 --
--- Constraints for table `PRODUCT`
---
-ALTER TABLE `PRODUCT`
-  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`categoryId`) REFERENCES `CATEGORY` (`categoryId`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `USER`
---
-ALTER TABLE `USER`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `ROLE` (`roleId`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
 -- Constraints for table `USER_PRODUCT`
 --
 ALTER TABLE `USER_PRODUCT`
-  ADD CONSTRAINT `user_product_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `USER` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_product_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `PRODUCT` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_product_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `USER` (`userId`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_product_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `PRODUCT` (`productId`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `USER_PRODUCT_ORDER`
 --
 ALTER TABLE `USER_PRODUCT_ORDER`
-  ADD CONSTRAINT `user_product_order_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `USER` (`userId`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_product_order_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `PRODUCT` (`productId`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_product_order_ibfk_3` FOREIGN KEY (`orderId`) REFERENCES `ORDERS` (`orderId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_product_order_ibfk_1` FOREIGN KEY (`userId`,`productId`) REFERENCES `USER_PRODUCT` (`userId`, `productId`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_product_order_ibfk_2` FOREIGN KEY (`orderId`) REFERENCES `ORDER` (`orderId`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `USER_PRODUCT_ORDER_REVIEW`
 --
 ALTER TABLE `USER_PRODUCT_ORDER_REVIEW`
-  ADD CONSTRAINT `user_product_order_review_ibfk_1` FOREIGN KEY (`userId`,`productId`,`orderId`) REFERENCES `USER_PRODUCT_ORDER` (`userId`, `productId`, `orderId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_product_order_review_ibfk_1` FOREIGN KEY (`userId`,`productId`,`orderId`) REFERENCES `USER_PRODUCT_ORDER` (`userId`, `productId`, `orderId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
