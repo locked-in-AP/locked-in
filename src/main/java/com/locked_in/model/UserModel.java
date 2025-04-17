@@ -1,12 +1,9 @@
-/**
- * 
- */
 package com.locked_in.model;
 
 import java.time.LocalDate;
 
 /**
- * 
+ * UserModel represents a user in the system with personal, contact, account, and cart details.
  */
 public class UserModel {
 
@@ -20,32 +17,33 @@ public class UserModel {
 	private LocalDate dateJoined;
 	private String imageUrl;
 	private Integer cartSize;
-	private RoleModel role;
-	
+	private String role;
+
 	/**
-	 * 
+	 * Default constructor for creating an empty UserModel instance.
 	 */
 	public UserModel() {
-		// TODO Auto-generated constructor stub
+		// No-args constructor
 	}
 
 	/**
-	 * @param userId
-	 * @param firstName
-	 * @param middleName
-	 * @param lastName
-	 * @param email
-	 * @param password
-	 * @param contactNum
-	 * @param dateJoined
-	 * @param imageUrl
-	 * @param cartSize
-	 * @param role
+	 * Constructs a fully-initialized UserModel including user ID.
+	 * 
+	 * @param userId     unique identifier for the user
+	 * @param firstName  user's first name
+	 * @param middleName user's middle name
+	 * @param lastName   user's last name
+	 * @param email      user's email address
+	 * @param password   user's password
+	 * @param contactNum user's contact number
+	 * @param dateJoined date the user joined the system
+	 * @param imageUrl   URL of user's profile image
+	 * @param cartSize   number of items in user's cart
+	 * @param role       user's role in the system (e.g., admin, user)
 	 */
 	public UserModel(Integer userId, String firstName, String middleName, String lastName, String email,
-			String password, String contactNum, LocalDate dateJoined, String imageUrl, Integer cartSize,
-			RoleModel role) {
-		super();
+					 String password, String contactNum, LocalDate dateJoined, String imageUrl,
+					 Integer cartSize, String role) {
 		this.userId = userId;
 		this.firstName = firstName;
 		this.middleName = middleName;
@@ -60,156 +58,140 @@ public class UserModel {
 	}
 
 	/**
-	 * @return the userId
+	 * Constructs a UserModel without a user ID (useful for registration).
+	 * 
+	 * @param firstName  user's first name
+	 * @param middleName user's middle name
+	 * @param lastName   user's last name
+	 * @param email      user's email address
+	 * @param password   user's password
+	 * @param contactNum user's contact number
+	 * @param dateJoined date the user joined the system
+	 * @param imageUrl   URL of user's profile image
+	 * @param cartSize   number of items in user's cart
+	 * @param role       user's role in the system (e.g., admin, user)
 	 */
+	public UserModel(String firstName, String middleName, String lastName, String email, String password,
+					 String contactNum, LocalDate dateJoined, String imageUrl, Integer cartSize, String role) {
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.contactNum = contactNum;
+		this.dateJoined = dateJoined;
+		this.imageUrl = imageUrl;
+		this.cartSize = cartSize;
+		this.role = role;
+	}
+
+	/** @return user ID */
 	public Integer getUserId() {
 		return userId;
 	}
 
-	/**
-	 * @param userId the userId to set
-	 */
+	/** @param userId sets the user ID */
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * @return the firstName
-	 */
+	/** @return first name */
 	public String getFirstName() {
 		return firstName;
 	}
 
-	/**
-	 * @param firstName the firstName to set
-	 */
+	/** @param firstName sets the user's first name */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-	/**
-	 * @return the middleName
-	 */
+	/** @return middle name */
 	public String getMiddleName() {
 		return middleName;
 	}
 
-	/**
-	 * @param middleName the middleName to set
-	 */
+	/** @param middleName sets the user's middle name */
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
 
-	/**
-	 * @return the lastName
-	 */
+	/** @return last name */
 	public String getLastName() {
 		return lastName;
 	}
 
-	/**
-	 * @param lastName the lastName to set
-	 */
+	/** @param lastName sets the user's last name */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-	/**
-	 * @return the email
-	 */
+	/** @return email address */
 	public String getEmail() {
 		return email;
 	}
 
-	/**
-	 * @param email the email to set
-	 */
+	/** @param email sets the user's email address */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	/**
-	 * @return the password
-	 */
+	/** @return password */
 	public String getPassword() {
 		return password;
 	}
 
-	/**
-	 * @param password the password to set
-	 */
+	/** @param password sets the user's password */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	/**
-	 * @return the contactNum
-	 */
+	/** @return contact number */
 	public String getContactNum() {
 		return contactNum;
 	}
 
-	/**
-	 * @param contactNum the contactNum to set
-	 */
+	/** @param contactNum sets the user's contact number */
 	public void setContactNum(String contactNum) {
 		this.contactNum = contactNum;
 	}
 
-	/**
-	 * @return the dateJoined
-	 */
+	/** @return the date the user joined */
 	public LocalDate getDateJoined() {
 		return dateJoined;
 	}
 
-	/**
-	 * @param dateJoined the dateJoined to set
-	 */
+	/** @param dateJoined sets the date the user joined */
 	public void setDateJoined(LocalDate dateJoined) {
 		this.dateJoined = dateJoined;
 	}
 
-	/**
-	 * @return the imageUrl
-	 */
+	/** @return profile image URL */
 	public String getImageUrl() {
 		return imageUrl;
 	}
 
-	/**
-	 * @param imageUrl the imageUrl to set
-	 */
+	/** @param imageUrl sets the user's profile image URL */
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
 
-	/**
-	 * @return the cartSize
-	 */
+	/** @return number of items in user's cart */
 	public Integer getCartSize() {
 		return cartSize;
 	}
 
-	/**
-	 * @param cartSize the cartSize to set
-	 */
+	/** @param cartSize sets the number of items in user's cart */
 	public void setCartSize(Integer cartSize) {
 		this.cartSize = cartSize;
 	}
 
-	/**
-	 * @return the role
-	 */
-	public RoleModel getRole() {
+	/** @return user's role in the system */
+	public String getRole() {
 		return role;
 	}
 
-	/**
-	 * @param role the role to set
-	 */
-	public void setRole(RoleModel role) {
+	/** @param role sets the user's system role */
+	public void setRole(String role) {
 		this.role = role;
 	}
 
