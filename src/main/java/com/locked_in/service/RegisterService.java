@@ -1,7 +1,6 @@
 package com.locked_in.service;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +16,6 @@ import com.locked_in.model.UserModel;
 public class RegisterService {
 
 	private Connection dbConn;
-	private final Integer DEFAULT_CART_SIZE = 1;
 
 	/**
 	 * Constructor initializes the database connection.
@@ -42,8 +40,6 @@ public class RegisterService {
 			System.err.println("Database connection is not available.");
 			return null;
 		}
-
-		String roleQuery = "SELECT role_id FROM Role WHERE role = ?";
 		String insertQuery = """
 INSERT INTO User (
 	first_name,
@@ -55,19 +51,11 @@ INSERT INTO User (
 	date_joined,
 	image_url,
 	cart_size,
-	role_id
+	role
 )
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 """;
-
-		try (PreparedStatement roleStmt = dbConn.prepareStatement(roleQuery);
-				PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
-
-			// Fetch role ID
-			roleStmt.setString(1, userModel.getRole().getRole());
-			ResultSet result = roleStmt.executeQuery();
-			int roleId = result.next() ? result.getInt("role_id") : 1;
-
+		try (PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
 			// Insert user details
 			insertStmt.setString(1, userModel.getFirstName());
 			insertStmt.setString(2, userModel.getMiddleName());
@@ -75,11 +63,11 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setString(4, userModel.getEmail());
 			insertStmt.setString(5, userModel.getPassword());
 			insertStmt.setString(6, userModel.getContactNum());
-			insertStmt.setDate(7, java.sql.Date.valueOf(LocalDate.now()));
+			insertStmt.setDate  (7, java.sql.Date.valueOf(LocalDate.now()));
 			insertStmt.setString(8, userModel.getImageUrl());
-			insertStmt.setInt(9, this.DEFAULT_CART_SIZE);
-			insertStmt.setInt(10, roleId);
-
+			insertStmt.setInt   (9, userModel.getCartSize());
+			insertStmt.setInt   (10, userModel.getRole());
+			// Execute statement
 			return insertStmt.executeUpdate() > 0;
 		} catch (SQLException e) {
 			System.err.println("Error during user registration: " + e.getMessage());

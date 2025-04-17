@@ -20,7 +20,7 @@ public class UserModel {
 	private LocalDate dateJoined;
 	private String imageUrl;
 	private Integer cartSize;
-	private RoleModel role;
+	private String role;
 	
 	/**
 	 * 
@@ -44,7 +44,7 @@ public class UserModel {
 	 */
 	public UserModel(Integer userId, String firstName, String middleName, String lastName, String email,
 			String password, String contactNum, LocalDate dateJoined, String imageUrl, Integer cartSize,
-			RoleModel role) {
+			String role) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -202,14 +202,14 @@ public class UserModel {
 	/**
 	 * @return the role
 	 */
-	public RoleModel getRole() {
+	public String getRole() {
 		return role;
 	}
 
 	/**
 	 * @param role the role to set
 	 */
-	public void setRole(RoleModel role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
