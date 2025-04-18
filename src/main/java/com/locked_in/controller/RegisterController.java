@@ -29,6 +29,7 @@ public class RegisterController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			String name = request.getParameter("name");
 			String nickname = request.getParameter("nickname");
 			String email = request.getParameter("email");
@@ -42,6 +43,8 @@ public class RegisterController extends HttpServlet {
 			if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")) {
 				handleError(request, response, "Please enter a valid email address.");
 =======
+=======
+>>>>>>> 81b7e44 (Registration partially working)
 //			 Validate and extract user model
 			String validationMessage = validateRegistrationForm(request);
 			if (validationMessage != null) {
@@ -94,7 +97,10 @@ public class RegisterController extends HttpServlet {
 			} else if (isAdded) {
 				handleSuccess(request, response, "Your account is successfully created!", "/WEB-INF/pages/login.jsp");
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 81b7e44 (Registration partially working)
 
 //				try {
 //					if (uploadImage(request)) {
@@ -106,6 +112,9 @@ public class RegisterController extends HttpServlet {
 //					handleError(request, response, "An error occurred while uploading the image. Please try again later!");
 //					e.printStackTrace(); // Log the exception
 //				}
+<<<<<<< HEAD
+>>>>>>> 81b7e44 (Registration partially working)
+=======
 >>>>>>> 81b7e44 (Registration partially working)
 			} else {
 				handleError(request, response, "Could not register your account. Please try again later!");
