@@ -85,6 +85,17 @@ public class UserModel {
 		this.role = role;
 	}
 
+	/**
+	 * Constructs a UserModel with only email and password (useful for login).
+	 * 
+	 * @param email      user's email address
+	 * @param password   user's password
+	 */
+	public UserModel(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+
 	/** @return user ID */
 	public Integer getUserId() {
 		return userId;
