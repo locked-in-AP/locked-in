@@ -1,0 +1,94 @@
+@charset "UTF-8";
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+}
+
+img {
+  height: 200px;
+}
+
+.registration-container {
+  width: 420px;
+  background: #ffffff;
+  padding: 20px;
+}
+
+.registration-container .header {
+  text-align: center;
+}
+
+.registration-container h1 {
+  font-size: 30px;
+  margin: 20px auto;
+}
+
+.registration-container p {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.registration-container .input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 20px auto;
+}
+
+.registration-container input {
+  width: 100%;
+  height: 100% ;
+  border: 2px solid #f1f1f1;
+  padding: 20px 45px 20px 20px;
+
+}
+
+.btn {
+  width: 100%;
+  height: 55px;
+  padding: 12px;
+  border-radius: 45px;
+  background-color: black;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 17px;
+}
+
+
+.login  {
+font-size: 14px;
+text-align: center;
+margin-top: 12px;
+}
+
+.login p a{
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.input-box {
+  margin: 10px 0px;
+}
+
+.input-box label {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-weight: 500;
+    color: #333;
+}
