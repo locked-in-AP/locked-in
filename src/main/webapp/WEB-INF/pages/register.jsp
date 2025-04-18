@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>User Registration</title>
-<link rel="stylesheet" type="text/css" href = "${pageContext.request.contextPath}/css/registration.css">
+<link rel="stylesheet" type="text/css" href = "${pageContext.request.contextPath}/css/register.css">
 </head>
 <body>
 <div class="registration-container">
