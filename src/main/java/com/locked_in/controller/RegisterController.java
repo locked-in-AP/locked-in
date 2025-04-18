@@ -127,9 +127,9 @@ public class RegisterController extends HttpServlet {
 		if (ValidationUtil.isNullOrEmpty(contactNum)) {
 			return "Contact number is required.";
 		}
-		if (ValidationUtil.isNullOrEmpty(dateJoinedStr)) {
-			return "Date of birth is required.";
-		}
+//		if (ValidationUtil.isNullOrEmpty(dateJoinedStr)) {
+//			return "Date of birth is required.";
+//		}
 
 		// Validate fields
 		if (!ValidationUtil.isAlphanumericStartingWithLetter(firstName)) {
