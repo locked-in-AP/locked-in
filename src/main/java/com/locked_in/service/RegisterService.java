@@ -64,7 +64,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setString(6, userModel.getContactNum());
 			insertStmt.setDate  (7, java.sql.Date.valueOf(LocalDate.now()));
 			insertStmt.setString(8, userModel.getImageUrl());
-			insertStmt.setInt   (9, userModel.getCartSize());
+			insertStmt.setInt   (9, 0);
 			insertStmt.setString(10, userModel.getRole());
 			// Execute statement
 			return insertStmt.executeUpdate() > 0;

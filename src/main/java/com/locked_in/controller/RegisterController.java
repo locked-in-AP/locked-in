@@ -187,11 +187,9 @@ public class RegisterController extends HttpServlet {
 		// LocalDate dateJoined = LocalDate.parse(request.getParameter("dateJoined"));
 		Part image = request.getPart("image");
 		String imageUrl = imageUtil.getImageNameFromPart(image);
-		Integer cartSize = 0;
-
 		password = PasswordUtil.encrypt(email, password);
 
-		return new UserModel(firstName, middleName, lastName, email, password, contactNum, null, imageUrl, cartSize, "CUSTOMER");
+		return new UserModel(firstName, middleName, lastName, email, password, contactNum, null, imageUrl, null, "CUSTOMER");
 	}
 
 	/**
