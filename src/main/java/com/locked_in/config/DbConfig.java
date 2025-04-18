@@ -14,7 +14,7 @@ public class DbConfig {
 	private static final String DB_NAME = "locked_in";
 	private static final String URL = "jdbc:mysql://localhost:3306/" + DB_NAME;
 	private static final String USERNAME = "root";
-	private static final String PASSWORD = "";
+	private static final String PASSWORD = "locked_in";
 
 	/**
 	 * Establishes a connection to the database.
