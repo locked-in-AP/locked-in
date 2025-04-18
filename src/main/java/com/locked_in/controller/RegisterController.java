@@ -106,7 +106,7 @@ public class RegisterController extends HttpServlet {
 		String password = request.getParameter("password");
 		String retypePassword = request.getParameter("retypePassword");
 		String contactNum = request.getParameter("contactNum");
-		String dateJoinedStr = request.getParameter("dateJoined");
+		// String dateJoinedStr = request.getParameter("dateJoined");
 
 		// Check for null or empty fields first
 		if (ValidationUtil.isNullOrEmpty(firstName)) {
@@ -155,11 +155,11 @@ public class RegisterController extends HttpServlet {
 		if (!ValidationUtil.isValidPhoneNumber(contactNum)) {
 			return "Contact number must be 10 digits and start with 98.";
 		}
-		try {
-			LocalDate.parse(dateJoinedStr);
-		} catch (Exception e) {
-			return "Invalid date format. Please use YYYY-MM-DD.";
-		}
+		// try {
+		// 	LocalDate.parse(dateJoinedStr);
+		// } catch (Exception e) {
+		// 	return "Invalid date format. Please use YYYY-MM-DD.";
+		// }
 		try {
 			Part image = request.getPart("image");
 			if (!ValidationUtil.isValidImageExtension(image)) {
@@ -185,14 +185,14 @@ public class RegisterController extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String contactNum = request.getParameter("contactNum");
-		LocalDate dateJoined = LocalDate.parse(request.getParameter("dateJoined"));
+		// LocalDate dateJoined = LocalDate.parse(request.getParameter("dateJoined"));
 		Part image = request.getPart("image");
 		String imageUrl = imageUtil.getImageNameFromPart(image);
 		Integer cartSize = 0;
 
 		password = PasswordUtil.encrypt(email, password);
 
-		return new UserModel(firstName, middleName, lastName, email, password, contactNum, dateJoined, imageUrl, cartSize, "CUSTOMER");
+		return new UserModel(firstName, middleName, lastName, email, password, contactNum, null, imageUrl, cartSize, "CUSTOMER");
 	}
 
 	/**
