@@ -26,9 +26,9 @@ public class AuthenticationFilter implements Filter {
 	private static final String MODIFY_STUDENTS = "/modifyStudents";
 	private static final String STUDENT_UPDATE = "/studentUpdate";
 	private static final String ADMIN_ORDER = "/adminOrder";
-	private static final String ABOUT = "/about";
+	private static final String ABOUT = "/aboutus";
 	private static final String PORTFOLIO = "/portfolio";
-	private static final String CONTACT = "/contact";
+	private static final String CONTACT = "/contactus";
 	private static final String ORDER_LIST = "/orderlist";
 	private static final String CART_LIST = "/cartlist";
 

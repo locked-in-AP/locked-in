@@ -74,9 +74,9 @@
                 <div class="features-grid">
                     <div class="feature">
                         <div class="feature-icon">
-                            <img src="${pageContext.request.contextPath}/resources/images/system/delivary.jpg" alt="Delivary Image">
+                            <img src="${pageContext.request.contextPath}/resources/images/system/delivary.png" alt="Delivary Image">
                         </div>
-                        <h4>ON TIME DELIVARY</h4>
+                        <h4>Timely Delivary</h4>
                         
                     </div>
                     <div class="feature">
@@ -97,9 +97,8 @@
              </section>
 
     </div>
-    <footer class="footer">
-        <p>&copy; 2023 Your Company Name. All rights reserved.</p>
-    </footer>    
+    
+    <jsp:include page="footer.jsp" />
     
     
 
