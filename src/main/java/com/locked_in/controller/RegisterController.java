@@ -1,7 +1,6 @@
 package com.locked_in.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 import com.locked_in.model.UserModel;
 import com.locked_in.service.RegisterService;
