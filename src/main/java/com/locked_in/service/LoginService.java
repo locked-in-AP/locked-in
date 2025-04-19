@@ -74,6 +74,6 @@ public class LoginService {
 		String dbPassword = result.getString("password");
 
 		return dbEmail.equals(userModel.getEmail())
-				&& PasswordUtil.decrypt(dbPassword, dbEmail).equals(userModel.getPassword());
+				&& PasswordUtil.decrypt(dbPassword, dbEmail).equals(userModel.getPasswordHash());
 	}
 }

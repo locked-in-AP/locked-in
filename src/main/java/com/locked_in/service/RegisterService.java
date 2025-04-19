@@ -3,7 +3,6 @@ package com.locked_in.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 import com.locked_in.config.DbConfig;
 import com.locked_in.model.UserModel;
@@ -40,32 +39,26 @@ public class RegisterService {
 			return null;
 		}
 		String insertQuery = """
-INSERT INTO User (
-	first_name,
-	middle_name,
-	last_name,
+INSERT INTO users (
+	name,
+	nickname,
 	email,
-	password,
-	contact_num,
-	date_joined,
-	image_url,
-	cart_size,
-	role
+	password_hash,
+	phone_number,
+	gender,
+	date_of_birth
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?)
 """;
 		try (PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
 			// Insert user details
-			insertStmt.setString(1, userModel.getFirstName());
-			insertStmt.setString(2, userModel.getMiddleName());
-			insertStmt.setString(3, userModel.getLastName());
-			insertStmt.setString(4, userModel.getEmail());
-			insertStmt.setString(5, userModel.getPassword());
-			insertStmt.setString(6, userModel.getContactNum());
-			insertStmt.setDate  (7, java.sql.Date.valueOf(LocalDate.now()));
-			insertStmt.setString(8, userModel.getImageUrl());
-			insertStmt.setInt   (9, 0);
-			insertStmt.setString(10, userModel.getRole());
+			insertStmt.setString(1, userModel.getName());
+			insertStmt.setString(2, userModel.getNickname());
+			insertStmt.setString(3, userModel.getEmail());
+			insertStmt.setString(4, userModel.getPasswordHash());
+			insertStmt.setString(5, userModel.getPhoneNumber());
+			insertStmt.setString(6, userModel.getGender());
+			insertStmt.setDate  (7, java.sql.Date.valueOf(userModel.getDateOfBirth()));
 			// Execute statement
 			return insertStmt.executeUpdate() > 0;
 		} catch (SQLException e) {

@@ -56,30 +56,30 @@ public class LoginController extends HttpServlet {
 	 * in the session and sets a role-based cookie. Redirects to dashboard or home.
 	 * If authentication fails or the service is unavailable, an error message is shown.
 	 *
-	 * @param req  the HTTP request containing login form data
-	 * @param resp the HTTP response used to redirect or show errors
+	 * @param request  the HTTP request containing login form data
+	 * @param response the HTTP response used to redirect or show errors
 	 * @throws ServletException if servlet-specific error occurs
 	 * @throws IOException      if an I/O error occurs during processing
 	 */
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String username = req.getParameter("username");
-		String password = req.getParameter("password");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
 
-		UserModel userModel = new UserModel(username, password);
+		UserModel userModel = new UserModel(email, password);
 		Boolean loginStatus = loginService.loginUser(userModel);
 
 		if (loginStatus != null && loginStatus) {
-			SessionUtil.setAttribute(req, "username", username);
-			if (username.equals("admin")) {
-				CookieUtil.addCookie(resp, "role", "admin", 5 * 30);
-				resp.sendRedirect(req.getContextPath() + "/dashboard");
+			SessionUtil.setAttribute(request, "email", email);
+			if (email.equals("admin")) {
+				CookieUtil.addCookie(response, "role", "admin", 5 * 30);
+				response.sendRedirect(request.getContextPath() + "/dashboard");
 			} else {
-				CookieUtil.addCookie(resp, "role", "user", 5 * 30);
-				resp.sendRedirect(req.getContextPath() + "/home");
+				CookieUtil.addCookie(response, "role", "user", 5 * 30);
+				response.sendRedirect(request.getContextPath() + "/home");
 			}
 		} else {
-			handleLoginFailure(req, resp, loginStatus);
+			handleLoginFailure(request, response, loginStatus);
 		}
 	}
 
@@ -88,13 +88,13 @@ public class LoginController extends HttpServlet {
 	 * 
 	 * Distinguishes between server unavailability (null loginStatus) and invalid credentials.
 	 *
-	 * @param req         the HTTP request used to set attributes
-	 * @param resp        the HTTP response used to forward to login page
-	 * @param loginStatus indicates login result (null for server issue, false for auth failure)
+	 * @param request         the HTTP request used to set attributes
+	 * @param response        the HTTP response used to forward to login page
+	 * @param loginStatus indicates login result (null for server issue, false for authentication failure)
 	 * @throws ServletException if a servlet-specific error occurs
 	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
-	private void handleLoginFailure(HttpServletRequest req, HttpServletResponse resp, Boolean loginStatus)
+	private void handleLoginFailure(HttpServletRequest request, HttpServletResponse response, Boolean loginStatus)
 			throws ServletException, IOException {
 		String errorMessage;
 		if (loginStatus == null) {
@@ -102,8 +102,8 @@ public class LoginController extends HttpServlet {
 		} else {
 			errorMessage = "User credential mismatch. Please try again!";
 		}
-		req.setAttribute("error", errorMessage);
-		req.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(req, resp);
+		request.setAttribute("error", errorMessage);
+		request.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(request, response);
 	}
 
 }
