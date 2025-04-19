@@ -23,16 +23,11 @@ import jakarta.servlet.http.Part;
  * It also manages file uploads and account creation.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/register" })
-@MultipartConfig(
-	fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
-	maxFileSize       = 1024 * 1024 * 10, // 10MB
-	maxRequestSize    = 1024 * 1024 * 50  // 50MB
-) 
 public class RegisterController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private final ImageUtil imageUtil = new ImageUtil();
+//	private final ImageUtil imageUtil = new ImageUtil();
 	private final RegisterService registerService = new RegisterService();
 
 	/**
@@ -72,16 +67,7 @@ public class RegisterController extends HttpServlet {
 			if (isAdded == null) {
 				handleError(request, response, "Our server is under maintenance. Please try again later!");
 			} else if (isAdded) {
-				try {
-					if (uploadImage(request)) {
-						handleSuccess(request, response, "Your account is successfully created!", "/WEB-INF/pages/login.jsp");
-					} else {
-						handleError(request, response, "Could not upload the image. Please try again later!");
-					}
-				} catch (IOException | ServletException e) {
-					handleError(request, response, "An error occurred while uploading the image. Please try again later!");
-					e.printStackTrace(); // Log the exception
-				}
+				handleSuccess(request, response, "Your account is successfully created!", "/WEB-INF/pages/login.jsp");
 			} else {
 				handleError(request, response, "Could not register your account. Please try again later!");
 			}
@@ -178,31 +164,15 @@ public class RegisterController extends HttpServlet {
 	 * @throws Exception if an error occurs during parsing or image handling
 	 */
 	private UserModel extractUserModel(HttpServletRequest request) throws Exception {
-		String firstName = request.getParameter("firstName");
-		String middleName = request.getParameter("middleName");
-		String lastName = request.getParameter("lastName");
+		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String contactNum = request.getParameter("contactNum");
+		String phone = request.getParameter("phone");
 		// LocalDate dateJoined = LocalDate.parse(request.getParameter("dateJoined"));
 		Part image = request.getPart("image");
-		String imageUrl = imageUtil.getImageNameFromPart(image);
 		password = PasswordUtil.encrypt(email, password);
 
-		return new UserModel(firstName, middleName, lastName, email, password, contactNum, null, imageUrl, null, "CUSTOMER");
-	}
-
-	/**
-	 * Uploads the image file from the registration form to the server directory.
-	 *
-	 * @param request the HttpServletRequest containing the image file part
-	 * @return true if the image upload succeeds, false otherwise
-	 * @throws IOException if an I/O error occurs during upload
-	 * @throws ServletException if the file part cannot be retrieved
-	 */
-	private boolean uploadImage(HttpServletRequest request) throws IOException, ServletException {
-		Part image = request.getPart("image");
-		return imageUtil.uploadImage(image, request.getServletContext().getRealPath("/"), "user");
+		return new UserModel(name, email, password, phone, null, null, "CUSTOMER");
 	}
 
 	/**
