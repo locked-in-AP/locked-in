@@ -42,7 +42,7 @@
 
 			<div class="input-box">
 				<input type="text" name="nickname"
-					placeholder="Enter preferred Nickname" required
+					placeholder="Enter preferred Nickname"
 					class="${not empty nicknameError ? 'error-border' : ''}"
 					value="${nickname != null ? nickname : ''}">
 
