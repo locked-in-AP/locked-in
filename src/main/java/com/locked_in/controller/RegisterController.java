@@ -37,32 +37,48 @@ public class RegisterController extends HttpServlet {
 			String gender = request.getParameter("gender");
 			String dateOfBirthStr = request.getParameter("dateOfBirth");
 
-			// Validation
+			// Basic email validation
 			if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")) {
 				handleError(request, response, "Please enter a valid email address.");
 				return;
 			}
 
-			if (!phoneNumber.matches("^[0-9]{10,15}$")) {
-				handleError(request, response, "Please enter a valid phone number (10–15 digits).");
+			// Phone number: digits only, length 10–15
+			if (!phoneNumber.matches("^[0-9]{10}$")) {
+				handleError(request, response, "Please enter a valid phone number (10 digits).");
 				return;
 			}
 
+			// Strong password validation
+			if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>/?]).{8,}$")) {
+				handleError(request, response, "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.");
+				return;
+			}
+
+			// Match passwords
 			if (!password.equals(repassword)) {
 				handleError(request, response, "Passwords do not match.");
 				return;
 			}
 
+			// Date of birth validation (must be at least 16 years old)
 			LocalDate dateOfBirth;
 			try {
 				dateOfBirth = LocalDate.parse(dateOfBirthStr);
+				LocalDate today = LocalDate.now();
+				if (dateOfBirth.isAfter(today.minusYears(16))) {
+					handleError(request, response, "You must be at least 16 years old to register.");
+					return;
+				}
 			} catch (DateTimeParseException e) {
 				handleError(request, response, "Invalid date format. Please select a valid date.");
 				return;
 			}
 
+			// Hash the password
 			String passwordHash = PasswordUtil.encrypt(email, password);
 			
+			// Create user object
 			UserModel userModel = new UserModel(name, nickname, email, passwordHash, phoneNumber, gender, dateOfBirth);
 			Boolean isAdded = registerService.addUser(userModel);
 
