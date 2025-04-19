@@ -38,7 +38,7 @@
       <button type="submit" class="btn">Login</button>
 
       <div class="registeration">
-        <p>Don't have an account? <a href="userregistration">Register</a></p>
+        <p>Don't have an account? <a href="${pageContext.request.contextPath}/register">Register</a></p>
       </div>
 
 
