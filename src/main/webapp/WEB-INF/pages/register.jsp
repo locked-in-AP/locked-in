@@ -49,11 +49,12 @@
 
 			<div class="input-box">
 				<select name="gender" required>
-					<option value="" disabled <c:if test="${empty gender}">selected</c:if>>Select gender</option>
-					<option value="male" <c:if test="${gender == 'male'}">selected</c:if>>Male</option>
-					<option value="female" <c:if test="${gender == 'female'}">selected</c:if>>Female</option>
-					<option value="prefer_not_to_say" <c:if test="${gender == 'prefer_not_to_say'}">selected</c:if>>Prefer not to say</option>
+					<option value="" disabled ${empty gender ? 'selected' : ''}>Select gender</option>
+					<option value="male" ${gender == 'male' ? 'selected' : ''}>Male</option>
+					<option value="female" ${gender == 'female' ? 'selected' : ''}>Female</option>
+					<option value="prefer_not_to_say" ${gender == 'prefer_not_to_say' ? 'selected' : ''}>Prefer not to say</option>
 				</select>
+
 			</div>
 
 			<div class="input-box">
