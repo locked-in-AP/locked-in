@@ -32,7 +32,7 @@ public class AuthenticationFilter implements Filter {
 	private static final String ORDER_LIST = "/orderlist";
 	private static final String CART_LIST = "/cartlist";
 	/* private static final String ITEM = "/item"; */
-	private static final String CART = "/cart";
+	/* private static final String CART = "/cart"; */
 	
 	
 
@@ -88,7 +88,7 @@ public class AuthenticationFilter implements Filter {
 		} else {
 			// Not logged in
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT)
-					|| uri.endsWith(CONTACT) || uri.endsWith(CART)) /*|| uri.endsWith(ITEM) */ {
+					|| uri.endsWith(CONTACT))/* || uri.endsWith(CART) */ /*|| uri.endsWith(ITEM) */ {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + LOGIN);
