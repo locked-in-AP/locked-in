@@ -58,50 +58,37 @@
 
 			</div>
 			<c:if test="${not empty emailError}">
-				<label class="field-error">>${emailError}</label>
+				<label class="field-error">${emailError}</label>
 
 			</c:if>
 
 			<div class="input-box">
-
 				<input type="tel" name="phoneNumber"
 					placeholder="Enter your Phone number" required
 					class="${not empty phoneNumberError ? 'error-border' : ''}"
 					value="${phoneNumber != null ? phoneNumber : ''}">
-
-
-
 			</div>
-
 			<c:if test="${not empty phoneNumberError}">
-				<label class="field-error">>${phoneNumberError}</label>
-				<%-- <p class="field-error">${phoneNumberError}</p> --%>
+				<p class="field-error">${phoneNumberError}</p>
 			</c:if>
-
 
 			<div class="input-box disappearing-label">
 				<input type="date" name="dateOfBirth" id="dob" required
 					class="${not empty dateOfBirthError ? 'error-border' : ''}"
 					value="${dateOfBirth != null ? dateOfBirth : ''}"> <label
 					for="dob">Date of birth</label>
-
 			</div>
 			<c:if test="${not empty dateOfBirthError}">
 				<p class="field-error">${dateOfBirthError}</p>
 			</c:if>
 
 			<div class="input-box">
-
-				<select name="gender" required
-					class="${not empty genderError ? 'error-border' : ''}">
+				<select name="gender" required class="${not empty genderError ? 'error-border' : ''}">
 					<option value=""  ${empty gender ? 'selected' : ''}>Select gender</option>
 					<option value="male" ${gender == 'male' ? 'selected' : ''}>Male</option>
 					<option value="female" ${gender == 'female' ? 'selected' : ''}>Female</option>
-					<option value="prefer_not_to_say"
-						${gender == 'prefer_not_to_say' ? 'selected' : ''}>Prefer
-						not to say</option>
+					<option value="prefer_not_to_say" ${gender == 'prefer_not_to_say' ? 'selected' : ''}>Prefer not to say</option>
 				</select>
-
 			</div>
 			<c:if test="${not empty genderError}">
 				<p class="field-error">${genderError}</p>
@@ -111,7 +98,6 @@
 				<input type="password" name="password" placeholder="Enter Password"
 					required class="${not empty passwordError ? 'error-border' : ''}">
 				<i class="fa-solid fa-lock toggle-password"></i>
-
 			</div>
 			<c:if test="${not empty passwordError}">
 				<p class="field-error">${passwordError}</p>
@@ -122,7 +108,6 @@
 					placeholder="Confirm Password" required
 					class="${not empty repasswordError ? 'error-border' : ''}">
 				<i class="fa-solid fa-lock toggle-password"></i>
-
 			</div>
 			<c:if test="${not empty repasswordError}">
 				<p class="field-error">${repasswordError}</p>
