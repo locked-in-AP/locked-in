@@ -14,10 +14,11 @@
 	<div class="registration-container">
 		<div class="header">
 			<img src="${pageContext.request.contextPath}/resources/images/system/logo.png" alt="">
-			<h1>Sign Up</h1>
+			<h1>Register</h1>
 			<p>Get ready to LOCK IN and become a better YOU</p>
 		</div>
 
+<<<<<<< HEAD
 		<!-- Error / Success Message -->
 		<c:if test="${not empty error}">
 			<p class="error-msg">${error}</p>
@@ -25,26 +26,58 @@
 		<c:if test="${not empty success}">
 			<p class="success-msg">${success}</p>
 		</c:if>
+=======
+  </div> 
+  <form action="${pageContext.request.contextPath}/register" method="post">
+    <div class="input-box">
+>>>>>>> 81b7e44 (Registration partially working)
 
 		<form action="${pageContext.request.contextPath}/register" method="post">
 			<div class="input-box">
-				<input type="text" name="name" placeholder="Enter your name" required value="${name != null ? name : ''}">
+    			<input type="text" name="name" placeholder="Enter your Name" required
+        			class="${not empty nameError ? 'error-border' : ''}"
+       				value="${name != null ? name : ''}">
+    					<c:if test="${not empty nameError}">
+        					<p class="field-error">${nameError}</p>
+    					</c:if>
 			</div>
 
 			<div class="input-box">
-				<input type="text" name="nickname" placeholder="Enter your preferred nickname" required value="${nickname != null ? nickname : ''}">
+				    <input type="text" name="nickname" placeholder="Enter preffered Nickname" required
+        			class="${not empty nicknameError ? 'error-border' : ''}"
+       				value="${nickname != null ? nickname : ''}">
+    					<c:if test="${not empty nicknameError}">
+        					<p class="field-error">${nicknameError}</p>
+    					</c:if>
 			</div>
 
 			<div class="input-box">
-				<input type="email" name="email" placeholder="Enter your email" required value="${email != null ? email : ''}">
+				    			<input type="email" name="email" placeholder="Enter your Email" required
+        			class="${not empty emailError ? 'error-border' : ''}"
+       				value="${email != null ? email : ''}">
+    					<c:if test="${not empty emailError}">
+        					<p class="field-error">${emailError}</p>
+    					</c:if>
 			</div>
 
 			<div class="input-box">
-				<input type="tel" name="phoneNumber" placeholder="Enter your phone number" required value="${phoneNumber != null ? phoneNumber : ''}">
+				    <input type="tel" name="phoneNumber" placeholder="Enter your Phone number" required
+        			class="${not empty phoneNumberError ? 'error-border' : ''}"
+       				value="${phoneNumber != null ? phoneNumber : ''}">
+    					<c:if test="${not empty phoneNumberError}">
+        					<p class="field-error">${phoneNumberError}</p>
+    					</c:if>
 			</div>
 
 			<div class="input-box">
-				<input type="date" name="dateOfBirth" required value="${dateOfBirth != null ? dateOfBirth : ''}">
+
+					<input type="date" name="dateOfBirth" placeholder="Enter your Date of Birth" required
+        			class="${not empty DateError ? 'error-border' : ''}"
+       				value="${date != null ? date : ''}">
+    					<c:if test="${not empty DateError}">
+        					<p class="field-error">${DateError}</p>
+    					</c:if>
+
 			</div>
 
 			<div class="input-box">
@@ -58,16 +91,26 @@
 			</div>
 
 			<div class="input-box">
-				<input type="password" name="password" placeholder="Enter your password" required>
+					<input type="password" name="password" placeholder="Enter Passowrd" required
+        			class="${not empty PasswordError ? 'error-border' : ''}"
+       				value="${password != null ? Password : ''}">
+    					<c:if test="${not empty PasswordError}">
+        					<p class="field-error">${PasswordError}</p>
+    					</c:if>
 				<i class="fa-solid fa-lock toggle-password"></i>
 			</div>
 
 			<div class="input-box">
-				<input type="password" name="repassword" placeholder="Confirm password" required>
+					<input type="password" name="rePassword" placeholder="Conform Password" required
+        			class="${not empty RePasswordError ? 'error-border' : ''}"
+       				value="${RePassword != null ? rePassword : ''}">
+    					<c:if test="${not empty rePasswordError}">
+        					<p class="field-error">${rePasswordError}</p>
+    					</c:if>
 				<i class="fa-solid fa-lock toggle-password"></i>
 			</div>
 
-			<button type="submit" class="btn">Sign Up</button>
+			<button type="submit" class="btn">Register</button>
 
 			<div class="login">
 				<p>Already have an account? <a href="/login">Login</a></p>
@@ -85,6 +128,23 @@
 				this.classList.toggle('fa-lock');
 			});
 		});
+		
+		const dobInput = document.querySelector('#dob');
+		const dobWrapper = dobInput.closest('.disappearing-label');
+
+		function toggleDobLabel() {
+			if (dobInput.value) {
+				dobWrapper.classList.add('hide-label');
+			} else {
+				dobWrapper.classList.remove('hide-label');
+			}
+		}
+
+	
+		toggleDobLabel();
+
+		
+		dobInput.addEventListener('input', toggleDobLabel);
 	</script>
 </body>
 </html>

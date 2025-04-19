@@ -39,6 +39,8 @@ public class RegisterService {
 			return null;
 		}
 		String insertQuery = """
+<<<<<<< HEAD
+<<<<<<< HEAD
 INSERT INTO users (
 	name,
 	nickname,
@@ -59,6 +61,38 @@ VALUES (?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setString(5, userModel.getPhoneNumber());
 			insertStmt.setString(6, userModel.getGender());
 			insertStmt.setDate  (7, java.sql.Date.valueOf(userModel.getDateOfBirth()));
+=======
+=======
+>>>>>>> 81b7e44 (Registration partially working)
+INSERT INTO Users (
+	first_name,
+	middle_name,
+	last_name,
+	email,
+	password,
+	contact_num,
+	date_joined,
+	cart_size,
+	role
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+""";
+		try (PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
+			// Insert user details
+			insertStmt.setString(1, userModel.getFirstName());
+			insertStmt.setString(2, userModel.getMiddleName());
+			insertStmt.setString(3, userModel.getLastName());
+			insertStmt.setString(4, userModel.getEmail());
+			insertStmt.setString(5, userModel.getPassword());
+			insertStmt.setString(6, userModel.getContactNum());
+			insertStmt.setDate  (7, java.sql.Date.valueOf(LocalDate.now()));
+//			insertStmt.setString(8, userModel.getImageUrl());
+			insertStmt.setInt   (8, 0);
+			insertStmt.setString(9, userModel.getRole());
+<<<<<<< HEAD
+>>>>>>> 81b7e44 (Registration partially working)
+=======
+>>>>>>> 81b7e44 (Registration partially working)
 			// Execute statement
 			return insertStmt.executeUpdate() > 0;
 		} catch (SQLException e) {
