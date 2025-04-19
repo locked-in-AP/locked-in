@@ -24,9 +24,6 @@
 		<c:if test="${not empty error}">
 			<p class="error-msg">${error}</p>
 		</c:if>
-		<c:if test="${not empty success}">
-			<p class="success-msg">${success}</p>
-		</c:if>
 
 		<form action="${pageContext.request.contextPath}/register"
 			method="post">
