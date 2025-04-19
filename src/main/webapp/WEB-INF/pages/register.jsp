@@ -18,6 +18,7 @@
 			<p>Get ready to LOCK IN and become a better YOU</p>
 		</div>
 
+<<<<<<< HEAD
 		<!-- Error / Success Message -->
 		<c:if test="${not empty error}">
 			<p class="error-msg">${error}</p>
@@ -25,6 +26,11 @@
 		<c:if test="${not empty success}">
 			<p class="success-msg">${success}</p>
 		</c:if>
+=======
+  </div> 
+  <form action="${pageContext.request.contextPath}/register" method="post">
+    <div class="input-box">
+>>>>>>> 81b7e44 (Registration partially working)
 
 		<form action="${pageContext.request.contextPath}/register" method="post">
 			<div class="input-box">

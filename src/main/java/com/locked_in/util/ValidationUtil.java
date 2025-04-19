@@ -29,28 +29,38 @@ public class ValidationUtil {
 
     // 5. Validate if a string is a valid email address
     public static boolean isValidEmail(String email) {
-        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[a-zA-Z]{2,}$";
         return email != null && Pattern.matches(emailRegex, email);
     }
 
-    // 6. Validate if a number is of 10 digits and starts with 98
+    // 6. Validate if a number is a valid phone number (more flexible)
     public static boolean isValidPhoneNumber(String number) {
-        return number != null && number.matches("^98\\d{8}$");
+        // Allow phone numbers with or without country code, with flexibility in format
+        return number != null && number.matches("^(\\+?\\d{1,3}[-.\\s]?)?\\d{8,10}$");
     }
 
-    // 7. Validate if a password is composed of at least 1 capital letter, 1 number, and 1 symbol
+    // 7. Validate if a password meets security requirements
     public static boolean isValidPassword(String password) {
+        // At least 8 chars, 1 uppercase, 1 digit, and 1 special character
         String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
         return password != null && password.matches(passwordRegex);
     }
 
-    // 8. Validate if a Part's file extension matches with image extensions (jpg, jpeg, png, gif)
+    // 8. Validate if a Part's file extension matches with image extensions
     public static boolean isValidImageExtension(Part imagePart) {
         if (imagePart == null || isNullOrEmpty(imagePart.getSubmittedFileName())) {
             return false;
         }
         String fileName = imagePart.getSubmittedFileName().toLowerCase();
-        return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".gif");
+        // Checking file extensions
+        boolean isValidExtension = fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || 
+                                  fileName.endsWith(".png") || fileName.endsWith(".gif");
+
+        // Optionally, check MIME type to ensure it's an image
+        String mimeType = imagePart.getContentType();
+        boolean isValidMimeType = mimeType != null && mimeType.startsWith("image/");
+
+        return isValidExtension && isValidMimeType;
     }
 
     // 9. Validate if password and retype password match
@@ -64,6 +74,15 @@ public class ValidationUtil {
             return false;
         }
         LocalDate today = LocalDate.now();
-        return Period.between(dob, today).getYears() >= 16;
+        int age = Period.between(dob, today).getYears();
+
+        // Handle age case correctly
+        if (age < 16) {
+            return false;
+        } else if (age == 16) {
+            // For exact age of 16, ensure their birthday has passed this year
+            return !dob.plusYears(16).isAfter(today);
+        }
+        return true;
     }
 }
