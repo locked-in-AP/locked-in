@@ -81,21 +81,20 @@
 
 			<div class="input-box disappearing-label">
 				<input type="date" name="dateOfBirth" id="dob" required
-					class="${not empty dateError ? 'error-border' : ''}"
+					class="${not empty dateOfBirthError ? 'error-border' : ''}"
 					value="${dateOfBirth != null ? dateOfBirth : ''}"> <label
 					for="dob">Date of birth</label>
 
 			</div>
-			<c:if test="${not empty dateError}">
-				<p class="field-error">${dateError}</p>
+			<c:if test="${not empty dateOfBirthError}">
+				<p class="field-error">${dateOfBirthError}</p>
 			</c:if>
 
 			<div class="input-box">
 
 				<select name="gender" required
 					class="${not empty genderError ? 'error-border' : ''}">
-					<option value=""disabled ${emptygender ? 'selected' : ''}>Select
-						gender</option>
+					<option value=""  ${empty gender ? 'selected' : ''}>Select gender</option>
 					<option value="male" ${gender == 'male' ? 'selected' : ''}>Male</option>
 					<option value="female" ${gender == 'female' ? 'selected' : ''}>Female</option>
 					<option value="prefer_not_to_say"
