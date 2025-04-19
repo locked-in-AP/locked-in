@@ -56,42 +56,45 @@ public class AuthenticationFilter implements Filter {
 			return;
 		}
 		
-		boolean isLoggedIn = SessionUtil.getAttribute(req, "username") != null;
+		boolean isLoggedIn = SessionUtil.getAttribute(req, "email") != null;
 		String userRole = CookieUtil.getCookie(req, "role") != null ? CookieUtil.getCookie(req, "role").getValue()
 				: null;
 
+		System.out.println("URI: " + uri);
+		System.out.println("Is logged in: " + isLoggedIn);
+		System.out.println("User role: " + userRole);
+
+		if (!isLoggedIn) {
+			// Not logged in
+			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT) 
+					|| uri.endsWith(ABOUT) || uri.endsWith(CONTACT))/* || uri.endsWith(CART) */ /*|| uri.endsWith(ITEM) */ {
+				chain.doFilter(request, response);
+			} else {
+				res.sendRedirect(req.getContextPath() + LOGIN);
+			}
+			return;
+		}
+
+		// User is logged in
 		if ("admin".equals(userRole)) {
-			// Admin is logged in
+			// Admin user
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);
 			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(MODIFY_STUDENTS) || uri.endsWith(STUDENT_UPDATE)
 					|| uri.endsWith(ADMIN_ORDER) || uri.endsWith(HOME) || uri.endsWith(ROOT)) {
 				chain.doFilter(request, response);
-			} else if (uri.endsWith(ORDER_LIST) || uri.endsWith(CART_LIST)) {
-				res.sendRedirect(req.getContextPath() + DASHBOARD);
 			} else {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);
 			}
-		} else if ("user".equals(userRole)) {
-			// User is logged in
+		} else {
+			// Regular user
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + HOME);
 			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(PORTFOLIO)
 					|| uri.endsWith(CONTACT) || uri.endsWith(ORDER_LIST) || uri.endsWith(CART_LIST)) {
 				chain.doFilter(request, response);
-			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(MODIFY_STUDENTS) || uri.endsWith(STUDENT_UPDATE)
-					|| uri.endsWith(ADMIN_ORDER)) {
-				res.sendRedirect(req.getContextPath() + HOME);
 			} else {
 				res.sendRedirect(req.getContextPath() + HOME);
-			}
-		} else {
-			// Not logged in
-			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT)
-					|| uri.endsWith(CONTACT))/* || uri.endsWith(CART) */ /*|| uri.endsWith(ITEM) */ {
-				chain.doFilter(request, response);
-			} else {
-				res.sendRedirect(req.getContextPath() + LOGIN);
 			}
 		}
 	}

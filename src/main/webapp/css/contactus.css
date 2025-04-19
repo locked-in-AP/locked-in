@@ -1,151 +1,160 @@
 @charset "UTF-8";
-        body {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 40px;
-            background: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+body {
+    font-family: 'Crimson Text', Georgia, Times, serif !important;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #222;
-            font-weight: 700;
-            font-size: 2.5rem;
-            background: linear-gradient(90deg, #222 0%, #444 100%);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
-        }
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px;
+    background: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-        p {
-            margin-bottom: 20px;
-            color: #555;
-        }
+h1 {
+    font-family: 'Crimson Text', Georgia, Times, serif !important;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #222;
+    font-weight: 700;
+    font-size: 2.8rem;
+}
 
-        form {
-            margin-top: 40px;
-        }
+p {
+    font-family: 'Crimson Text', Georgia, Times, serif !important;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #555;
+}
 
-        .form-group {
-            margin-bottom: 25px;
-        }
+form {
+    margin-top: 40px;
+}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #444;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
+.form-group {
+    margin-bottom: 25px;
+}
 
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 15px;
-            background-color: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
-        }
+.form-group label {
+    font-family: 'Crimson Text', Georgia, Times, serif !important;
+    display: block;
+    margin-bottom: 8px;
+    color: #444;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
+.form-group input,
+.form-group textarea {
+    font-family: 'Crimson Text', Georgia, Times, serif !important;
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
 
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #999;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
-            background-color: #fff;
-        }
+.form-group textarea {
+    resize: vertical;
+    min-height: 150px;
+}
 
-        button[type="submit"] {
-            background: linear-gradient(135deg, #222 0%, #444 100%);
-            color: #fff;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 40px auto 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #999;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+}
 
-        button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            background: linear-gradient(135deg, #333 0%, #555 100%);
-        }
+button[type="submit"] {
+    font-family: 'Crimson Text', Georgia, Times, serif !important;
+    background: linear-gradient(135deg, #222 0%, #444 100%);
+    color: #fff;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 40px auto 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
 
-        .contact-info {
-            margin-top: 50px;
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #333 0%, #555 100%);
+}
 
-        .contact-info h2 {
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
+.contact-info {
+    margin-top: 50px;
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
 
-        .contact-info p {
-            margin-bottom: 12px;
-            font-size: 15px;
-            color: #555;
-        }
+.contact-info h2 {
+    font-family: 'Crimson Text', Georgia, Times, serif !important;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
 
-        .contact-info strong {
-            color: #333;
-        }
+.contact-info p {
+    font-family: 'Crimson Text', Georgia, Times, serif !important;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    color: #555;
+}
 
-        .highlight {
-            color: #333;
-            font-weight: 600;
-            background: linear-gradient(90deg, #222 0%, #444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.contact-info strong {
+    color: #333;
+}
 
-        /* Floating label effect */
-        .form-group input:not(:placeholder-shown),
-        .form-group textarea:not(:placeholder-shown) {
-            border-color: #bbb;
-        }
+.highlight {
+    color: #333;
+    font-weight: 600;
+    background: linear-gradient(90deg, #222 0%, #444 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                margin: 30px 20px;
-                padding: 30px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-        }
+/* Floating label effect */
+.form-group input:not(:placeholder-shown),
+.form-group textarea:not(:placeholder-shown) {
+    border-color: #bbb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        margin: 30px 20px;
+        padding: 30px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+}
