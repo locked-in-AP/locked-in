@@ -14,12 +14,12 @@ public class ValidationUtil {
 
     // 2. Validate if a string contains only letters
     public static boolean isAlphabetic(String value) {
-        return value != null && value.matches("^[a-zA-Z]+$");
+        return value != null && value.matches("^[A-Za-z]+$");
     }
 
     // 3. Validate if a string starts with a letter and is composed of letters and numbers
     public static boolean isAlphanumericStartingWithLetter(String value) {
-        return value != null && value.matches("^[a-zA-Z][a-zA-Z0-9]*$");
+        return value != null && value.matches("^[A-Za-z][A-Za-z0-9]*$");
     }
 
     // 4. Validate if a string is "male" or "female" (case insensitive)
@@ -27,30 +27,35 @@ public class ValidationUtil {
         return value != null && (value.equalsIgnoreCase("male") || value.equalsIgnoreCase("female"));
     }
 
-    // 5. Validate if a string is a valid email address
+    // 5. Validate if a string is a valid email address (RFC‑style)
+    private static final Pattern EMAIL_PATTERN = 
+        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static boolean isValidEmail(String email) {
-        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        return email != null && Pattern.matches(emailRegex, email);
-    }
+        return email != null && EMAIL_PATTERN.matcher(email).matches();
+    }  // :contentReference[oaicite:0]{index=0}
 
-    // 6. Validate if a number is of 10 digits and starts with 98
+    // 6. Validate if a number is exactly 10 digits, starting with 97 or 98
     public static boolean isValidPhoneNumber(String number) {
-        return number != null && number.matches("^98\\d{8}$");
-    }
+        return number != null && number.matches("^9[78]\\d{8}$");
+    }  // :contentReference[oaicite:1]{index=1}
 
-    // 7. Validate if a password is composed of at least 1 capital letter, 1 number, and 1 symbol
+    // 7. Validate if a password has at least 8 chars, 1 lowercase, 1 uppercase, 1 digit, 1 special
+    private static final String PASSWORD_REGEX = 
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     public static boolean isValidPassword(String password) {
-        String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-        return password != null && password.matches(passwordRegex);
-    }
+        return password != null && password.matches(PASSWORD_REGEX);
+    }  // :contentReference[oaicite:2]{index=2}
 
-    // 8. Validate if a Part's file extension matches with image extensions (jpg, jpeg, png, gif)
+    // 8. Validate if a Part's file extension matches image types
     public static boolean isValidImageExtension(Part imagePart) {
         if (imagePart == null || isNullOrEmpty(imagePart.getSubmittedFileName())) {
             return false;
         }
         String fileName = imagePart.getSubmittedFileName().toLowerCase();
-        return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".gif");
+        return fileName.endsWith(".jpg")
+            || fileName.endsWith(".jpeg")
+            || fileName.endsWith(".png")
+            || fileName.endsWith(".gif");
     }
 
     // 9. Validate if password and retype password match
@@ -63,7 +68,6 @@ public class ValidationUtil {
         if (dob == null) {
             return false;
         }
-        LocalDate today = LocalDate.now();
-        return Period.between(dob, today).getYears() >= 16;
+        return Period.between(dob, LocalDate.now()).getYears() >= 16;
     }
 }
