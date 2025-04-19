@@ -51,7 +51,7 @@ INSERT INTO users (
 VALUES (?, ?, ?, ?, ?, ?, ?)
 """;
 		try (PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
-			// Insert user details
+
 			insertStmt.setString(1, userModel.getName());
 			insertStmt.setString(2, userModel.getNickname());
 			insertStmt.setString(3, userModel.getEmail());
@@ -59,7 +59,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setString(5, userModel.getPhoneNumber());
 			insertStmt.setString(6, userModel.getGender());
 			insertStmt.setDate  (7, java.sql.Date.valueOf(userModel.getDateOfBirth()));
-			// Execute statement
+
 			return insertStmt.executeUpdate() > 0;
 		} catch (SQLException e) {
 			System.err.println("Error during user registration: " + e.getMessage());
