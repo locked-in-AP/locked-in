@@ -13,7 +13,7 @@
   <div class="header">
     <img src="${pageContext.request.contextPath}/resources/images/system/logo.png" alt="">
   <h1>Sign Up</h1>
-  <p>Discover your favorites, add must-haves to your wishlist, and track every order with ease.</p>
+  <p>Get ready to LOCK IN and become a better YOU</p>
 
   </div> 
   <form action="${pageContext.request.contextPath}/registration" method="post">
