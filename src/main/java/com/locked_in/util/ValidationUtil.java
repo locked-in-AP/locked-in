@@ -17,7 +17,6 @@ public class ValidationUtil {
         return value != null && value.matches("^[A-Za-z]+([ '-][A-Za-z]+)*$");
     }
 
-
     // 3. Validate if a string starts with a letter and is composed of letters and numbers
     public static boolean isAlphanumericStartingWithLetter(String value) {
         return value != null && value.matches("^[A-Za-z][A-Za-z0-9]*$");
