@@ -24,9 +24,10 @@
         <i class="fa-solid fa-user"></i>
       </div>
       
+       
       <div class="input-box">
-        <input type="password" placeholder="Password" name="password" required>
-        <i class="fa-solid fa-lock"></i>
+        <input type="password" placeholder="Password" required>
+        <i class="fa-solid fa-lock toggle-password"></i>
       </div>
       
       <div class="forgot-box">
@@ -45,5 +46,23 @@
     
     
   </div>
+  
+  <script>
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+      icon.addEventListener('click', function() {
+        const input = this.previousElementSibling;
+        const isPassword = input.type === 'password';
+        
+        // Toggle input type
+        input.type = isPassword ? 'text' : 'password';
+        
+        // Toggle icon class
+        this.classList.toggle('fa-lock-open');
+        this.classList.toggle('fa-lock');
+      });
+    });
+  </script>
+  
+  
 </body>
 </html>

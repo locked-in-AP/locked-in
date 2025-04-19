@@ -92,3 +92,13 @@ margin-top: 12px;
     font-weight: 500;
     color: #333;
 }
+
+.input-box i {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      cursor: pointer; 
+    }
+
