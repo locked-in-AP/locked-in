@@ -32,19 +32,19 @@ public class ValidationUtil {
         Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static boolean isValidEmail(String email) {
         return email != null && EMAIL_PATTERN.matcher(email).matches();
-    }  // :contentReference[oaicite:0]{index=0}
+    }
 
     // 6. Validate if a number is exactly 10 digits, starting with 97 or 98
     public static boolean isValidPhoneNumber(String number) {
         return number != null && number.matches("^9[78]\\d{8}$");
-    }  // :contentReference[oaicite:1]{index=1}
+    }
 
     // 7. Validate if a password has at least 8 chars, 1 lowercase, 1 uppercase, 1 digit, 1 special
     private static final String PASSWORD_REGEX = 
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     public static boolean isValidPassword(String password) {
         return password != null && password.matches(PASSWORD_REGEX);
-    }  // :contentReference[oaicite:2]{index=2}
+    }
 
     // 8. Validate if a Part's file extension matches image types
     public static boolean isValidImageExtension(Part imagePart) {
