@@ -33,7 +33,7 @@ public class RegisterService {
 	 * @param userModel the user details to be registered
 	 * @return Boolean indicating the success of the operation
 	 */
-	public Boolean addUser(UserModel userModel) {
+	public String addUser(UserModel userModel) {
 		if (dbConn == null) {
 			System.err.println("Database connection is not available.");
 			return null;
@@ -60,11 +60,11 @@ VALUES (?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setString(6, userModel.getGender());
 			insertStmt.setDate  (7, java.sql.Date.valueOf(userModel.getDateOfBirth()));
 
-			return insertStmt.executeUpdate() > 0;
+			if (insertStmt.executeUpdate() > 0) {
+				return null
+			};
 		} catch (SQLException e) {
-			System.err.println("Error during user registration: " + e.getMessage());
-			e.printStackTrace();
-			return null;
+			return e.getMessage();
 		}
 	}
 }
