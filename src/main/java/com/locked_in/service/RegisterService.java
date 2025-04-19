@@ -61,10 +61,11 @@ VALUES (?, ?, ?, ?, ?, ?, ?)
 			insertStmt.setDate  (7, java.sql.Date.valueOf(userModel.getDateOfBirth()));
 
 			if (insertStmt.executeUpdate() > 0) {
-				return null
+				return null;
 			};
 		} catch (SQLException e) {
 			return e.getMessage();
 		}
+		return null;
 	}
 }
