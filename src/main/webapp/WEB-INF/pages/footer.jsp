@@ -63,7 +63,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2023 LockedIn. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            <p>&copy; 2025 LockedIn. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
         </div>
     </footer>
 </body>
