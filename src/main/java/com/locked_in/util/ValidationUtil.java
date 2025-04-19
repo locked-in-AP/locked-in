@@ -14,12 +14,12 @@ public class ValidationUtil {
 
     // 2. Validate if a string contains only letters
     public static boolean isAlphabetic(String value) {
-        return value != null && value.matches("^[a-zA-Z]+$");
+        return value != null && value.matches("^[A-Za-z]+$");
     }
 
     // 3. Validate if a string starts with a letter and is composed of letters and numbers
     public static boolean isAlphanumericStartingWithLetter(String value) {
-        return value != null && value.matches("^[a-zA-Z][a-zA-Z0-9]*$");
+        return value != null && value.matches("^[A-Za-z][A-Za-z0-9]*$");
     }
 
     // 4. Validate if a string is "male" or "female" (case insensitive)
@@ -27,40 +27,35 @@ public class ValidationUtil {
         return value != null && (value.equalsIgnoreCase("male") || value.equalsIgnoreCase("female"));
     }
 
-    // 5. Validate if a string is a valid email address
+    // 5. Validate if a string is a valid email address (RFC‑style)
+    private static final Pattern EMAIL_PATTERN = 
+        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static boolean isValidEmail(String email) {
-        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[a-zA-Z]{2,}$";
-        return email != null && Pattern.matches(emailRegex, email);
-    }
+        return email != null && EMAIL_PATTERN.matcher(email).matches();
+    }  // :contentReference[oaicite:0]{index=0}
 
-    // 6. Validate if a number is a valid phone number (more flexible)
+    // 6. Validate if a number is exactly 10 digits, starting with 97 or 98
     public static boolean isValidPhoneNumber(String number) {
-        // Allow phone numbers with or without country code, with flexibility in format
-        return number != null && number.matches("^(\\+?\\d{1,3}[-.\\s]?)?\\d{8,10}$");
-    }
+        return number != null && number.matches("^9[78]\\d{8}$");
+    }  // :contentReference[oaicite:1]{index=1}
 
-    // 7. Validate if a password meets security requirements
+    // 7. Validate if a password has at least 8 chars, 1 lowercase, 1 uppercase, 1 digit, 1 special
+    private static final String PASSWORD_REGEX = 
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     public static boolean isValidPassword(String password) {
-        // At least 8 chars, 1 uppercase, 1 digit, and 1 special character
-        String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-        return password != null && password.matches(passwordRegex);
-    }
+        return password != null && password.matches(PASSWORD_REGEX);
+    }  // :contentReference[oaicite:2]{index=2}
 
-    // 8. Validate if a Part's file extension matches with image extensions
+    // 8. Validate if a Part's file extension matches image types
     public static boolean isValidImageExtension(Part imagePart) {
         if (imagePart == null || isNullOrEmpty(imagePart.getSubmittedFileName())) {
             return false;
         }
         String fileName = imagePart.getSubmittedFileName().toLowerCase();
-        // Checking file extensions
-        boolean isValidExtension = fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || 
-                                  fileName.endsWith(".png") || fileName.endsWith(".gif");
-
-        // Optionally, check MIME type to ensure it's an image
-        String mimeType = imagePart.getContentType();
-        boolean isValidMimeType = mimeType != null && mimeType.startsWith("image/");
-
-        return isValidExtension && isValidMimeType;
+        return fileName.endsWith(".jpg")
+            || fileName.endsWith(".jpeg")
+            || fileName.endsWith(".png")
+            || fileName.endsWith(".gif");
     }
 
     // 9. Validate if password and retype password match
@@ -73,16 +68,6 @@ public class ValidationUtil {
         if (dob == null) {
             return false;
         }
-        LocalDate today = LocalDate.now();
-        int age = Period.between(dob, today).getYears();
-
-        // Handle age case correctly
-        if (age < 16) {
-            return false;
-        } else if (age == 16) {
-            // For exact age of 16, ensure their birthday has passed this year
-            return !dob.plusYears(16).isAfter(today);
-        }
-        return true;
+        return Period.between(dob, LocalDate.now()).getYears() >= 16;
     }
 }
