@@ -22,22 +22,11 @@ public class UserModel {
 	private Integer cartSize;
 	
 	/**
-	 * @param userId
-	 * @param name
-	 * @param nickname
-	 * @param email
-	 * @param passwordHash
-	 * @param phoneNumber
-	 * @param role
-	 * @param gender
-	 * @param dateOfBirth
-	 * @param joinedAt
-	 * @param cartSize
+	 * Full constructor with all fields
 	 */
 	public UserModel(Integer userId, String name, String nickname, String email, String passwordHash,
 			String phoneNumber, String role, String gender, LocalDate dateOfBirth, LocalDateTime joinedAt,
 			Integer cartSize) {
-		super();
 		this.userId = userId;
 		this.name = name;
 		this.nickname = nickname;
@@ -52,17 +41,10 @@ public class UserModel {
 	}
 
 	/**
-	 * @param name
-	 * @param nickname
-	 * @param email
-	 * @param passwordHash
-	 * @param phoneNumber
-	 * @param gender
-	 * @param dateOfBirth
+	 * Constructor for user registration
 	 */
 	public UserModel(String name, String nickname, String email, String passwordHash, String phoneNumber, String gender,
 			LocalDate dateOfBirth) {
-		super();
 		this.name = name;
 		this.nickname = nickname;
 		this.email = email;
@@ -70,18 +52,15 @@ public class UserModel {
 		this.phoneNumber = phoneNumber;
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
+		this.role = "customer"; // Default role
 	}
 	
-	
-
 	/**
-	 * @param email
-	 * @param passwordHash
+	 * Constructor for login
 	 */
-	public UserModel(String email, String passwordHash) {
-		super();
+	public UserModel(String email, String password) {
 		this.email = email;
-		this.passwordHash = passwordHash;
+		this.passwordHash = password;
 	}
 
 	/**

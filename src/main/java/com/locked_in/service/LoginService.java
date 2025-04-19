@@ -25,9 +25,11 @@ public class LoginService {
 	public LoginService() {
 		try {
 			dbConn = DbConfig.getDbConnection();
+			System.out.println("Database connection successful");
 		} catch (SQLException | ClassNotFoundException ex) {
 			ex.printStackTrace();
 			isConnectionError = true;
+			System.out.println("Database connection failed: " + ex.getMessage());
 		}
 	}
 
@@ -44,15 +46,20 @@ public class LoginService {
 			return null;
 		}
 
-		String query = "SELECT email, password FROM user WHERE email = ?";
+		System.out.println("Attempting login for email: " + userModel.getEmail());
+		String query = "SELECT email, password_hash, role FROM users WHERE email = ?";
 		try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
 			stmt.setString(1, userModel.getEmail());
 			ResultSet result = stmt.executeQuery();
 
 			if (result.next()) {
+				System.out.println("User found in database");
 				return validatePassword(result, userModel);
+			} else {
+				System.out.println("No user found with email: " + userModel.getEmail());
 			}
 		} catch (SQLException e) {
+			System.out.println("SQL Error during login: " + e.getMessage());
 			e.printStackTrace();
 			return null;
 		}
@@ -63,17 +70,48 @@ public class LoginService {
 	/**
 	 * Validates the password retrieved from the database.
 	 *
-	 * @param result       the ResultSet containing the email and password from
-	 *                     the database
+	 * @param result    the ResultSet containing the email and password from
+	 *                  the database
 	 * @param userModel the UserModel object containing user credentials
 	 * @return true if the passwords match, false otherwise
 	 * @throws SQLException if a database access error occurs
 	 */
 	private boolean validatePassword(ResultSet result, UserModel userModel) throws SQLException {
-		String dbEmail = result.getString("email");
-		String dbPassword = result.getString("password");
-
-		return dbEmail.equals(userModel.getEmail())
-				&& PasswordUtil.decrypt(dbPassword, dbEmail).equals(userModel.getPasswordHash());
+		String storedPasswordHash = result.getString("password_hash");
+		String providedPassword = userModel.getPasswordHash();
+		String role = result.getString("role");
+		
+		System.out.println("Stored password hash: " + storedPasswordHash);
+		System.out.println("Provided password: " + providedPassword);
+		
+		// First try direct comparison for testing
+		if (storedPasswordHash.equals(providedPassword)) {
+			System.out.println("Password matched directly");
+			userModel.setRole(role);
+			return true;
+		}
+		
+		// Try to decrypt the stored password hash
+		String decryptedStoredPassword = PasswordUtil.decrypt(storedPasswordHash, userModel.getEmail());
+		System.out.println("Decrypted stored password: " + (decryptedStoredPassword != null ? "success" : "failed"));
+		
+		if (decryptedStoredPassword != null && decryptedStoredPassword.equals(providedPassword)) {
+			System.out.println("Password matched after decryption");
+			userModel.setRole(role);
+			return true;
+		}
+		
+		// Try encrypting the provided password
+		String encryptedProvidedPassword = PasswordUtil.encrypt(userModel.getEmail(), providedPassword);
+		System.out.println("Encrypted provided password: " + (encryptedProvidedPassword != null ? "success" : "failed"));
+		
+		if (storedPasswordHash.equals(encryptedProvidedPassword)) {
+			System.out.println("Password matched after encryption");
+			userModel.setRole(role);
+			return true;
+		}
+		
+		System.out.println("Password validation failed");
+		return false;
 	}
 }

@@ -3,12 +3,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
         }
         
         body {
             color: #1A1F2C;
             background-color: #fff;
+            font-family: 'Crimson Text', Georgia, Times, serif !important;
         }
         
         /* Header Styles */
@@ -20,13 +20,15 @@
             background-color: #fff;
             border-bottom: 1px solid #f0f0f0;
             position: sticky;
+            font-family: 'Crimson Text', Georgia, Times, serif !important;
         }
         
         .top-bar-item {
             margin-left: 15px;
-            font-size: 12px;
+            font-size: 14px;
             color: #1A1F2C;
             text-decoration: none;
+            font-family: 'Crimson Text', Georgia, Times, serif !important;
         }
         
         .header {
@@ -37,13 +39,15 @@
             background-color: #fff;
             border-bottom: 1px solid #f0f0f0;
             position : sticky;
+            font-family: 'Crimson Text', Georgia, Times, serif !important;
         }
         
         .logo {
-            font-weight: 800;
+            font-weight: 700;
             font-size: 24px;
             text-decoration: none;
             color: #1A1F2C;
+            font-family: 'Crimson Text', Georgia, Times, serif !important;
         }
         
         .nav {
@@ -52,16 +56,18 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            font-family: 'Crimson Text', Georgia, Times, serif !important;
         }
         
         .nav-item {
             font-weight: 600;
             text-decoration: none;
             color: #1A1F2C;
-            font-size: 14px;
+            font-size: 16px;
             letter-spacing: 0.5px;
             position: relative;
             padding: 5px 0;
+            font-family: 'Crimson Text', Georgia, Times, serif !important;
         }
         
         .nav-item::after {
@@ -99,11 +105,12 @@
         }
         
         .search-input {
+            font-family: 'Crimson Text', Georgia, Times, serif !important;
             border: none;
             background: transparent;
             width: 100%;
             outline: none;
-            font-size: 14px;
+            font-size: 16px;
         }
         
         .icon {
