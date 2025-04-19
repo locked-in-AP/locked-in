@@ -14,7 +14,7 @@
 	<div class="registration-container">
 		<div class="header">
 			<img src="${pageContext.request.contextPath}/resources/images/system/logo.png" alt="">
-			<h1>Sign Up</h1>
+			<h1>Register</h1>
 			<p>Get ready to LOCK IN and become a better YOU</p>
 		</div>
 
@@ -64,12 +64,14 @@
 			</div>
 
 			<div class="input-box">
+
 					<input type="date" name="dateOfBirth" placeholder="Enter your Date of Birth" required
         			class="${not empty DateError ? 'error-border' : ''}"
        				value="${date != null ? date : ''}">
     					<c:if test="${not empty DateError}">
         					<p class="field-error">${DateError}</p>
     					</c:if>
+
 			</div>
 
 			<div class="input-box">
@@ -102,7 +104,7 @@
 				<i class="fa-solid fa-lock toggle-password"></i>
 			</div>
 
-			<button type="submit" class="btn">Sign Up</button>
+			<button type="submit" class="btn">Register</button>
 
 			<div class="login">
 				<p>Already have an account? <a href="/login">Login</a></p>
@@ -120,6 +122,23 @@
 				this.classList.toggle('fa-lock');
 			});
 		});
+		
+		const dobInput = document.querySelector('#dob');
+		const dobWrapper = dobInput.closest('.disappearing-label');
+
+		function toggleDobLabel() {
+			if (dobInput.value) {
+				dobWrapper.classList.add('hide-label');
+			} else {
+				dobWrapper.classList.remove('hide-label');
+			}
+		}
+
+	
+		toggleDobLabel();
+
+		
+		dobInput.addEventListener('input', toggleDobLabel);
 	</script>
 </body>
 </html>
