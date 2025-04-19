@@ -102,3 +102,13 @@ margin-top: 12px;
       cursor: pointer; 
     }
 
+.error-border {
+  border: 2px solid red !important;
+}
+
+.field-error {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+  padding-left: 5px;
+}
