@@ -97,33 +97,19 @@ public class RegisterController extends HttpServlet {
         }
 
         if (errors > 0) {
-            request.setAttribute("error", "You have " + errors + " invalid field(s).");
-            // preserve entered values
-            request.setAttribute("name", name);
-            request.setAttribute("nickname", nickname);
-            request.setAttribute("email", email);
-            request.setAttribute("phoneNumber", phoneNumber);
-            request.setAttribute("gender", gender);
-            request.setAttribute("dateOfBirth", dateOfBirthStr);
-            request.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(request, response);
-            return;
+            handleError(request, response, "You have " + errors + " invalid field(s).");
         }
 
         // All validations passed → hash password & register
         String passwordHash = PasswordUtil.encrypt(email, password);
         UserModel user = new UserModel(name, nickname, email, passwordHash,
                                        phoneNumber, gender, dob);
-        Boolean added = registerService.addUser(user);
+        String addedStatus = registerService.addUser(user);
 
-        if (added == null) {
-            handleError(request, response, 
-                "Our server is under maintenance. Please try again later!");
-        } else if (added) {
-            handleSuccess(request, response, 
-                "Your account was created successfully!", "/WEB-INF/pages/login.jsp");
+        if (addedStatus != null) {
+            handleError(request, response, addedStatus);
         } else {
-            handleError(request, response, 
-                "Could not register your account. Please try again later!");
+            handleSuccess(request, response, "Your account was created successfully!", "/WEB-INF/pages/login.jsp");
         }
     }
 
@@ -136,6 +122,13 @@ public class RegisterController extends HttpServlet {
 
     private void handleError(HttpServletRequest request, HttpServletResponse response, String message)
             throws ServletException, IOException {
+    	request.setAttribute("name", request.getParameter("name"));
+        request.setAttribute("nickname", request.getParameter("nickname"));
+        request.setAttribute("email", request.getParameter("email"));
+        request.setAttribute("phoneNumber", request.getParameter("phoneNumber"));
+        request.setAttribute("gender", request.getParameter("gender"));
+        request.setAttribute("dateOfBirth", request.getParameter("dateOfBirth"));
+        
         request.setAttribute("error", message);
         request.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(request, response);
     }
