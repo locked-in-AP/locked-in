@@ -6,11 +6,9 @@
 }
 
 body {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-    color: #333;
-    line-height: 1.6;
-    min-height: 100vh;
+  color: #1A1F2C;
+  background-color: #fff;
+  font-family: 'Crimson Text', Georgia, Times, serif;
 }
 
 .container {
