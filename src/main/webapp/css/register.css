@@ -43,11 +43,12 @@ body {
   width: 100%;
   height: 50px;
   margin: 10px 0 20px;
+ 
 }
 
 .input-box input,
 .input-box select {
-  width: 100%;
+  width: 95%;
   height: 100%;
   border: 2px solid #f1f1f1;
   padding: 20px 45px 20px 20px;
@@ -64,7 +65,7 @@ body {
 
 .input-box i {
   position: absolute;
-  right: 20px;
+  right: 63px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 15px;
@@ -166,13 +167,8 @@ body {
   font-weight: 350;
   pointer-events: none;
   transition: all 0.3s;
-}
-
-.disappearing-label.hide-label label,
-.disappearing-label input:focus + label,
-.disappearing-label input:not(:placeholder-shown) + label {
-  opacity: 0;
-  visibility: hidden;
+  width: 70%;
+ 
 }
 
 img {
