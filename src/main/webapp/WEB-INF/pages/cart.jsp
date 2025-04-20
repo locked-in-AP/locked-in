@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Cart - Hukut</title>
+    <title>Your Cart</title>
     <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/cart.css" />
 </head>

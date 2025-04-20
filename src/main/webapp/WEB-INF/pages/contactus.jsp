@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/contactus.css">
-<title>Insert title here</title>
+<title>Contact Us</title>
 </head>
 <body>
     <jsp:include page="header.jsp" />
