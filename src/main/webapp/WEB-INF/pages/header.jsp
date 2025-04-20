@@ -27,7 +27,7 @@
             <input type="text" class="search-input" placeholder="What are you looking for to...">
         </div>
         <span class="icon heart-icon"></span>
-        <span class="icon user-icon"></span>
+        <a  href="${pageContext.request.contextPath}/userprofile"><span class="icon user-icon" ></span></a>
         <span class="icon bag-icon" id="cartIcon"></span>
     </div>
 </header>
