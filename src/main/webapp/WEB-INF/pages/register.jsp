@@ -70,7 +70,7 @@
 			</c:if>
 
 			<div class="input-box">
-				<input type="password" name="password" placeholder="Enter Password"
+				<input type="password" name="password" placeholder="Enter Password" value="${password != null ? password : ''}"
 					required class="${not empty passwordError ? 'error-border' : ''}">
 				<i class="fa-solid fa-eye toggle-password"></i>
 			</div>
@@ -79,7 +79,7 @@
 			</c:if>
 
 			<div class="input-box">
-				<input type="password" name="repassword"
+				<input type="password" name="repassword" value="${repassword != null ? repassword : ''}"
 					placeholder="Confirm Password" required
 					class="${not empty repasswordError ? 'error-border' : ''}">
 				<i class="fa-solid fa-eye toggle-password"></i>
