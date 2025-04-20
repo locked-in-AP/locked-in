@@ -47,7 +47,7 @@ public class LoginService {
 		}
 
 		System.out.println("Attempting login for email: " + userModel.getEmail());
-		String query = "SELECT email, password_hash, role FROM users WHERE email = ?";
+		String query = "SELECT email, password, role FROM users WHERE email = ?";
 		try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
 			stmt.setString(1, userModel.getEmail());
 			ResultSet result = stmt.executeQuery();
