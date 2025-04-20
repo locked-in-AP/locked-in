@@ -8,7 +8,7 @@
     
 <!-- Top Bar -->
 <div class="top-bar">
-    <a href="${pageContext.request.contextPath}/dashboard" class="top-bar-item">Hi, User</a>
+    <a href="${pageContext.request.contextPath}/login" class="top-bar-item">Login In</a>
     <a href="${pageContext.request.contextPath}/aboutus" class="top-bar-item">About Us</a>
     <a href="${pageContext.request.contextPath}/contactus" class="top-bar-item">Contact Us</a>
 </div>

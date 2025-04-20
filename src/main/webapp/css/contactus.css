@@ -1,4 +1,6 @@
 @charset "UTF-8";
+
+/* Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -6,14 +8,44 @@
 }
 
 body {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
+	padding-top: 100px !important;
+    font-family: 'Crimson Text', Georgia, Times, serif;
     background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
     color: #333;
     line-height: 1.6;
     min-height: 100vh;
 }
 
+/* Typography */
+h1, h2, p, label, input, textarea, button {
+    font-family: inherit;
+}
+
+h1, h2 {
+    color: #222;
+    font-weight: 600;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.8rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Container & Layout */
 .container {
+	margin-top: 20px;
     max-width: 800px;
     margin: 50px auto;
     padding: 40px;
@@ -23,22 +55,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-h1 {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
-    text-align: center;
-    margin-bottom: 30px;
-    color: #222;
-    font-weight: 700;
-    font-size: 2.8rem;
-}
-
-p {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    color: #555;
-}
-
+/* Form Styles */
 form {
     margin-top: 40px;
 }
@@ -48,17 +65,14 @@ form {
 }
 
 .form-group label {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
     display: block;
     margin-bottom: 8px;
     color: #444;
     font-weight: 600;
-    font-size: 1.1rem;
 }
 
 .form-group input,
 .form-group textarea {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #ddd;
@@ -81,8 +95,14 @@ form {
     background-color: #fff;
 }
 
+/* Floating label effect */
+.form-group input:not(:placeholder-shown),
+.form-group textarea:not(:placeholder-shown) {
+    border-color: #bbb;
+}
+
+/* Button Styles */
 button[type="submit"] {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
     background: linear-gradient(135deg, #222 0%, #444 100%);
     color: #fff;
     padding: 12px 30px;
@@ -92,10 +112,9 @@ button[type="submit"] {
     font-weight: 600;
     cursor: pointer;
     width: 100%;
-    margin-top: 20px;
+    margin: 40px auto 0;
     transition: all 0.3s ease;
     display: block;
-    margin: 40px auto 0;
     text-transform: uppercase;
     letter-spacing: 1px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -107,26 +126,12 @@ button[type="submit"]:hover {
     background: linear-gradient(135deg, #333 0%, #555 100%);
 }
 
+/* Contact Info Section */
 .contact-info {
     margin-top: 50px;
     text-align: center;
     padding-top: 30px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.contact-info h2 {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
-    color: #333;
-    font-weight: 600;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-}
-
-.contact-info p {
-    font-family: 'Crimson Text', Georgia, Times, serif !important;
-    margin-bottom: 12px;
-    font-size: 1.1rem;
-    color: #555;
 }
 
 .contact-info strong {
@@ -137,17 +142,9 @@ button[type="submit"]:hover {
     color: #333;
     font-weight: 600;
     background: linear-gradient(90deg, #222 0%, #444 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
-/* Floating label effect */
-.form-group input:not(:placeholder-shown),
-.form-group textarea:not(:placeholder-shown) {
-    border-color: #bbb;
-}
-
-/* Responsive adjustments */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
     .container {
         margin: 30px 20px;
