@@ -284,6 +284,10 @@ body {
   background-color: #000;
   color: white;
 }
+.view-cart-btn {
+  background-color: #000;
+  color: white;
+}
 
 /* Responsive Styles */
 @media (max-width: 576px) {
