@@ -25,6 +25,10 @@ public class AuthenticationFilter implements Filter {
 	private static final String DASHBOARD = "/dashboard";
 	private static final String ADMIN_ORDER = "/adminOrder";
 	private static final String ABOUT = "/aboutus";
+	private static final String SUPPLEMENTS = "/supplements";
+	private static final String MERCHANDISE = "/merchandise";
+	private static final String EQUIPMENTS = "/equipments";
+
 	private static final String CONTACT = "/contactus";
 	private static final String ORDER_LIST = "/orderlist";
 	private static final String CART_LIST = "/cartlist";
@@ -62,7 +66,7 @@ public class AuthenticationFilter implements Filter {
 
 		if (!isLoggedIn) {
 			// Not logged in
-			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT)
+			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(SUPPLEMENTS)||uri.endsWith(EQUIPMENTS)|| uri.endsWith(MERCHANDISE)||uri.endsWith(HOME) || uri.endsWith(ROOT)
 					|| uri.endsWith(ABOUT)
 					|| uri.endsWith(CONTACT)) /* || uri.endsWith(CART) */ /* || uri.endsWith(ITEM) */ {
 				chain.doFilter(request, response);
