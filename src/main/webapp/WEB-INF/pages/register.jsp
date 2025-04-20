@@ -72,7 +72,7 @@
 			<div class="input-box">
 				<input type="password" name="password" placeholder="Enter Password"
 					required class="${not empty passwordError ? 'error-border' : ''}">
-				<i class="fa-solid fa-lock toggle-password"></i>
+				<i class="fa-solid fa-eye toggle-password"></i>
 			</div>
 			<c:if test="${not empty passwordError}">
 				<p class="field-error">${passwordError}</p>
@@ -82,7 +82,7 @@
 				<input type="password" name="repassword"
 					placeholder="Confirm Password" required
 					class="${not empty repasswordError ? 'error-border' : ''}">
-				<i class="fa-solid fa-lock toggle-password"></i>
+				<i class="fa-solid fa-eye toggle-password"></i>
 			</div>
 			<c:if test="${not empty repasswordError}">
 				<p class="field-error">${repasswordError}</p>
@@ -105,8 +105,8 @@
                 const input = this.parentElement.querySelector('input');
                 const isPassword = input.type === 'password';
                 input.type = isPassword ? 'text' : 'password';
-                this.classList.toggle('fa-lock-open');
-                this.classList.toggle('fa-lock');
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
             });
         });
         

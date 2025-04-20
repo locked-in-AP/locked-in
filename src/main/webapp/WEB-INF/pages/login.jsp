@@ -40,7 +40,7 @@
 
 			<div class="input-box">
 				<input type="password" placeholder="Password" name="password"
-					required> <i class="fa-solid fa-lock toggle-password"></i>
+					required> <i class="fa-solid fa-eye toggle-password"></i>
 			</div>
 
 			<div class="forgot-box">
@@ -69,8 +69,8 @@
         input.type = isPassword ? 'text' : 'password';
         
         // Toggle icon class
-        this.classList.toggle('fa-lock-open');
-        this.classList.toggle('fa-lock');
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
       });
     });
   </script>
