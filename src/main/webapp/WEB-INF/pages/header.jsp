@@ -61,6 +61,7 @@
         <p class="empty-cart-subtext">There are no products in your bag</p>
         <a href="#" class="cart-action-btn shop-men-btn">SHOP MENS</a>
         <a href="#" class="cart-action-btn shop-women-btn">SHOP WOMENS</a>
+        
     </div>
 </div>
 
