@@ -23,18 +23,14 @@ public class AuthenticationFilter implements Filter {
 	private static final String HOME = "/home";
 	private static final String ROOT = "/";
 	private static final String DASHBOARD = "/dashboard";
-	private static final String MODIFY_STUDENTS = "/modifyStudents";
-	private static final String STUDENT_UPDATE = "/studentUpdate";
 	private static final String ADMIN_ORDER = "/adminOrder";
 	private static final String ABOUT = "/aboutus";
-	private static final String PORTFOLIO = "/portfolio";
 	private static final String CONTACT = "/contactus";
 	private static final String ORDER_LIST = "/orderlist";
 	private static final String CART_LIST = "/cartlist";
-	/* private static final String ITEM = "/item"; */
-	/* private static final String CART = "/cart"; */
 	
-	
+	private static final String ITEM = "/item";
+	private static final String CART = "/cart";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -49,13 +45,13 @@ public class AuthenticationFilter implements Filter {
 		HttpServletResponse res = (HttpServletResponse) response;
 
 		String uri = req.getRequestURI();
-		
+
 		// Allow access to resources
 		if (uri.endsWith(".png") || uri.endsWith(".jpg") || uri.endsWith(".css")) {
 			chain.doFilter(request, response);
 			return;
 		}
-		
+
 		boolean isLoggedIn = SessionUtil.getAttribute(req, "email") != null;
 		String userRole = CookieUtil.getCookie(req, "role") != null ? CookieUtil.getCookie(req, "role").getValue()
 				: null;
@@ -66,8 +62,9 @@ public class AuthenticationFilter implements Filter {
 
 		if (!isLoggedIn) {
 			// Not logged in
-			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT) 
-					|| uri.endsWith(ABOUT) || uri.endsWith(CONTACT))/* || uri.endsWith(CART) */ /*|| uri.endsWith(ITEM) */ {
+			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(HOME) || uri.endsWith(ROOT)
+					|| uri.endsWith(ABOUT)
+					|| uri.endsWith(CONTACT)) /* || uri.endsWith(CART) */ /* || uri.endsWith(ITEM) */ {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + LOGIN);
@@ -80,8 +77,8 @@ public class AuthenticationFilter implements Filter {
 			// Admin user
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);
-			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(MODIFY_STUDENTS) || uri.endsWith(STUDENT_UPDATE)
-					|| uri.endsWith(ADMIN_ORDER) || uri.endsWith(HOME) || uri.endsWith(ROOT)) {
+			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(ADMIN_ORDER) || uri.endsWith(HOME)
+					|| uri.endsWith(ROOT)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);
@@ -90,8 +87,8 @@ public class AuthenticationFilter implements Filter {
 			// Regular user
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + HOME);
-			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(PORTFOLIO)
-					|| uri.endsWith(CONTACT) || uri.endsWith(ORDER_LIST) || uri.endsWith(CART_LIST)) {
+			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(CONTACT)
+					|| uri.endsWith(ORDER_LIST) || uri.endsWith(CART_LIST)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + HOME);
