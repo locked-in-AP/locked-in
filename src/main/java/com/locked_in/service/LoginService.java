@@ -77,22 +77,22 @@ public class LoginService {
 	 * @throws SQLException if a database access error occurs
 	 */
 	private boolean validatePassword(ResultSet result, UserModel userModel) throws SQLException {
-		String storedPasswordHash = result.getString("password_hash");
-		String providedPassword = userModel.getPasswordHash();
+		String storedPassword = result.getString("password");
+		String providedPassword = userModel.getPassword();
 		String role = result.getString("role");
 		
-		System.out.println("Stored password hash: " + storedPasswordHash);
+		System.out.println("Stored password hash: " + storedPassword);
 		System.out.println("Provided password: " + providedPassword);
 		
 		// First try direct comparison for testing
-		if (storedPasswordHash.equals(providedPassword)) {
+		if (storedPassword.equals(providedPassword)) {
 			System.out.println("Password matched directly");
 			userModel.setRole(role);
 			return true;
 		}
 		
 		// Try to decrypt the stored password hash
-		String decryptedStoredPassword = PasswordUtil.decrypt(storedPasswordHash, userModel.getEmail());
+		String decryptedStoredPassword = PasswordUtil.decrypt(storedPassword, userModel.getEmail());
 		System.out.println("Decrypted stored password: " + (decryptedStoredPassword != null ? "success" : "failed"));
 		
 		if (decryptedStoredPassword != null && decryptedStoredPassword.equals(providedPassword)) {
@@ -105,7 +105,7 @@ public class LoginService {
 		String encryptedProvidedPassword = PasswordUtil.encrypt(userModel.getEmail(), providedPassword);
 		System.out.println("Encrypted provided password: " + (encryptedProvidedPassword != null ? "success" : "failed"));
 		
-		if (storedPasswordHash.equals(encryptedProvidedPassword)) {
+		if (storedPassword.equals(encryptedProvidedPassword)) {
 			System.out.println("Password matched after encryption");
 			userModel.setRole(role);
 			return true;

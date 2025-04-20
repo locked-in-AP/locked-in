@@ -59,16 +59,6 @@
 
 			</c:if>
 
-			<div class="input-box">
-				<input type="tel" name="phoneNumber"
-					placeholder="Enter your Phone number" required
-					class="${not empty phoneNumberError ? 'error-border' : ''}"
-					value="${phoneNumber != null ? phoneNumber : ''}">
-			</div>
-			<c:if test="${not empty phoneNumberError}">
-				<p class="field-error">${phoneNumberError}</p>
-			</c:if>
-
 			<div class="input-box disappearing-label">
 				<input type="date" name="dateOfBirth" id="dob" required
 					class="${not empty dateOfBirthError ? 'error-border' : ''}"
@@ -77,18 +67,6 @@
 			</div>
 			<c:if test="${not empty dateOfBirthError}">
 				<p class="field-error">${dateOfBirthError}</p>
-			</c:if>
-
-			<div class="input-box">
-				<select name="gender" required class="${not empty genderError ? 'error-border' : ''}">
-					<option value=""  ${empty gender ? 'selected' : ''}>Select gender</option>
-					<option value="male" ${gender == 'male' ? 'selected' : ''}>Male</option>
-					<option value="female" ${gender == 'female' ? 'selected' : ''}>Female</option>
-					<option value="prefer_not_to_say" ${gender == 'prefer_not_to_say' ? 'selected' : ''}>Prefer not to say</option>
-				</select>
-			</div>
-			<c:if test="${not empty genderError}">
-				<p class="field-error">${genderError}</p>
 			</c:if>
 
 			<div class="input-box">

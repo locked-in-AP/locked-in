@@ -35,8 +35,6 @@ public class RegisterController extends HttpServlet {
         String email          = request.getParameter("email");
         String password       = request.getParameter("password");
         String repassword     = request.getParameter("repassword");
-        String phoneNumber    = request.getParameter("phoneNumber");
-        String gender         = request.getParameter("gender");
         String dateOfBirthStr = request.getParameter("dateOfBirth");
 
         int errors = 0;
@@ -55,19 +53,6 @@ public class RegisterController extends HttpServlet {
         // Email
         if (!ValidationUtil.isValidEmail(email)) {
             request.setAttribute("emailError", "Please enter a valid email address.");
-            errors++;
-        }
-
-        // Phone
-        if (!ValidationUtil.isValidPhoneNumber(phoneNumber)) {
-            request.setAttribute("phoneNumberError", 
-                "Phone must be 10 digits and start with 97 or 98.");
-            errors++;
-        }
-
-        // Gender
-        if (!ValidationUtil.isValidGender(gender)) {
-            request.setAttribute("genderError", "Please select Male or Female.");
             errors++;
         }
 
@@ -102,8 +87,7 @@ public class RegisterController extends HttpServlet {
 
         // All validations passed → hash password & register
         String passwordHash = PasswordUtil.encrypt(email, password);
-        UserModel user = new UserModel(name, nickname, email, passwordHash,
-                                       phoneNumber, gender, dob);
+        UserModel user = new UserModel(name, nickname, email, passwordHash, dob);
         String addedStatus = registerService.addUser(user);
 
         if (addedStatus != null) {
@@ -125,8 +109,8 @@ public class RegisterController extends HttpServlet {
     	request.setAttribute("name", request.getParameter("name"));
         request.setAttribute("nickname", request.getParameter("nickname"));
         request.setAttribute("email", request.getParameter("email"));
-        request.setAttribute("phoneNumber", request.getParameter("phoneNumber"));
-        request.setAttribute("gender", request.getParameter("gender"));
+        request.setAttribute("password", request.getParameter("password"));
+        request.setAttribute("repassword", request.getParameter("repassword"));
         request.setAttribute("dateOfBirth", request.getParameter("dateOfBirth"));
         
         request.setAttribute("error", message);

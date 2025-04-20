@@ -13,54 +13,61 @@ public class UserModel {
 	private String name;
 	private String nickname;
 	private String email;
-	private String passwordHash;
-	private String phoneNumber;
+	private String password;
 	private String role;
-	private String gender;
 	private LocalDate dateOfBirth;
 	private LocalDateTime joinedAt;
 	private Integer cartSize;
 	
 	/**
-	 * Full constructor with all fields
+	 * @param userId
+	 * @param name
+	 * @param nickname
+	 * @param email
+	 * @param password
+	 * @param role
+	 * @param dateOfBirth
+	 * @param joinedAt
+	 * @param cartSize
 	 */
-	public UserModel(Integer userId, String name, String nickname, String email, String passwordHash,
-			String phoneNumber, String role, String gender, LocalDate dateOfBirth, LocalDateTime joinedAt,
-			Integer cartSize) {
+	public UserModel(Integer userId, String name, String nickname, String email, String password, String role,
+			LocalDate dateOfBirth, LocalDateTime joinedAt, Integer cartSize) {
+		super();
 		this.userId = userId;
 		this.name = name;
 		this.nickname = nickname;
 		this.email = email;
-		this.passwordHash = passwordHash;
-		this.phoneNumber = phoneNumber;
+		this.password = password;
 		this.role = role;
-		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.joinedAt = joinedAt;
 		this.cartSize = cartSize;
 	}
 
 	/**
-	 * Constructor for user registration
+	 * @param name
+	 * @param nickname
+	 * @param email
+	 * @param password
+	 * @param dateOfBirth
 	 */
-	public UserModel(String name, String nickname, String email, String passwordHash, String phoneNumber, String gender,
-			LocalDate dateOfBirth) {
+	public UserModel(String name, String nickname, String email, String password, LocalDate dateOfBirth) {
+		super();
 		this.name = name;
 		this.nickname = nickname;
 		this.email = email;
-		this.passwordHash = passwordHash;
-		this.phoneNumber = phoneNumber;
-		this.gender = gender;
+		this.password = password;
 		this.dateOfBirth = dateOfBirth;
-		this.role = "customer"; // Default role
 	}
-	
+
 	/**
-	 * Constructor for login
+	 * @param email
+	 * @param password
 	 */
 	public UserModel(String email, String password) {
+		super();
 		this.email = email;
-		this.passwordHash = password;
+		this.password = password;
 	}
 
 	/**
@@ -120,31 +127,17 @@ public class UserModel {
 	}
 
 	/**
-	 * @return the passwordHash
+	 * @return the password
 	 */
-	public String getPasswordHash() {
-		return passwordHash;
+	public String getPassword() {
+		return password;
 	}
 
 	/**
-	 * @param passwordHash the passwordHash to set
+	 * @param password the password to set
 	 */
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-
-	/**
-	 * @return the phoneNumber
-	 */
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	/**
-	 * @param phoneNumber the phoneNumber to set
-	 */
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	/**
@@ -159,20 +152,6 @@ public class UserModel {
 	 */
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	/**
-	 * @return the gender
-	 */
-	public String getGender() {
-		return gender;
-	}
-
-	/**
-	 * @param gender the gender to set
-	 */
-	public void setGender(String gender) {
-		this.gender = gender;
 	}
 
 	/**
@@ -216,5 +195,6 @@ public class UserModel {
 	public void setCartSize(Integer cartSize) {
 		this.cartSize = cartSize;
 	}
+	
 
 }

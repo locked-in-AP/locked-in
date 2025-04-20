@@ -43,22 +43,18 @@ INSERT INTO users (
 	name,
 	nickname,
 	email,
-	password_hash,
-	phone_number,
-	gender,
+	password,
 	date_of_birth
 )
-VALUES (?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?)
 """;
 		try (PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
 
 			insertStmt.setString(1, userModel.getName());
 			insertStmt.setString(2, userModel.getNickname());
 			insertStmt.setString(3, userModel.getEmail());
-			insertStmt.setString(4, userModel.getPasswordHash());
-			insertStmt.setString(5, userModel.getPhoneNumber());
-			insertStmt.setString(6, userModel.getGender());
-			insertStmt.setDate  (7, java.sql.Date.valueOf(userModel.getDateOfBirth()));
+			insertStmt.setString(4, userModel.getPassword());
+			insertStmt.setDate  (5, java.sql.Date.valueOf(userModel.getDateOfBirth()));
 
 			if (insertStmt.executeUpdate() > 0) {
 				return null;
