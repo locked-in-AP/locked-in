@@ -94,7 +94,7 @@ public class AuthenticationFilter implements Filter {
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + HOME);
 			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(CONTACT)
-					|| uri.endsWith(ORDER_LIST) || uri.endsWith(CART_LIST) || uri.endsWith(USER_DASHBOARD) || uri.endsWith(SUPPLEMENTS) || uri.endsWith(EQUIPMENTS) || uri.endsWith(MERCHANDISE)){
+					|| uri.endsWith(ORDER_LIST) || uri.endsWith(CART) || uri.endsWith(USER_DASHBOARD) || uri.endsWith(SUPPLEMENTS) || uri.endsWith(EQUIPMENTS) || uri.endsWith(MERCHANDISE)){
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + HOME);
