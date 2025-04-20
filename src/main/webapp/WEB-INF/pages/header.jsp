@@ -19,7 +19,7 @@
     <nav class="nav">
         <a href="${pageContext.request.contextPath}/supplements" class="nav-item">SUPPLEMENTS</a>
         <a href="${pageContext.request.contextPath}/equipments" class="nav-item">EQUIPMENTS</a>
-        <a href="${pageContext.request.contextPath}/merchandises" class="nav-item">MERCHANDISES</a>
+        <a href="${pageContext.request.contextPath}/merchandise" class="nav-item">MERCHANDISE</a>
     </nav>
     <div class="right-menu">
         <div class="search-box">
