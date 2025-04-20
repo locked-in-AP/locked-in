@@ -36,7 +36,7 @@
                 <h3>Customer Service</h3>
                 <ul>
                     <li><a href="#">Shipping Policy</a></li>
-                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Returns and Exchanges</a></li>
                     <li><a href="#">Product Guides</a></li>
                     <li><a href="#">FAQ</a></li>
                     <li><a href="#">Contact Support</a></li>
