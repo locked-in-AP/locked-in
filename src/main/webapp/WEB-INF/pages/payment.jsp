@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Cart - Hukut</title>
+    <title>Your Cart</title>
     <%-- Link to the combined CSS file --%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/payment.css" />
     <%-- Removed Font Awesome CSS link --%>

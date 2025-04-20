@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>About Us</title>\
+<title>About Us</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/aboutus.css">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
