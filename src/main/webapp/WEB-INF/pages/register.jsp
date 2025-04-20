@@ -60,10 +60,10 @@
 			</c:if>
 
 			<div class="input-box disappearing-label">
-				<input type="date" name="dateOfBirth" id="dob" required
+				<input type="date" name="dateOfBirth" id="dateOfBirth" required
 					class="${not empty dateOfBirthError ? 'error-border' : ''}"
 					value="${dateOfBirth != null ? dateOfBirth : ''}"> <label
-					for="dob">Date of birth</label>
+					for="dateOfBirth">Date of birth</label>
 			</div>
 			<c:if test="${not empty dateOfBirthError}">
 				<p class="field-error">${dateOfBirthError}</p>
