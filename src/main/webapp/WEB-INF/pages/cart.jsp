@@ -8,9 +8,12 @@
 	href="${pageContext.request.contextPath}/css/cart.css" />
 </head>
 <body>
+
 	<jsp:include page="header.jsp" />
 	<div class="container">
 		<h1 class="page-title">Your Cart</h1>
+
+
 
 		<div class="cart-grid">
 			<div class="cart-items">
@@ -96,8 +99,19 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="header.jsp" />
-	<script>
+
+
+                 <a href = "payment" class = "checkout-btn">Proceed to Checkout</a>
+            </div>
+        </div>
+    </div>
+	<jsp:include page="footer.jsp" />
+
+    
+
+
+    <script>
+
         function updateQuantity(change, btn) {
             const input = btn.parentElement.querySelector('.qty-input');
             let newVal = parseInt(input.value) + change;
@@ -146,4 +160,7 @@
     </script>
 
 </body>
+
+    
+
 </html>

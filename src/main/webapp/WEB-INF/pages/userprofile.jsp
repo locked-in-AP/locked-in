@@ -13,6 +13,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
+
 <body>
 	<div class="account-container">
 		<div class="account-overview-container">
@@ -106,6 +107,70 @@
 			</div>
 		</div>
 
+   
+   <jsp:include page="header.jsp" />
+   
+  <div class="account-container">
+    <div class="account-overview-container">
+      <div class="account-name">
+        <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png" alt="Profile">
+        <h1>USERNAME</h1>
+      </div>
+      <div class="account-tier">
+        <div class="reward-card">
+          <h2 class="card-title">Unlock XP And Rewards</h2>
+          <button class="header-btn">VIEW TIERS AND BENEFITS</button>
+        </div>
+      </div>
+   
+      <div class="contact-info">
+        <h2>CONTACT INFO</h2>
+        <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            500 Panda, Brazil
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            240 Iotos
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            37 patsas
+        </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="card-container">
+    <div class="orders-column">
+      <div class="orders-card">
+        <h2 class="orders-header">ORDERS</h2>
+        <div class="image-container">
+          <img src="${pageContext.request.contextPath}/resources/images/system/orders.png" class="placeholder-image" alt="Womens">
+        </div>
+        <div class="empty-state">
+          You haven't made any orders yet.<br>
+          When you make an order it'll show up here.
+        </div>
+        <div class="button-container">
+          <button class="shop-button">VIEW PRODUCTS</button>
+        </div>
+      </div>
+
+      <div class="orders-card">
+        <h2 class="orders-header">RECENT ACTIVITY</h2>
+        <div class="image-container">
+          <img src="${pageContext.request.contextPath}/resources/images/system/orders.png" class="placeholder-image" alt="Activity">
+        </div>
+        <div class="empty-state">
+          No recent activity found.<br>
+          Your workout history will appear here.
+        </div>
+        <div class="button-container">
+          <button class="shop-button">VIEW HISTORY</button>
+        </div>
+      </div>
+    </div>
 
 	</div>
 
@@ -123,5 +188,7 @@
 
 
 
+ <jsp:include page="footer.jsp" />
+ 
 </body>
 </html>
