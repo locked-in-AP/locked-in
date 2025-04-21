@@ -57,7 +57,7 @@
 <div class="cart-overlay" id="cartOverlay"></div>
 <div class="cart-panel" id="cartPanel">
 	<div class="cart-header">
-		<h2 class="cart-title">YOUR BAG</h2>
+		<h2 class="cart-title">YOUR CART</h2>
 		<div class="cart-header-actions">
 			<button class="cart-header-button bag-icon-button">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -91,8 +91,8 @@
 					stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
 		</div>
-		<h3 class="empty-cart-text">YOUR BAG IS EMPTY</h3>
-		<p class="empty-cart-subtext">There are no products in your bag</p>
+		<h3 class="empty-cart-text">YOUR CART IS EMPTY</h3>
+		<p class="empty-cart-subtext">There are no products in your cart</p>
 
 		<a href="${pageContext.request.contextPath}/cart"
 			class="cart-action-btn view-cart-btn">View Full Cart</a>

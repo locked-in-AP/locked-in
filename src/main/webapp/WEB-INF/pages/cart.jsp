@@ -95,22 +95,20 @@
 					<span>Total</span> <span id="totalAmount">₹7,100</span>
 				</div>
 
-				<button class="checkout-btn">Proceed to Checkout</button>
+				<a href="payment" class="checkout-btn"><button
+						class="checkout-btn">Proceed to Checkout</button> </a>
 			</div>
 		</div>
 	</div>
 
 
-                 <a href = "payment" class = "checkout-btn">Proceed to Checkout</a>
-            </div>
-        </div>
-    </div>
+
 	<jsp:include page="footer.jsp" />
 
-    
 
 
-    <script>
+
+	<script>
 
         function updateQuantity(change, btn) {
             const input = btn.parentElement.querySelector('.qty-input');
@@ -161,6 +159,6 @@
 
 </body>
 
-    
+
 
 </html>
