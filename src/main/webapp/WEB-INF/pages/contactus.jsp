@@ -39,7 +39,7 @@
             <p><strong>Email:</strong> support@lockedinfitness.com</p>
             <p><strong>Phone:</strong> +1 (555) 123-4567</p>
             <p><strong>Address:</strong> LockedIn.co, Kathmandu City, 44600</p>
-            <p>Thank you for choosing <span class="highlight">Locked In</span>!</p>
+            <p>Thank you for choosing <b>Locked In</b>!</p>
         </div>
     </div>
     

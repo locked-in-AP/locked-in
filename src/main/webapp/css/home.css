@@ -80,7 +80,8 @@
 }
 
     
-.explore-button {
+.booking-link {
+	text-decoration: none;
     padding: 1rem 2.5rem;
     background: transparent;
     color: white;
@@ -95,7 +96,7 @@
     overflow: hidden;
 }
 
-.explore-button:hover {
+.booking-link:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
 }
@@ -249,7 +250,7 @@
     font-weight: 300;
 }
 
-/* FWhy Choose Us Section */
+/*Why Choose Us Section */
 .featured-section {
     background: #f9f9f9;
     padding: 4rem 2rem;
@@ -283,16 +284,6 @@
 .featured-section .features-grid  h4 {
     color: #000000; 
 }
-
- /* Footer Styles */
-.footer {
-    background-color: #343434;
-    color: white;
-    padding: 2rem;
-    text-align: center;
-}
-
-
 
 
 /* Responsive Design */
