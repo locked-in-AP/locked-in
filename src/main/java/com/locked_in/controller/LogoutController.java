@@ -44,6 +44,6 @@ public class LogoutController extends HttpServlet {
 		SessionUtil.removeAttribute(request, "email");
 
 		// Redirect to login page
-		response.sendRedirect(request.getContextPath() + "/login");
+		response.sendRedirect(request.getContextPath() + "/home");
 	}
 }

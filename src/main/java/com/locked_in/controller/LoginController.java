@@ -71,8 +71,10 @@ public class LoginController extends HttpServlet {
 
 		if (loginStatus != null && loginStatus) {
 			SessionUtil.setAttribute(request, "email", email);
+			SessionUtil.setAttribute(request, "name", userModel.getName());
 			String role = userModel.getRole();
 			System.out.println("User role from database: " + role);
+			System.out.println("User name from database: " + userModel.getName());
 			CookieUtil.addCookie(response, "role", role, 5 * 30);
 			if ("admin".equals(role)) {
 				response.sendRedirect(request.getContextPath() + "/dashboard");

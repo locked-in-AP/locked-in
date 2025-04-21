@@ -29,8 +29,75 @@
 		<div class="content-wrapper">
 			<!-- Filters -->
 			<aside class="filters">
-				<!-- Filter sections remain the same -->
-				<!-- ... -->
+				<div class="filter-section">
+					<button class="filter-button">FILTER & SORT</button>
+					<a href="#" class="clear-all">Clear All</a>
+				</div>
+
+				<div class="filter-divider"></div>
+
+				<div class="filter-section">
+					<div class="filter-header">
+						<span>SORT BY</span>
+						<button class="filter-toggle">▼</button>
+					</div>
+					<div class="filter-options">
+						<div class="filter-option">
+							<input type="radio" id="price-low-high" name="sort"
+								value="price-low-high"> <label for="price-low-high">Price:
+								Low to High</label>
+						</div>
+						<div class="filter-option">
+							<input type="radio" id="price-high-low" name="sort"
+								value="price-high-low"> <label for="price-high-low">Price:
+								High to Low</label>
+						</div>
+						<div class="filter-option">
+							<input type="radio" id="relevancy" name="sort" value="relevancy"
+								checked> <label for="relevancy">Relevancy</label>
+						</div>
+						<div class="filter-option">
+							<input type="radio" id="newest" name="sort" value="newest">
+							<label for="newest">Newest</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="filter-divider"></div>
+
+				<div class="filter-section">
+					<div class="filter-header">
+						<span>GENDER</span>
+						<button class="filter-toggle">▼</button>
+					</div>
+				</div>
+
+				<div class="filter-divider"></div>
+
+				<div class="filter-section">
+					<div class="filter-header">
+						<span>SIZE</span>
+						<button class="filter-toggle">▼</button>
+					</div>
+				</div>
+
+				<div class="filter-divider"></div>
+
+				<div class="filter-section">
+					<div class="filter-header">
+						<span>FEATURES</span>
+						<button class="filter-toggle">▼</button>
+					</div>
+				</div>
+
+				<div class="filter-divider"></div>
+
+				<div class="filter-section">
+					<div class="filter-header">
+						<span>ACTIVITY</span>
+						<button class="filter-toggle">▼</button>
+					</div>
+				</div>
 			</aside>
 
 			<!-- Product Grid -->

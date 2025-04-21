@@ -41,6 +41,12 @@ body {
 	text-decoration: none;
 }
 
+.greeting {
+	font-weight: 600;
+	color: #1A1F2C;
+	margin-right: 5px;
+}
+
 .header {
 	display: flex;
 	justify-content: space-between;
