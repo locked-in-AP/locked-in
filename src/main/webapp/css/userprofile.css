@@ -8,6 +8,16 @@ body {
 	color: #333;
 }
 
+.success-msg {
+	background-color: #e8f5e9;
+	color: #2e7d32;
+	padding: 10px;
+	border-radius: 5px;
+	margin: 10px 0;
+	text-align: center;
+	font-size: 14px;
+}
+
 /* Main container styles */
 .account-container {
 	max-width: 1200px;
