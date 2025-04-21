@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +12,10 @@
 <body>
 	<jsp:include page="header.jsp" />
 
+	<c:if test="${not empty success}">
+		<p class="success-msg">You are logged in!</p>
+	</c:if>
+	
 	<div class="endurance-hero">
 		<div class="hero-accent"></div>
 		<span class="brand-tag">Locked in</span>
@@ -22,6 +27,7 @@
 	</div>
 
 	<div class="main-container">
+
 
 		<div class="shop-tag">
 			<h1>Shop with Categories</h1>
