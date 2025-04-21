@@ -10,6 +10,9 @@
     <%-- Removed Font Awesome CSS link --%>
 </head>
 <body>
+   
+    <jsp:include page="header.jsp" />
+    
     <div class="container">
         <h1 class="page-title">Your Cart</h1>
 
@@ -144,6 +147,7 @@
             </div>
         </div>
     </div>
+    <jsp:include page="footer.jsp" />
 
     <%-- Link to the combined JavaScript file --%>
     <script src="${pageContext.request.contextPath}/js/payment.js"></script>

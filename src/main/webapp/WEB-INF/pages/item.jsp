@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/item.css">
 </head>
 <body>
+	    <jsp:include page="header.jsp" />
     <div class="product-container">
         <div class="left-column">
             <div class="image-gallery">
@@ -108,5 +109,6 @@
             </div>
         </div>
     </div>
+    <jsp:include page="footer.jsp" />
 </body>
 </html>

@@ -7,6 +7,7 @@
 	href="${pageContext.request.contextPath}/css/cart.css" />
 </head>
 <body>
+    <jsp:include page="header.jsp" />
     <div class="container">
         <h1 class="page-title">Your Cart</h1>
 
@@ -90,7 +91,7 @@
             </div>
         </div>
     </div>
-
+	<jsp:include page="header.jsp" />
     <script>
         function updateQuantity(change, btn) {
             const input = btn.parentElement.querySelector('.qty-input');
@@ -100,7 +101,7 @@
             updateTotal();
         }
 
-        <script>
+        
         function updateTotal() {
             const items = document.querySelectorAll('.cart-item');
             let totalItems = 0;
@@ -138,5 +139,6 @@
         }
   
     </script>
+    
 </body>
 </html>
