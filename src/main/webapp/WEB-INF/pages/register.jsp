@@ -112,7 +112,7 @@
             });
         });
         
-        const dobInput = document.querySelector('#dob');
+        const dobInput = document.querySelector('#dateOfBirth');
         const dobLabel = dobInput.nextElementSibling;
 
         function toggleDobLabel() {
