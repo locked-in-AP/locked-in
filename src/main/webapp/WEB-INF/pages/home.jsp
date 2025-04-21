@@ -18,8 +18,10 @@
 		<h2 class="collection-title">COLLECTION</h2>
 		<p class="endurance-tag">Precision Performance for Every Locked in
 			Athlete</p>
-		<a class="booking-link" href ="${pageContext.request.contextPath}/contactus">Book a Meeting</a>
-	</div>	
+		<a class="booking-link"
+			href="${pageContext.request.contextPath}/contactus">Book a
+			Meeting</a>
+	</div>
 
 	<div class="main-container">
 
