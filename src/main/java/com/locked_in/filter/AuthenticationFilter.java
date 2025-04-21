@@ -72,7 +72,7 @@ public class AuthenticationFilter implements Filter {
 			// Not logged in
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(SUPPLEMENTS) || uri.endsWith(EQUIPMENTS)
 					|| uri.endsWith(MERCHANDISE) || uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT)
-					|| uri.endsWith(CONTACT) || uri.endsWith(LOGOUT) || uri.endsWith(PRODUCTS) || uri.endsWith(ITEM)) /* || uri.endsWith(CART) */ /* || uri.endsWith(ITEM) */ {
+					|| uri.endsWith(CONTACT) || uri.endsWith(LOGOUT) || uri.endsWith(ITEM)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + LOGIN);
