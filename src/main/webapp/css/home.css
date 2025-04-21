@@ -3,7 +3,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Libre Baskerville", Georgia, Garamond, "Times New Roman", Times, serif;
+    font-family: 'Crimson Text', Georgia, Times, serif;
+    
 }
 .main-container {
     max-width: 1640px;       
@@ -12,7 +13,7 @@
     box-sizing: border-box;  
     background-color: #ffffff;  
     color: #fff;             
-    font-family: 'Poppins', sans-serif;
+    
   }
 
   .endurance-hero {
