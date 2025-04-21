@@ -17,7 +17,7 @@
   <div class="account-container">
     <div class="account-overview-container">
       <div class="account-name">
-        <img src="${pageContext.request.contextPath}/resources/images/system/Redd.png" alt="Profile">
+        <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png" alt="Profile">
         <h1>USERNAME</h1>
       </div>
       <div class="account-tier">
@@ -50,7 +50,7 @@
       <div class="orders-card">
         <h2 class="orders-header">ORDERS</h2>
         <div class="image-container">
-          <img src="${pageContext.request.contextPath}/resources/images/system/—Pngtree—gym logo_5149987.png" class="placeholder-image" alt="Womens">
+          <img src="${pageContext.request.contextPath}/resources/images/system/orders.png" class="placeholder-image" alt="Womens">
         </div>
         <div class="empty-state">
           You haven't made any orders yet.<br>
@@ -64,7 +64,7 @@
       <div class="orders-card">
         <h2 class="orders-header">RECENT ACTIVITY</h2>
         <div class="image-container">
-          <img src="${pageContext.request.contextPath}/resources/images/system/—Pngtree—gym logo_5149987.png" class="placeholder-image" alt="Activity">
+          <img src="${pageContext.request.contextPath}/resources/images/system/orders.png" class="placeholder-image" alt="Activity">
         </div>
         <div class="empty-state">
           No recent activity found.<br>
