@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Servlet implementation class AdminDashboard
  */
-@WebServlet("/AdminDashboard")
+@WebServlet(asyncSupported = true, urlPatterns = { "/admindashboard" })
 public class AdminDashboardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

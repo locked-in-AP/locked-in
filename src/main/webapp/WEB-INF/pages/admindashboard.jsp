@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,22 +10,32 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/admindashboard.css" />
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Admin Dashboard - LockedIN</title>
 </head>
 <body>
+
 	<jsp:include page="header.jsp" />
 	<c:if test="${not empty success}">
 		<p class="success-msg">You are logged in!</p>
 	</c:if>
+
 	<div class="admin-header">
 		<h1 class="section-title">Admin Dashboard</h1>
 		<div class="right-section">
 			<p>Welcome, Admin</p>
+
 			<img
 				src="${pageContext.request.contextPath}/resources/images/system/Redd.png"
 				alt="Admin Profile" class="admin-pfp">
 		</div>
 
+			<a href="${pageContext.request.contextPath}/logout" class="logout-btn">
+				<i class="fas fa-sign-out-alt"></i> Logout
+			</a>
+			<img
+				src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+				alt="Admin Profile" class="admin-pfp">
+		</div>
 	</div>
 
 
@@ -159,5 +170,14 @@
 		</div>
 	</div>
 
+			<div class="card">
+				<div class="card-content">
+					<div class="icon">💳</div>
+					<h2>No Revenue</h2>
+					<p>Revenue hasn't changed in the last 30 days</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
