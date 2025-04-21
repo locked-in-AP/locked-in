@@ -9,15 +9,18 @@
 		sans-serif;
 }
 
-body {
-	background-color: white;
-	padding: 2rem;
-}
 
-.container {
-	max-width: 1200px;
-	margin: 0 auto;
-}
+ body {
+     background-color: white;
+ 
+ }
+
+ .container {
+ 	
+     max-width: 1200px;
+     margin: 0 auto;
+ }
+
 
 .page-title {
 	margin-bottom: 2rem;
