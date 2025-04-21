@@ -70,16 +70,18 @@
 			</c:if>
 
 			<div class="input-box">
-				<input type="password" name="password" placeholder="Enter Password" value="${password != null ? password : ''}"
-					required class="${not empty passwordError ? 'error-border' : ''}">
-				<i class="fa-solid fa-eye toggle-password"></i>
+				<input type="password" name="password" placeholder="Enter Password"
+					value="${password != null ? password : ''}" required
+					class="${not empty passwordError ? 'error-border' : ''}"> <i
+					class="fa-solid fa-eye toggle-password"></i>
 			</div>
 			<c:if test="${not empty passwordError}">
 				<p class="field-error">${passwordError}</p>
 			</c:if>
 
 			<div class="input-box">
-				<input type="password" name="repassword" value="${repassword != null ? repassword : ''}"
+				<input type="password" name="repassword"
+					value="${repassword != null ? repassword : ''}"
 					placeholder="Confirm Password" required
 					class="${not empty repasswordError ? 'error-border' : ''}">
 				<i class="fa-solid fa-eye toggle-password"></i>
@@ -110,7 +112,7 @@
             });
         });
         
-        const dobInput = document.querySelector('#dob');
+        const dobInput = document.querySelector('#dateOfBirth');
         const dobLabel = dobInput.nextElementSibling;
 
         function toggleDobLabel() {

@@ -18,7 +18,9 @@
 		<h2 class="collection-title">COLLECTION</h2>
 		<p class="endurance-tag">Precision Performance for Every Locked in
 			Athlete</p>
-		<button class="explore-button">Explore Products</button>
+		<a class="booking-link"
+			href="${pageContext.request.contextPath}/contactus">Book a
+			Meeting</a>
 	</div>
 
 	<div class="main-container">
