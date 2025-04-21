@@ -1,80 +1,90 @@
--- ===============================================================
--- TABLE: USERS
--- Stores user information.
--- ===============================================================
-CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    nickname VARCHAR(100),
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('customer', 'endorser', 'admin') DEFAULT 'customer' NOT NULL,
-    date_of_birth DATE NOT NULL,
-    joined_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    cart_size INT DEFAULT 0 NOT NULL
-);
+-- Number of orders made by user
+SELECT 
+    u.user_id,
+    u.name,
+    COUNT(DISTINCT upo.order_id) AS total_orders
+FROM 
+    users u
+JOIN 
+    user_product_order upo ON u.user_id = upo.user_id
+GROUP BY 
+    u.user_id, u.name;
 
--- ===============================================================
--- TABLE: PRODUCT
--- Stores product information.
--- ===============================================================
-CREATE TABLE product (
-    product_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    description TEXT,
-    brand VARCHAR(100),
-    category ENUM('equipment', 'supplement', 'merchandise') NOT NULL,
-    tags TEXT,
-    price DECIMAL(10,2) NOT NULL CHECK (price >= 0),
-    stock_quantity INT DEFAULT 0 NOT NULL,
-    weight DECIMAL(6,2) NOT NULL CHECK (weight >= 0),
-    image TEXT,
-    dimensions VARCHAR(50) NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
 
--- ===============================================================
--- TABLE: USER_PRODUCT
--- Tracks products associated with users (e.g., cart or wishlist).
--- ===============================================================
-CREATE TABLE user_product (
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL DEFAULT 1,
-    is_currently_in_cart BOOLEAN DEFAULT TRUE,
-    PRIMARY KEY (user_id, product_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (product_id) REFERENCES product(product_id)
-);
+-- Number of products purchased by user
+SELECT 
+    u.user_id,
+    u.name,
+    SUM(upo.order_quantity) AS total_products_purchased
+FROM 
+    users u
+JOIN 
+    user_product_order upo ON u.user_id = upo.user_id
+GROUP BY 
+    u.user_id, u.name;
 
--- ===============================================================
--- TABLE: ORDERS
--- Stores individual orders.
--- ===============================================================
-CREATE TABLE orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_date DATETIME NOT NULL,
-    total_price DECIMAL(12, 2) NOT NULL,
-    payment_date DATETIME,
-    payment_method VARCHAR(50),
-    payment_amount DECIMAL(12, 2),
-    payment_status VARCHAR(50) NOT NULL
-);
 
--- ===============================================================
--- TABLE: USER_PRODUCT_ORDER
--- Tracks which products from which users are part of which orders.
--- Also includes review information.
--- ===============================================================
-CREATE TABLE user_product_order (
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    order_id INT NOT NULL,
-    order_quantity INT NOT NULL,
-    review_date DATETIME,
-    review TEXT,
-    rating INT CHECK (rating >= 1 AND rating <= 5),
-    PRIMARY KEY (user_id, product_id, order_id),
-    FOREIGN KEY (user_id, product_id) REFERENCES user_product(user_id, product_id),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id)
-);
+-- number of disctinct product purchased by user
+SELECT 
+    u.user_id,
+    u.name,
+    COUNT(DISTINCT upo.product_id) AS distinct_products_purchased
+FROM 
+    users u
+JOIN 
+    user_product_order upo ON u.user_id = upo.user_id
+GROUP BY 
+    u.user_id, u.name;
+
+
+-- Add to cart
+INSERT INTO user_product (user_id, product_id, quantity, is_currently_in_cart)
+VALUES (?, ?, ?, TRUE)
+ON DUPLICATE KEY UPDATE 
+    quantity = quantity + VALUES(quantity),
+    is_currently_in_cart = TRUE;
+
+-- Soft remove from cart (retain history)
+UPDATE user_product
+SET is_currently_in_cart = FALSE
+WHERE user_id = ? AND product_id = ? AND is_currently_in_cart = TRUE;
+
+
+-- Creating order from cart items
+-- Step 1: Create a new order
+INSERT INTO orders (order_date, total_price, payment_status)
+VALUES (NOW(), ?, 'pending');  -- You should calculate total_price in your application
+
+-- Assume last_insert_id() gives the new order_id
+SET @new_order_id = LAST_INSERT_ID();
+
+-- Step 2: Move cart items to user_product_order
+INSERT INTO user_product_order (user_id, product_id, order_id, order_quantity)
+SELECT 
+    up.user_id,
+    up.product_id,
+    @new_order_id,
+    up.quantity
+FROM 
+    user_product up
+WHERE 
+    up.user_id = ? AND up.is_currently_in_cart = TRUE;
+
+-- Step 3: Clear cart items for the user
+DELETE FROM user_product
+WHERE user_id = ? AND is_currently_in_cart = TRUE;
+
+
+-- Buy now 
+-- just create a user-product-order with a corresponding new order
+-- Step 1: Create a new order
+INSERT INTO orders (order_date, total_price, payment_status)
+VALUES (NOW(), ?, 'pending');
+
+-- Step 2: Get the new order ID
+SET @order_id = LAST_INSERT_ID();
+
+-- Step 3: Insert into user_product_order
+INSERT INTO user_product_order (user_id, product_id, order_id, order_quantity)
+VALUES (?, ?, @order_id, ?);
+
