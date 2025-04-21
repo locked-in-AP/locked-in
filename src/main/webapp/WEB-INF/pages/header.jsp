@@ -59,8 +59,7 @@
         </div>
         <h3 class="empty-cart-text">YOUR BAG IS EMPTY</h3>
         <p class="empty-cart-subtext">There are no products in your bag</p>
-        <a href="#" class="cart-action-btn shop-men-btn">SHOP MENS</a>
-        <a href="#" class="cart-action-btn shop-women-btn">SHOP WOMENS</a>
+
         <a href="${pageContext.request.contextPath}/cart" class="cart-action-btn view-cart-btn">View Full Cart</a>
 
         

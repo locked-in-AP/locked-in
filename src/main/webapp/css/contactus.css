@@ -131,11 +131,6 @@ button[type="submit"]:hover {
     color: #333;
 }
 
-.highlight {
-    color: #333;
-    font-weight: 600;
-    background: linear-gradient(90deg, #222 0%, #444 100%);
-}
 
 /* Floating label effect */
 .form-group input:not(:placeholder-shown),
