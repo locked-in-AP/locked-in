@@ -77,9 +77,11 @@ public class LoginController extends HttpServlet {
 			System.out.println("User name from database: " + userModel.getName());
 			CookieUtil.addCookie(response, "role", role, 5 * 30);
 			if ("admin".equals(role)) {
-				response.sendRedirect(request.getContextPath() + "/dashboard");
+				request.setAttribute("success", true);
+				request.getRequestDispatcher("/WEB-INF/pages/admindashboard.jsp").forward(request, response);
 			} else {
-				response.sendRedirect(request.getContextPath() + "/home");
+				request.setAttribute("success", true);
+				request.getRequestDispatcher("/WEB-INF/pages/home.jsp").forward(request, response);
 			}
 		} else {
 			handleLoginFailure(request, response, loginStatus);

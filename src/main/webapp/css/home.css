@@ -7,6 +7,16 @@
 	font-family: 'Crimson Text', Georgia, Times, serif;
 }
 
+.success-msg {
+	background-color: #e8f5e9;
+	color: #2e7d32;
+	padding: 10px;
+	border-radius: 5px;
+	margin: 10px 0;
+	text-align: center;
+	font-size: 14px;
+}
+
 .main-container {
 	max-width: 1640px;
 	margin: 0 auto;
@@ -28,6 +38,7 @@
 	position: relative;
 	overflow: hidden;
 }
+
 
 .brand-tag {
 	font-size: 1rem;
@@ -93,7 +104,6 @@
 	position: relative;
 	z-index: 1;
 	overflow: hidden;
-	padding: 1rem 2.5rem;
 }
 
 .booking-link:hover {
