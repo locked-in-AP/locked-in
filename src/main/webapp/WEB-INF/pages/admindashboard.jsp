@@ -24,15 +24,9 @@
 		<div class="right-section">
 			<p>Welcome, Admin</p>
 
-			<img
-				src="${pageContext.request.contextPath}/resources/images/system/Redd.png"
-				alt="Admin Profile" class="admin-pfp">
-		</div>
-
-			<a href="${pageContext.request.contextPath}/logout" class="logout-btn">
-				<i class="fas fa-sign-out-alt"></i> Logout
-			</a>
-			<img
+			<a href="${pageContext.request.contextPath}/logout"
+				class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
+			</a> <img
 				src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
 				alt="Admin Profile" class="admin-pfp">
 		</div>
@@ -163,20 +157,6 @@
 				</div>
 			</div>
 
-
-
-
-
-		</div>
-	</div>
-
-			<div class="card">
-				<div class="card-content">
-					<div class="icon">💳</div>
-					<h2>No Revenue</h2>
-					<p>Revenue hasn't changed in the last 30 days</p>
-				</div>
-			</div>
 		</div>
 	</div>
 </body>
