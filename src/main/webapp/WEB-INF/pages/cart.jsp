@@ -28,7 +28,7 @@
 							</div>
 							<p class="variant">White</p>
 							<div class="delivery-options">
-								<p class="delivery-option">Pickup at Hukut Store</p>
+								<p class="delivery-option">Free Delivery</p>
 								<p class="delivery-time">Ready by Mon. Apr 14</p>
 							</div>
 							<div class="product-actions">
@@ -51,15 +51,15 @@
 
 				<div class="cart-item card">
 					<div class="item-details">
-						<img src="https://via.placeholder.com/100" class="product-image"
+						<img src="https://cdn.shopify.com/s/files/1/0156/6146/files/AdaptCamoCrossBackSportsBraENGLA0240GSAsphaltGreyGSBlackB3C2E-GC8N-1132-0051_9da704e5-3ac0-4af6-9fea-66564f5b61e7_1080x.jpg?v=1740429553" class="product-image"
 							alt="Utitma Atom 520 Pro">
 						<div class="product-info">
 							<div class="product-header">
-								<h2>Utitma Atom 520 Pro</h2>
+								<h2>Adapt Camo Cross Back Sports Bra</h2>
 							</div>
-							<p class="variant">White</p>
+							<p class="variant">Grey</p>
 							<div class="delivery-options">
-								<p class="delivery-option">Pickup at Hukut Store</p>
+								<p class="delivery-option">Free Delivery</p>
 								<p class="delivery-time">Ready by Mon. Apr 14</p>
 							</div>
 							<div class="product-actions">
@@ -95,8 +95,9 @@
 					<span>Total</span> <span id="totalAmount">₹7,100</span>
 				</div>
 
-				<a href="payment" class="checkout-btn"><button
-						class="checkout-btn">Proceed to Checkout</button> </a>
+				<button class="checkout-btn">
+					<a href="payment" style="display: block; width: 100%; height: 100%; color: white; text-decoration: none;">Proceed to Checkout</a>
+				</button>
 			</div>
 		</div>
 	</div>
