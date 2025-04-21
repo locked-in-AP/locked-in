@@ -83,6 +83,7 @@ public class RegisterController extends HttpServlet {
 
         if (errors > 0) {
             handleError(request, response, "You have " + errors + " invalid field(s).");
+            return;
         }
 
         // All validations passed → hash password & register

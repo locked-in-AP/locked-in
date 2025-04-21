@@ -176,9 +176,9 @@
 
 	<div class="account-signout-update">
 		<!-- Sign Out Icon -->
-		<button class="account-action">
+		<a href="${pageContext.request.contextPath}/logout" class="account-action">
 			<i class="fa-solid fa-right-from-bracket"></i> Sign Out
-		</button>
+		</a>
 
 		<!-- Update Profile Icon -->
 		<button class="account-action">

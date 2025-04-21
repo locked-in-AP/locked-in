@@ -14,6 +14,14 @@
 <div class="top-bar">
     <c:choose>
         <c:when test="${sessionScope.email != null}">
+            <c:choose>
+                <c:when test="${cookie.role.value eq 'admin'}">
+                    <span class="top-bar-item greeting">Hi, Admin</span>
+                </c:when>
+                <c:otherwise>
+                    <span class="top-bar-item greeting">Hi, ${sessionScope.name != null ? sessionScope.name : 'User'}</span>
+                </c:otherwise>
+            </c:choose>
             <a href="${pageContext.request.contextPath}/logout" class="top-bar-item">Logout</a>
         </c:when>
         <c:otherwise>
