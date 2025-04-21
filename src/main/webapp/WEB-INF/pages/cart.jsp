@@ -7,7 +7,9 @@
 	href="${pageContext.request.contextPath}/css/cart.css" />
 </head>
 <body>
-    <jsp:include page="header.jsp" />
+
+<jsp:include page="header.jsp" />
+
     <div class="container">
         <h1 class="page-title">Your Cart</h1>
 
@@ -87,11 +89,15 @@
                     <span id="totalAmount">₹7,100</span>
                 </div>
 
-                <button class="checkout-btn">Proceed to Checkout</button>
+                 <a href = "payment" class = "checkout-btn">Proceed to Checkout</a>
             </div>
         </div>
     </div>
-	<jsp:include page="header.jsp" />
+	<jsp:include page="footer.jsp" />
+
+    
+
+
     <script>
         function updateQuantity(change, btn) {
             const input = btn.parentElement.querySelector('.qty-input');
@@ -140,5 +146,10 @@
   
     </script>
     
+
+    
 </body>
+
+    
+
 </html>

@@ -10,6 +10,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+<jsp:include page="header.jsp" />
+
   <div class="admin-header">
     <h1 class="section-title">Admin Dashboard</h1>
     <div class="right-section">    <p>Welcome, Admin</p>
@@ -17,6 +20,8 @@
   </div>
 
   </div>
+  
+  
   
 
   <div class="dashboard-buttons">
@@ -149,6 +154,8 @@
      
     </div>
   </div>
+
+<jsp:include page="footer.jsp" />
 
 </body>
 </html>
