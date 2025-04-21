@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
-   <body>
+   
+   <jsp:include page="header.jsp" />
+   
   <div class="account-container">
     <div class="account-overview-container">
       <div class="account-name">
@@ -116,6 +118,7 @@
   </div>
   
 
+ <jsp:include page="footer.jsp" />
  
 </body>
 </html>
