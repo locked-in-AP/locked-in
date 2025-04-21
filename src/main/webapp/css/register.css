@@ -1,176 +1,174 @@
 @charset "UTF-8";
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Libre Baskerville", Georgia, Garamond, "Times New Roman", Times, serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Libre Baskerville", Georgia, Garamond, "Times New Roman",
+		Times, serif;
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
 }
 
 .registration-container {
-  width: 420px;
-  max-width: 500px;
-  background: #ffffff;
-  padding: 20px;
-  margin: 0 auto;
+	width: 420px;
+	max-width: 500px;
+	background: #ffffff;
+	padding: 20px;
+	margin: 0 auto;
 }
 
 .registration-container .header {
-  text-align: center;
+	text-align: center;
 }
 
 .registration-container h1 {
-  font-size: 30px;
-  margin: 20px auto;
+	font-size: 30px;
+	margin: 20px auto;
 }
 
 .registration-container p {
-  margin-top: 10px;
-  font-size: 13px;
+	margin-top: 10px;
+	font-size: 13px;
 }
 
 .input-box {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 50px;
-  margin: 10px 0 20px;
- 
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 50px;
+	margin: 10px 0 20px;
 }
 
-.input-box input,
-.input-box select {
-  width: 95%;
-  height: 100%;
-  border: 2px solid #f1f1f1;
-  padding: 20px 45px 20px 20px;
-  font-size: 14px;
-  color: #333;
-  background-color: white;
+.input-box input, .input-box select {
+	width: 95%;
+	height: 100%;
+	border: 2px solid #f1f1f1;
+	padding: 20px 45px 20px 20px;
+	font-size: 14px;
+	color: #333;
+	background-color: white;
 }
 
 .input-box select {
-  appearance: none;
-  font-weight: 350;
-  padding: 0 20px;
+	appearance: none;
+	font-weight: 350;
+	padding: 0 20px;
 }
 
 .input-box i {
-  position: absolute;
-  right: 63px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 15px;
-  cursor: pointer;
+	position: absolute;
+	right: 63px;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 15px;
+	cursor: pointer;
 }
 
 .btn {
-  width: 100%;
-  height: 55px;
-  padding: 12px;
-  border-radius: 45px;
-  background-color: black;
-  color: white;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 17px;
+	width: 100%;
+	height: 55px;
+	padding: 12px;
+	border-radius: 45px;
+	background-color: black;
+	color: white;
+	border: none;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	margin-top: 17px;
 }
 
 .login {
-  font-size: 14px;
-  text-align: center;
-  margin-top: 12px;
+	font-size: 14px;
+	text-align: center;
+	margin-top: 12px;
 }
 
 .login p a {
-  color: black;
-  font-weight: bold;
-  font-size: 16px;
+	color: black;
+	font-weight: bold;
+	font-size: 16px;
 }
 
 /* Add these styles to your register.css */
 .error-msg {
-    color: #dc3545;
-    background: #f8d7da;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    border: 1px solid #f5c6cb;
+	color: #dc3545;
+	background: #f8d7da;
+	padding: 10px;
+	border-radius: 4px;
+	margin-bottom: 15px;
+	border: 1px solid #f5c6cb;
 }
 
 .field-error {
-    color: #dc3545;
-    font-size: 12px;
-    margin-top: 5px;
-    display: block;
-    padding: 5px 0;
+	color: #dc3545;
+	font-size: 12px;
+	margin-top: 5px;
+	display: block;
+	padding: 5px 0;
 }
 
 .input-container {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .input-box {
-    position: relative;
-    margin-bottom: 5px; /* Reduced from 20px to make room for errors */
+	position: relative;
+	margin-bottom: 5px; /* Reduced from 20px to make room for errors */
 }
 
 .error-border {
-    border: 2px solid #dc3545 !important;
+	border: 2px solid #dc3545 !important;
 }
 
 .field-error {
-  color: #ff0000;
-  font-size: 0.8em;
-  margin-top: 5px;
-  padding-left: 5px;
+	color: #ff0000;
+	font-size: 0.8em;
+	margin-top: 5px;
+	padding-left: 5px;
 }
 
 .error-msg {
-  color: #ff0000;
-  background: #ffeeee;
-  padding: 10px;
-  border-radius: 5px;
+	color: #ff0000;
+	background: #ffeeee;
+	padding: 10px;
+	border-radius: 5px;
 }
 
 .success-msg {
-  color: #008000;
-  background: #eeffee;
-  padding: 10px;
-  border-radius: 5px;
+	color: #008000;
+	background: #eeffee;
+	padding: 10px;
+	border-radius: 5px;
 }
 
 /* Date of Birth Label Styles */
 .disappearing-label {
-  position: relative;
+	position: relative;
 }
 
 .disappearing-label label {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  color: #333;
-  background-color: white;
-  font-weight: 350;
-  pointer-events: none;
-  transition: all 0.3s;
-  width: 70%;
- 
+	position: absolute;
+	left: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 14px;
+	color: #333;
+	background-color: white;
+	font-weight: 350;
+	pointer-events: none;
+	transition: all 0.3s;
+	width: 70%;
 }
 
 img {
-  height: 200px;
+	height: 200px;
 }
