@@ -68,7 +68,7 @@ public class AuthenticationFilter implements Filter {
 			// Not logged in
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(SUPPLEMENTS) || uri.endsWith(EQUIPMENTS)
 					|| uri.endsWith(MERCHANDISE) || uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT)
-					|| uri.endsWith(CONTACT) || uri.endsWith(LOGOUT)) {
+					|| uri.endsWith(CONTACT) || uri.endsWith(LOGOUT) || uri.endsWith(ITEM)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + LOGIN);
@@ -82,7 +82,7 @@ public class AuthenticationFilter implements Filter {
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + ADMIN_DASHBOARD);
 			} else if (uri.endsWith(ADMIN_DASHBOARD) || uri.endsWith(ADMIN_ORDER) || uri.endsWith(HOME)
-					|| uri.endsWith(ROOT) || uri.endsWith(LOGOUT) || uri.endsWith(ITEM)) {
+					|| uri.endsWith(ROOT) || uri.endsWith(LOGOUT)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + ADMIN_DASHBOARD);
