@@ -35,10 +35,6 @@ public class AuthenticationFilter implements Filter {
 	private static final String PAYMENT = "/payment";
 	private static final String ITEM = "/item";
 	private static final String CART = "/cart";
-	private static final String UPDATE_PROFILE = "/updateProfile";
-	private static final String PRODUCTS = "/products";
-	private static final String WISHLIST = "/wishlist";
-	private static final String HISTORY = "/history";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -72,7 +68,7 @@ public class AuthenticationFilter implements Filter {
 			// Not logged in
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(SUPPLEMENTS) || uri.endsWith(EQUIPMENTS)
 					|| uri.endsWith(MERCHANDISE) || uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT)
-					|| uri.endsWith(CONTACT) || uri.endsWith(LOGOUT) || uri.endsWith(ITEM)) {
+					|| uri.endsWith(CONTACT) || uri.endsWith(LOGOUT)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + LOGIN);
@@ -86,7 +82,7 @@ public class AuthenticationFilter implements Filter {
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + ADMIN_DASHBOARD);
 			} else if (uri.endsWith(ADMIN_DASHBOARD) || uri.endsWith(ADMIN_ORDER) || uri.endsWith(HOME)
-					|| uri.endsWith(ROOT) || uri.endsWith(LOGOUT)) {
+					|| uri.endsWith(ROOT) || uri.endsWith(LOGOUT) || uri.endsWith(ITEM)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + ADMIN_DASHBOARD);
@@ -98,9 +94,7 @@ public class AuthenticationFilter implements Filter {
 			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(CONTACT)
 					|| uri.endsWith(ORDER_LIST) || uri.endsWith(CART) || uri.endsWith(USER_DASHBOARD)
 					|| uri.endsWith(SUPPLEMENTS) || uri.endsWith(EQUIPMENTS) || uri.endsWith(MERCHANDISE)
-					|| uri.endsWith(ITEM) || uri.endsWith(PAYMENT) || uri.endsWith(LOGOUT) 
-					|| uri.endsWith(UPDATE_PROFILE) || uri.endsWith(PRODUCTS) || uri.endsWith(WISHLIST) 
-					|| uri.endsWith(HISTORY)) {
+					|| uri.endsWith(ITEM) || uri.endsWith(PAYMENT) || uri.endsWith(LOGOUT)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + HOME);

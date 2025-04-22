@@ -103,7 +103,7 @@
 			<!-- Product Grid -->
 			<div class="product-grid">
 				<!-- Product 1 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
@@ -129,7 +129,7 @@
 				</a>
 
 				<!-- Product 2 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
@@ -155,7 +155,7 @@
 				</a>
 
 				<!-- Product 3 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
@@ -182,7 +182,7 @@
 				</a>
 
 				<!-- Product 4 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
@@ -208,7 +208,7 @@
 				</a>
 
 				<!-- Product 5 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
@@ -233,7 +233,7 @@
 				</a>
 
 				<!-- Product 6 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
@@ -262,7 +262,7 @@
 				</a>
 
 				<!-- Product 7 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
@@ -287,7 +287,7 @@
 				</a>
 
 				<!-- Product 8 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
@@ -312,7 +312,7 @@
 				</a>
 
 				<!-- Product 9 -->
-				<a href="${pageContext.request.contextPath}/pages/item.jsp"
+				<a href="${pageContext.request.contextPath}/item"
 					class="product-link">
 					<div class="product-card">
 						<div class="product-image-container">
