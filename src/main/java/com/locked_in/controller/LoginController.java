@@ -72,6 +72,7 @@ public class LoginController extends HttpServlet {
 		if (loginStatus != null && loginStatus) {
 			SessionUtil.setAttribute(request, "email", email);
 			SessionUtil.setAttribute(request, "name", userModel.getName());
+			SessionUtil.setAttribute(request, "profilePicture", userModel.getProfilePicture());
 			String role = userModel.getRole();
 			System.out.println("User role from database: " + role);
 			System.out.println("User name from database: " + userModel.getName());

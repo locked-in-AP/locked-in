@@ -172,3 +172,30 @@ body {
 img {
 	height: 200px;
 }
+
+/* File upload styles */
+.file-upload-label {
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #f0f0f0;
+	border: 2px dashed #ccc;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	width: 100%;
+	text-align: center;
+}
+
+.file-upload-label:hover {
+	background-color: #e0e0e0;
+	border-color: #999;
+}
+
+.file-upload-input {
+	display: none;
+}
+
+.file-upload-label i {
+	margin-right: 8px;
+	color: #666;
+}

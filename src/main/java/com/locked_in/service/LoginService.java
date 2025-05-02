@@ -47,7 +47,7 @@ public class LoginService {
 		}
 
 		System.out.println("Attempting login for email: " + userModel.getEmail());
-		String query = "SELECT email, password, role, name FROM users WHERE email = ?";
+		String query = "SELECT email, password, role, name, profile_picture FROM users WHERE email = ?";
 		try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
 			stmt.setString(1, userModel.getEmail());
 			ResultSet result = stmt.executeQuery();
@@ -81,6 +81,7 @@ public class LoginService {
 		String providedPassword = userModel.getPassword();
 		String role = result.getString("role");
 		String name = result.getString("name");
+		String profilePicture = result.getString("profile_picture");
 		
 		System.out.println("Stored password hash: " + storedPassword);
 		System.out.println("Provided password: " + providedPassword);
@@ -90,6 +91,7 @@ public class LoginService {
 			System.out.println("Password matched directly");
 			userModel.setRole(role);
 			userModel.setName(name);
+			userModel.setProfilePicture(profilePicture);
 			return true;
 		}
 		
@@ -101,6 +103,7 @@ public class LoginService {
 			System.out.println("Password matched after decryption");
 			userModel.setRole(role);
 			userModel.setName(name);
+			userModel.setProfilePicture(profilePicture);
 			return true;
 		}
 		
@@ -112,6 +115,7 @@ public class LoginService {
 			System.out.println("Password matched after encryption");
 			userModel.setRole(role);
 			userModel.setName(name);
+			userModel.setProfilePicture(profilePicture);
 			return true;
 		}
 		

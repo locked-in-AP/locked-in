@@ -1,6 +1,8 @@
 package com.locked_in.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -10,12 +12,17 @@ import com.locked_in.util.PasswordUtil;
 import com.locked_in.util.ValidationUtil;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
 @WebServlet(asyncSupported = true, urlPatterns = { "/register" })
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+maxFileSize = 1024 * 1024 * 10, // 10MB
+maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class RegisterController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -86,9 +93,26 @@ public class RegisterController extends HttpServlet {
             return;
         }
 
+        // Handle profile picture upload
+        String profilePicturePath = "resources/images/system/userpfp.png"; // Default path
+        Part filePart = request.getPart("profilePicture");
+        if (filePart != null && filePart.getSize() > 0) {
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            String savePath = getServletContext().getRealPath("/") + "resources/images/system/";
+            File fileSaveDir = new File(savePath);
+            if (!fileSaveDir.exists()) {
+                fileSaveDir.mkdirs();
+            }
+            
+            // Save the file
+            filePart.write(savePath + fileName);
+            profilePicturePath = "resources/images/system/" + fileName;
+        }
+
         // All validations passed → hash password & register
         String passwordHash = PasswordUtil.encrypt(email, password);
         UserModel user = new UserModel(name, nickname, email, passwordHash, dob);
+        user.setProfilePicture(profilePicturePath);
         String addedStatus = registerService.addUser(user);
 
         if (addedStatus != null) {

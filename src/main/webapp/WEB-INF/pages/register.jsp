@@ -26,7 +26,7 @@
 		</c:if>
 
 		<form action="${pageContext.request.contextPath}/register"
-			method="post">
+			method="post"  enctype="multipart/form-data">
 			<div class="input-box">
 				<input type="text" name="name" placeholder="Enter your Name"
 					required class="${not empty nameError ? 'error-border' : ''}"
@@ -89,7 +89,14 @@
 			<c:if test="${not empty repasswordError}">
 				<p class="field-error">${repasswordError}</p>
 			</c:if>
-
+			
+			<div class="input-box">
+				<label for="profilePicture" class="file-upload-label">
+					<i class="fas fa-camera"></i> Upload Profile Picture
+				</label>
+				<input type="file" name="profilePicture" id="profilePicture" accept="image/*" class="file-upload-input">
+			</div>
+			
 			<button type="submit" class="btn">Register</button>
 
 			<div class="login">
