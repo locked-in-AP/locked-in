@@ -1,6 +1,8 @@
 package com.locked_in.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import com.locked_in.model.UserModel;
 import com.locked_in.service.UserService;
@@ -8,15 +10,21 @@ import com.locked_in.util.PasswordUtil;
 import com.locked_in.util.SessionUtil;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 /**
  * Controller for handling user profile updates
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/updateProfile" })
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+maxFileSize = 1024 * 1024 * 10, // 10MB
+maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class UpdateProfileController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
@@ -146,6 +154,36 @@ public class UpdateProfileController extends HttpServlet {
         if (!updateSuccess) {
             handleUpdateError(request, response, "Failed to update your profile. Please try again later.");
             return;
+        }
+        
+        // Handle profile picture upload
+        Part filePart = request.getPart("profilePicture");
+        if (filePart != null && filePart.getSize() > 0) {
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            String savePath = getServletContext().getRealPath("/") + "resources/images/system/";
+            File fileSaveDir = new File(savePath);
+            if (!fileSaveDir.exists()) {
+                fileSaveDir.mkdirs();
+            }
+            
+            // Save the file
+            filePart.write(savePath + fileName);
+            
+            // Set the profile picture path in the user model and database
+            String relativePath = "resources/images/system/" + fileName;
+            
+            currentUser.setProfilePicture(relativePath);
+            
+            // Update the database with the new profile picture path
+            if (!userService.updateUser(currentUser)) {
+                handleUpdateError(request, response, "Failed to update profile picture in database.");
+                return;
+            }
+            
+            // Set the profile picture path in session
+            
+            // Set the profile picture path in session
+            SessionUtil.setAttribute(request, "profilePicture", relativePath);
         }
         
         // Update session name attribute

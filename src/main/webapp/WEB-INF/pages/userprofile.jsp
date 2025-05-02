@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +10,14 @@
 <title>User Dashboard</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/userprofile.css">
+	
+<%
+    String profilePicture = (String) session.getAttribute("profilePicture");
+    if (profilePicture == null || profilePicture.isEmpty()) {
+        // Default profile picture
+        profilePicture = "resources/images/system/userpfp.png";
+    }
+%>	
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,9 +28,7 @@
 	<div class="account-container">
 		<div class="account-overview-container">
 			<div class="account-name">
-				<img
-					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-					alt="Profile">
+				<img src="<%= profilePicture %>" alt="Profile Picture" class="profile-picture" />
 				<h1>${sessionScope.name != null ? sessionScope.name : 'USERNAME'}</h1>
 			</div>
 			<div class="account-tier">
