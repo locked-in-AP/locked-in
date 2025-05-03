@@ -1,25 +1,31 @@
 package com.locked_in.controller;
 
+import java.io.IOException;
+import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import com.locked_in.model.ProductModel;
+import com.locked_in.service.ProductService;
 
 /**
  * Servlet implementation class Item
  */
-@WebServlet(asyncSupported = true, urlPatterns = { "/item"})
+@WebServlet("/item")
 public class ItemController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private ProductService productService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ItemController() {
         super();
-        // TODO Auto-generated constructor stub
+        productService = new ProductService();
     }
 
 	/**
@@ -27,14 +33,29 @@ public class ItemController extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/pages/item.jsp").forward(request, response);
+        String productId = request.getParameter("id");
+        
+        if (productId != null && !productId.isEmpty()) {
+            try {
+                ProductModel product = productService.getProductById(Integer.parseInt(productId));
+                if (product != null) {
+                    request.setAttribute("product", product);
+                    request.getRequestDispatcher("/WEB-INF/pages/item.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/home");
+                }
+            } catch (NumberFormatException e) {
+                response.sendRedirect(request.getContextPath() + "/home");
+            }
+        } else {
+            response.sendRedirect(request.getContextPath() + "/home");
+        }
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
