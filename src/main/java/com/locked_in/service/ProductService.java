@@ -297,8 +297,9 @@ public class ProductService {
             e.printStackTrace();
             return false;
         }
+        }
 
-     * Retrieves a limited number of products from the database
+     /* Retrieves a limited number of products from the database
      * 
      * @param limit the maximum number of products to retrieve
      * @param sortBy the sorting criteria (price-low-high, price-high-low, relevancy, newest)
