@@ -21,11 +21,11 @@
         </div>
 
         <c:if test="${not empty success}">
-            <p class="success-msg">${success}</p>
-        </c:if>
+               <p class="alert success-msg">${success}</p>       
+                </c:if>
 
         <c:if test="${not empty error}">
-            <p class="error-msg">${error}</p>
+             <p class="alert error-msg">${success}</p>
         </c:if>
 
         <form action="${pageContext.request.contextPath}/updateProfile" method="post" enctype="multipart/form-data">

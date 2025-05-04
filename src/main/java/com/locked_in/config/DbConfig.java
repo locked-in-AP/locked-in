@@ -5,12 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * DbConfig is a configuration class for managing database connections. It
- * handles the connection to a MySQL database using JDBC.
+ * DbConfig is a configuration class for managing database connections.
+ * It handles the connection to a MySQL database using JDBC.
  */
 public class DbConfig {
-
-	// Database configuration information
 	private static final String DB_NAME = "locked_in";
 	private static final String URL = "jdbc:mysql://localhost:3306/" + DB_NAME;
 	private static final String USERNAME = "root";

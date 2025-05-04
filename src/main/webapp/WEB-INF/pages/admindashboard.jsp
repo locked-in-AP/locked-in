@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/admindashboard.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <meta charset="UTF-8">
 <title>Admin Dashboard - LockedIN</title>
 </head>
@@ -19,145 +18,155 @@
 		<p class="success-msg">You are logged in!</p>
 	</c:if>
 
-	<div class="admin-header">
-		<h1 class="section-title">Admin Dashboard</h1>
-		<div class="right-section">
-			<p>Welcome, Admin</p>
-
-			<a href="${pageContext.request.contextPath}/logout"
-				class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
-			</a> <img
-				src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-				alt="Admin Profile" class="admin-pfp">
-		</div>
+	<div class="sidebar">
+		<ul class="nav">
+			<li><a href="${pageContext.request.contextPath}/admindashboard"><span class="icon"><i class="fas fa-home"></i></span> Dashboard</a></li>
+			<li><a href="${pageContext.request.contextPath}/users"><span class="icon"><i class="fas fa-user"></i></span>Users</a></li>
+			<li><a href="${pageContext.request.contextPath}/addProduct"><span class="icon"><i class="fas fa-pen"></i></span> Add Product</a></li>
+			<li><a href="${pageContext.request.contextPath}/updateProduct"><span class="icon"><i class="fas fa-pen"></i></span> Edit Product</a></li>
+			<li><a href="${pageContext.request.contextPath}/deleteProduct"><span class="icon"><i class="fas fa-trash"></i></span> Delete Product</a></li>
+			
+		</ul>
 	</div>
 
+	<div class="main-content">
+		<div class="admin-header">
+			<h1 class="section-title">Admin Dashboard</h1>
+			<div class="right-section">
+				<p>Welcome, Admin</p>
 
-	<div class="dashboard-buttons">
-		<a href="#" class="btn"><i class="fas fa-plus"></i> Add Product</a> <a
-			href="#" class="btn"><i class="fas fa-box"></i> View Orders</a>
-	</div>
-
-	<div class="dashboard-container">
-		<h1 class="section-title">Overview</h1>
-		<div class="metrics-grid">
-			<div class="metric-card">
-				<div class="metric-content">
-					<h3 class="metric-title">Total Revenue</h3>
-					<p class="metric-subtitle">Last 30 days</p>
-				</div>
-				<div class="metric-value revenue">$82,650</div>
-			</div>
-
-			<div class="metric-card">
-				<div class="metric-content">
-					<h3 class="metric-title">Total Order</h3>
-					<p class="metric-subtitle">Last 30 days</p>
-				</div>
-				<div class="metric-value order">16.45</div>
-			</div>
-
-			<div class="metric-card">
-				<div class="metric-content">
-					<h3 class="metric-title">Total Customer</h3>
-					<p class="metric-subtitle">Last 30 days</p>
-				</div>
-				<div class="metric-value customer">1,462</div>
-			</div>
-
-			<div class="metric-card">
-				<div class="metric-content">
-					<h3 class="metric-title">Pending Delivery</h3>
-					<p class="metric-subtitle">Last 30 days</p>
-				</div>
-				<div class="metric-value delivery">117</div>
+				<a href="${pageContext.request.contextPath}/logout"
+					class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
+				</a> <img
+					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+					alt="Admin Profile" class="admin-pfp">
 			</div>
 		</div>
-	</div>
 
-	<div class="table-container">
-		<h2>Recent Orders</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Product Name</th>
-					<th>Product ID</th>
-					<th>Quantity</th>
-					<th>Price</th>
-					<th>Order Time</th>
-					<th>Customer</th>
-					<th>Status</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>Adjustable Dumbbell</td>
-					<td>gym001</td>
-					<td>5</td>
-					<td>$150.00</td>
-					<td>2025-04-12 09:45</td>
-					<td>John Muscle</td>
-					<td class="status intransit">In Transit</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>Whey Protein 2kg</td>
-					<td>gym002</td>
-					<td>2</td>
-					<td>$90.00</td>
-					<td>2025-04-11 14:33</td>
-					<td>Sara Fitwell</td>
-					<td class="status delivered">Delivered</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>Gym Tank Top</td>
-					<td>gym003</td>
-					<td>10</td>
-					<td>$250.00</td>
-					<td>2025-04-10 18:12</td>
-					<td>Mike Ironman</td>
-					<td class="status delivered">Delivered</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>Yoga Mat Pro</td>
-					<td>gym004</td>
-					<td>3</td>
-					<td>$60.00</td>
-					<td>2025-04-09 10:15</td>
-					<td>Amanda Flex</td>
-					<td class="status delivered">Delivered</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="view-details">
-			<button>View Details</button>
-		</div>
-	</div>
+		<c:if test="${not empty error}">
+			<div class="error-message">
+				<i class="fas fa-exclamation-circle"></i> ${error}
+			</div>
+		</c:if>
 
-	<div class="dashboard-container">
-		<h1 class="section-title">Analytics Summary</h1>
-		<div class="card-container">
-			<div class="card">
-				<div class="card-content">
-					<div class="icon">📦</div>
-					<h2>No Orders</h2>
-					<p>No sales made in the past 30 days</p>
+		<div class="dashboard-container">
+			<h1 class="section-title">Overview</h1>
+			<div class="metrics-grid">
+				<div class="metric-card">
+					<div class="metric-content">
+						<h3 class="metric-title">Total Revenue</h3>
+						<p class="metric-subtitle">Last 30 days</p>
+					</div>
+					<div class="metric-value revenue">$82,650</div>
+				</div>
+
+				<div class="metric-card">
+					<div class="metric-content">
+						<h3 class="metric-title">Total Orders</h3>
+						<p class="metric-subtitle">Last 30 days</p>
+					</div>
+					<div class="metric-value order">16.45</div>
+				</div>
+
+				<div class="metric-card">
+					<div class="metric-content">
+						<h3 class="metric-title">Total Customers</h3>
+						<p class="metric-subtitle">Last 30 days</p>
+					</div>
+					<div class="metric-value customer">1,462</div>
+				</div>
+
+				<div class="metric-card">
+					<div class="metric-content">
+						<h3 class="metric-title">Pending Deliveries</h3>
+						<p class="metric-subtitle">Last 30 days</p>
+					</div>
+					<div class="metric-value delivery">117</div>
 				</div>
 			</div>
-
-			<div class="card">
-				<div class="card-content">
-					<div class="icon">💳</div>
-					<h2>No Revenue</h2>
-					<p>Revenue hasn't changed in the last 30 days</p>
-				</div>
-			</div>
-
 		</div>
+
+		<div class="table-container">
+			<h2>Product List</h2>
+			<div style="margin-bottom: 10px; text-align: right;">
+				<a href="${pageContext.request.contextPath}/productList" class="btn btn-primary">View All Products</a>
+				
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Brand</th>
+						<th>Category</th>
+						<th>Price</th>
+						<th>Stock</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty products}">
+						<c:forEach var="product" items="${products}">
+							<tr>
+								<td>${product.productId}</td>
+								<td>${product.name}</td>
+								<td>${product.brand}</td>
+								<td>${product.category}</td>
+								<td>$${product.price}</td>
+								<td>${product.stockQuantity}</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty products}">
+						<tr>
+							<td colspan="6" style="text-align: center;">No products found</td>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
+		</div>
+		
+			<div class="table-container">
+			<h2>Users List</h2>
+			<div style="margin-bottom: 10px; text-align: right;">
+				<a href="${pageContext.request.contextPath}/users" class="btn btn-primary" style="margin-left: 8px;">View All Users</a>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Nickname</th>
+						<th>Email</th>
+						<th>Role</th>
+						<th>Date of Birth</th>
+						<th>Date Joined</th>
+						<th>Cart Size</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty users}">
+						<c:forEach var="user" items="${users}">
+							<tr>
+								<td>${user.userId}</td>
+								<td>${user.name}</td>
+								<td>${user.nickname}</td>
+								<td>${user.email}</td>
+								<td>${user.role}</td>
+								<td>${user.dateOfBirth}</td>
+								<td>${user.joinedAt}</td>
+								<td>${user.cartSize}</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty users}">
+						<tr>
+							<td colspan="8" style="text-align: center;">No users found</td>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
+		</div>
+		
 	</div>
 </body>
 </html>
