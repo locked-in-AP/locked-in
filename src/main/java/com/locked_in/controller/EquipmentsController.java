@@ -32,11 +32,18 @@ public class EquipmentsController extends HttpServlet {
 	 * Retrieves equipment from the database and forwards to the equipments JSP
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get equipment from the database
-		List<ProductModel> equipment = productService.getProductsByCategory("equipment");
+		// Get the sort parameter from the request, default to "relevancy" if not specified
+		String sortBy = request.getParameter("sort");
+		if (sortBy == null || sortBy.isEmpty()) {
+			sortBy = "relevancy";
+		}
 		
-		// Set the products in the request
+		// Get equipment from the database with sorting
+		List<ProductModel> equipment = productService.getProductsByCategory("equipment", sortBy);
+		
+		// Set the products and sort parameter in the request
 		request.setAttribute("products", equipment);
+		request.setAttribute("currentSort", sortBy);
 		
 		// Forward to the equipments JSP
 		request.getRequestDispatcher("/WEB-INF/pages/equipments.jsp").forward(request, response);

@@ -15,8 +15,8 @@ INSERT INTO product (name, description, brand, category, tags, price, stock_quan
 ('Centr x Hyrox Perform Tread', 'High-performance treadmill designed for serious athletes', 'Centr', 'equipment', 'treadmill,cardio,professional', 6400.00, 8, 300.0, 'https://www.topfitness.com/cdn/shop/files/centr-x-hyrox-perform-tread-8_f2282a75-1abe-484c-9ef9-60a27ae1555a.jpg?v=1739048346', '84x36x48'),
 
 -- Merchandise
-('Locked IN Performance Crew Socks 5-Pack', 'High-performance athletic socks with moisture-wicking technology', 'Locked IN', 'merchandise', 'socks,clothing,accessories', 35.00, 200, 0.5, '${pageContext.request.contextPath}/resources/images/system/sample.png', '10x6x1'),
+('Locked IN Performance Crew Socks 5-Pack', 'High-performance athletic socks with moisture-wicking technology', 'Locked IN', 'merchandise', 'socks,clothing,accessories', 35.00, 200, 0.5, 'https://cdn.shopify.com/s/files/1/0156/6146/files/CrewSocks5pkGSClassicBlue_GSRestBlue_GSMetalPurple_GSGentleBlue_GSSoftWhiteI3A1Y-UDC1131-0041_512c25ba-7064-41fb-900f-ea19c8592019_3840x.jpg?v=1742894737', '10x6x1'),
 
-('Locked IN Training Shorts', 'Premium athletic shorts with built-in compression liner', 'Locked IN', 'merchandise', 'shorts,clothing,training', 45.00, 150, 0.3, '${pageContext.request.contextPath}/resources/images/system/sample.png', '12x8x1'),
+('Locked IN Training Shorts', 'Premium athletic shorts with built-in compression liner', 'Locked IN', 'merchandise', 'shorts,clothing,training', 45.00, 150, 0.3, 'https://www.gymshark.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fwl6q2in9o7k3%2F7sq3VZZa2AgEuTO0xgpP9n%2F34ccbb5239240aa648593412262f843b%2Fflared.webp&w=3840&q=75', '12x8x1'),
 
-('Locked IN Performance Tank Top', 'Lightweight performance tank top with quick-dry technology', 'Locked IN', 'merchandise', 'tank top,clothing,training', 40.00, 180, 0.2, '${pageContext.request.contextPath}/resources/images/system/sample.png', '14x10x1'); 
+('Locked IN Performance Tank Top', 'Lightweight performance tank top with quick-dry technology', 'Locked IN', 'merchandise', 'tank top,clothing,training', 40.00, 180, 0.2, 'https://cdn.shopify.com/s/files/1/0156/6146/files/A_PowerOriginalsCutOffTankCharcoalCoreMarlA2C9M-GBBB_1027_3840x.jpg?v=1745401454', '14x10x1'); 

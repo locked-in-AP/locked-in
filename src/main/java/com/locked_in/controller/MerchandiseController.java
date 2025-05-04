@@ -32,11 +32,18 @@ public class MerchandiseController extends HttpServlet {
 	 * Retrieves merchandise from the database and forwards to the merchandise JSP
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get merchandise from the database
-		List<ProductModel> merchandise = productService.getProductsByCategory("merchandise");
+		// Get the sort parameter from the request, default to "relevancy" if not specified
+		String sortBy = request.getParameter("sort");
+		if (sortBy == null || sortBy.isEmpty()) {
+			sortBy = "relevancy";
+		}
 		
-		// Set the products in the request
+		// Get merchandise from the database with sorting
+		List<ProductModel> merchandise = productService.getProductsByCategory("merchandise", sortBy);
+		
+		// Set the products and sort parameter in the request
 		request.setAttribute("products", merchandise);
+		request.setAttribute("currentSort", sortBy);
 		
 		// Forward to the merchandise JSP
 		request.getRequestDispatcher("/WEB-INF/pages/merchandise.jsp").forward(request, response);

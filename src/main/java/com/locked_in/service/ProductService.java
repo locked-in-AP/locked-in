@@ -66,6 +66,57 @@ public class ProductService {
     }
     
     /**
+     * Retrieves products by category with sorting
+     * 
+     * @param category the category of products to retrieve
+     * @param sortBy the sorting criteria (price-low-high, price-high-low, relevancy, newest)
+     * @return List of sorted products
+     */
+    public List<ProductModel> getProductsByCategory(String category, String sortBy) {
+        if (isConnectionError) {
+            System.out.println("ProductService - Connection Error!");
+            return new ArrayList<>();
+        }
+        
+        List<ProductModel> products = new ArrayList<>();
+        String query = "SELECT * FROM product WHERE category = ?";
+        
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            stmt.setString(1, category);
+            ResultSet result = stmt.executeQuery();
+            
+            while (result.next()) {
+                ProductModel product = mapResultSetToProduct(result);
+                products.add(product);
+            }
+            
+            // Sort the products based on the sortBy parameter
+            switch (sortBy) {
+                case "price-low-high":
+                    products.sort((p1, p2) -> p1.getPrice().compareTo(p2.getPrice()));
+                    break;
+                case "price-high-low":
+                    products.sort((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()));
+                    break;
+                case "newest":
+                    products.sort((p1, p2) -> p2.getCreatedAt().compareTo(p1.getCreatedAt()));
+                    break;
+                case "relevancy":
+                default:
+                    // Default sorting by relevancy (could be based on popularity, ratings, etc.)
+                    // For now, we'll keep the original order
+                    break;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("ProductService - SQL Error retrieving products: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return products;
+    }
+    
+    /**
      * Retrieves a single product by its ID
      * 
      * @param productId the ID of the product to retrieve
