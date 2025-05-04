@@ -21,6 +21,13 @@ public class ProductModel {
     private LocalDateTime createdAt;
 
     /**
+     * Default constructor
+     */
+    public ProductModel() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    /**
      * Full constructor for ProductModel
      */
     public ProductModel(Integer productId, String name, String description, String brand, 

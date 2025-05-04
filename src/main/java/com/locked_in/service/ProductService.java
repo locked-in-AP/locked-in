@@ -242,6 +242,62 @@ public class ProductService {
     }
     
     /**
+
+     * Checks if a product has sufficient stock for the requested quantity
+     * 
+     * @param productId the ID of the product to check
+     * @param requestedQuantity the quantity requested
+     * @return true if sufficient stock available, false otherwise
+     */
+    public boolean hasAvailableStock(Integer productId, int requestedQuantity) {
+        if (isConnectionError) {
+            System.out.println("ProductService - Connection Error!");
+            return false;
+        }
+        
+        String query = "SELECT stock_quantity FROM product WHERE product_id = ?";
+        
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            stmt.setInt(1, productId);
+            ResultSet result = stmt.executeQuery();
+            
+            if (result.next()) {
+                int stockQuantity = result.getInt("stock_quantity");
+                return stockQuantity >= requestedQuantity;
+            }
+        } catch (SQLException e) {
+            System.out.println("ProductService - SQL Error checking stock: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Updates the stock quantity of a product
+     * 
+     * @param productId the ID of the product to update
+     * @param quantityChange the change in quantity (negative for decrease, positive for increase)
+     * @return true if successful, false otherwise
+     */
+    public boolean updateStockQuantity(Integer productId, int quantityChange) {
+        if (isConnectionError) {
+            System.out.println("ProductService - Connection Error!");
+            return false;
+        }
+        
+        String query = "UPDATE product SET stock_quantity = stock_quantity + ? WHERE product_id = ?";
+        
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            stmt.setInt(1, quantityChange);
+            stmt.setInt(2, productId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("ProductService - SQL Error updating stock: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+
      * Retrieves a limited number of products from the database
      * 
      * @param limit the maximum number of products to retrieve
@@ -315,6 +371,7 @@ public class ProductService {
             e.printStackTrace();
         }
         return products;
+
     }
     
     /**

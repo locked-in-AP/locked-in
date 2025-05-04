@@ -1,165 +1,170 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Your Cart</title>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/cart.css" />
+<meta charset="UTF-8">
+<title>Shopping Cart - Locked In</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+	.cart-item {
+		border-bottom: 1px solid #dee2e6;
+		padding: 20px 0;
+	}
+	.cart-item:last-child {
+		border-bottom: none;
+	}
+	.product-image {
+		max-width: 100px;
+		height: auto;
+	}
+	.quantity-control {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.quantity-btn {
+		padding: 5px 10px;
+		border: 1px solid #dee2e6;
+		background: none;
+		cursor: pointer;
+	}
+	.cart-summary {
+		background-color: #f8f9fa;
+		padding: 20px;
+		border-radius: 5px;
+	}
+	#messageToast {
+		position: fixed;
+		top: 20px;
+		right: 20px;
+		z-index: 1000;
+		display: none;
+	}
+</style>
 </head>
 <body>
 
 	<jsp:include page="header.jsp" />
-	<div class="container">
-		<h1 class="page-title">Your Cart</h1>
-
-
-
-		<div class="cart-grid">
-			<div class="cart-items">
-				<div class="cart-item card">
-					<div class="item-details">
-						<img
-							src="${pageContext.request.contextPath}/resources/images/system/sample.png"
-							class="product-image" alt="Vibes Socks 211">
-						<div class="product-info">
-							<div class="product-header">
-								<h2>Vibes Bass Buds 211</h2>
-							</div>
-							<p class="variant">White</p>
-							<div class="delivery-options">
-								<p class="delivery-option">Free Delivery</p>
-								<p class="delivery-time">Ready by Mon. Apr 14</p>
-							</div>
-							<div class="product-actions">
-								<span class="item-price">₹4,497</span>
-							</div>
-						</div>
-					</div>
-					<div class="item-controls">
-						<div class="quantity-selector">
-							<button class="qty-btn" onclick="updateQuantity(-1, this)">−</button>
-							<input type="number" class="qty-input" value="1" min="1"
-								onchange="updateTotal()">
-							<button class="qty-btn" onclick="updateQuantity(1, this)">+</button>
-						</div>
-						<div class="item-actions">
-							<button class="remove-btn" onclick="removeItem(this)">Remove</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="cart-item card">
-					<div class="item-details">
-						<img src="https://cdn.shopify.com/s/files/1/0156/6146/files/AdaptCamoCrossBackSportsBraENGLA0240GSAsphaltGreyGSBlackB3C2E-GC8N-1132-0051_9da704e5-3ac0-4af6-9fea-66564f5b61e7_1080x.jpg?v=1740429553" class="product-image"
-							alt="Utitma Atom 520 Pro">
-						<div class="product-info">
-							<div class="product-header">
-								<h2>Adapt Camo Cross Back Sports Bra</h2>
-							</div>
-							<p class="variant">Grey</p>
-							<div class="delivery-options">
-								<p class="delivery-option">Free Delivery</p>
-								<p class="delivery-time">Ready by Mon. Apr 14</p>
-							</div>
-							<div class="product-actions">
-								<span class="item-price">₹2,603</span>
-							</div>
-						</div>
-					</div>
-					<div class="item-controls">
-						<div class="quantity-selector">
-							<button class="qty-btn" onclick="updateQuantity(-1, this)">−</button>
-							<input type="number" class="qty-input" value="1" min="1"
-								onchange="updateTotal()">
-							<button class="qty-btn" onclick="updateQuantity(1, this)">+</button>
-						</div>
-						<div class="item-actions">
-							<button class="remove-btn" onclick="removeItem(this)">Remove</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="order-summary card">
-				<h2 class="summary-title">Order Summary</h2>
-
-				<div class="summary-details">
-					<div class="summary-row">
-						<span>Item Total (<span id="totalItems">2</span>)
-						</span> <span id="subtotal">7,100</span>
-					</div>
-				</div>
-
-				<div class="total-row">
-					<span>Total</span> <span id="totalAmount">₹7,100</span>
-				</div>
-
-				<button class="checkout-btn">
-					<a href="payment" style="display: block; width: 100%; height: 100%; color: white; text-decoration: none;">Proceed to Checkout</a>
-				</button>
-			</div>
+	
+	<!-- Toast for messages -->
+	<div id="messageToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="d-flex">
+			<div class="toast-body"></div>
+			<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 		</div>
 	</div>
+	
+	<div class="container my-5">
+		<h2 class="mb-4">Shopping Cart</h2>
+		
+		<c:choose>
+			<c:when test="${empty cartItems}">
+				<div class="alert alert-info">
+					Your cart is empty. <a href="${pageContext.request.contextPath}/products">Continue shopping</a>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="row">
+					<div class="col-md-8">
+						<c:forEach items="${cartItems}" var="item">
+							<div class="cart-item" data-product-id="${item.productId}">
+								<div class="row align-items-center">
+									<div class="col-md-2">
+										<img src="${item.product.image}" alt="${item.product.name}" class="product-image">
+									</div>
+									<div class="col-md-4">
+										<h5>${item.product.name}</h5>
+										<p class="text-muted">${item.product.brand}</p>
+										<p class="text-muted">Stock: ${item.product.stockQuantity}</p>
+									</div>
+									<div class="col-md-2">
+										<fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="$"/>
+									</div>
+									<div class="col-md-2">
+										<div class="quantity-control">
+											<form action="${pageContext.request.contextPath}/cart" method="post" style="display:inline;">
+												<input type="hidden" name="action" value="update">
+												<input type="hidden" name="productId" value="${item.productId}">
+												<button type="submit" name="quantity" value="${item.quantity - 1}" class="quantity-btn" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+											</form>
+											<span>${item.quantity}</span>
+											<form action="${pageContext.request.contextPath}/cart" method="post" style="display:inline;">
+												<input type="hidden" name="action" value="update">
+												<input type="hidden" name="productId" value="${item.productId}">
+												<button type="submit" name="quantity" value="${item.quantity + 1}" class="quantity-btn">+</button>
+											</form>
+										</div>
+									</div>
+									<div class="col-md-2">
+										<form action="${pageContext.request.contextPath}/cart" method="post" style="display:inline;">
+											<input type="hidden" name="action" value="remove">
+											<input type="hidden" name="productId" value="${item.productId}">
+											<button type="submit" class="btn btn-danger btn-sm">
+												<i class="fas fa-trash"></i>
+											</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="order-summary card">
+							<h3 class="summary-title">Order Summary</h3>
+							<div class="summary-details">
+								<div class="summary-row">
+									<span>Subtotal</span>
+									<span><fmt:formatNumber value="${total}" type="currency" currencySymbol="$"/></span>
+								</div>
+								<div class="summary-row">
+									<span>Shipping</span>
+									<span>Free</span>
+								</div>
+								<div class="summary-row">
+									<span>Tax</span>
+									<span><fmt:formatNumber value="${total * 0.1}" type="currency" currencySymbol="$"/></span>
+								</div>
+							</div>
+							<div class="total-row">
+								<span>Total</span>
+								<span><fmt:formatNumber value="${total * 1.1}" type="currency" currencySymbol="$"/></span>
+							</div>
+							<form action="${pageContext.request.contextPath}/checkout" method="post">
+								<button type="submit" class="checkout-btn">Proceed to Checkout</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</c:otherwise>
+		</c:choose>
+	</div>
 
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		// Show toast message if there's a message in the URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const message = urlParams.get('message');
+		if (message) {
+			showMessage(message, false);
+		}
 
+		function showMessage(message, isError) {
+			const toast = document.getElementById('messageToast');
+			const toastBody = toast.querySelector('.toast-body');
+			toastBody.textContent = message;
+			toast.classList.add(isError ? 'bg-danger' : 'bg-success');
+			toast.classList.add('text-white');
+			const bsToast = new bootstrap.Toast(toast);
+			bsToast.show();
+		}
+	</script>
 
 	<jsp:include page="footer.jsp" />
-
-
-
-
-	<script>
-
-        function updateQuantity(change, btn) {
-            const input = btn.parentElement.querySelector('.qty-input');
-            let newVal = parseInt(input.value) + change;
-            if(newVal < 1) newVal = 1;
-            input.value = newVal;
-            updateTotal();
-        }
-
-        
-        function updateTotal() {
-            const items = document.querySelectorAll('.cart-item');
-            let totalItems = 0;
-            let subtotal = 0;
-
-            items.forEach(item => {
-                const qty = parseInt(item.querySelector('.qty-input').value);
-                const price = parseFloat(item.querySelector('.item-price').textContent.replace('₹','').replace(/,/g, ''));
-                subtotal += qty * price;
-                totalItems += qty;
-            });
-
-            // Always show these elements even when empty
-            document.getElementById('totalItems').textContent = totalItems;
-            document.getElementById('subtotal').textContent = `₹${subtotal.toLocaleString()}`;
-            document.getElementById('totalAmount').textContent = `₹${subtotal.toLocaleString()}`;
-        }
-
-        function removeItem(btn) {
-            const item = btn.closest('.cart-item');
-            item.remove();
-            updateTotal();
-            
-            // Add empty state if needed
-            const cartItems = document.querySelector('.cart-items');
-            if(cartItems.children.length === 0) {
-                const emptyCart = document.createElement('div');
-                emptyCart.className = 'empty-cart card';
-                emptyCart.innerHTML = `
-                    <h3>Your cart is empty</h3>
-                    <p>Continue shopping to add items to your cart</p>
-                `;
-                cartItems.prepend(emptyCart);
-            }
-        }
-  
-    </script>
-
 </body>
-
-
-
 </html>
