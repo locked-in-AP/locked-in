@@ -9,6 +9,7 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/header.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <!-- Top Bar -->
 <div class="top-bar">
@@ -47,59 +48,37 @@
 			<span class="icon search-icon"></span> <input type="text"
 				class="search-input" placeholder="What are you looking for to...">
 		</div>
-		<span class="icon heart-icon"></span> <a
-			href="${pageContext.request.contextPath}/userprofile"><span
-			class="icon user-icon"></span></a> <span class="icon bag-icon"
-			id="cartIcon"></span>
+		<a href="${pageContext.request.contextPath}/wishlist"><span class="icon heart-icon"></span></a>
+		<a href="${pageContext.request.contextPath}/userprofile"><span
+			class="icon user-icon"></span></a>
+		<a href="${pageContext.request.contextPath}/cart" class="cart-link">
+			<span class="icon bag-icon"></span>
+			<c:if test="${sessionScope.email != null}">
+				<span class="cart-count">${sessionScope.cartSize}</span>
+			</c:if>
+		</a>
 	</div>
 </header>
-<!-- New Cart Overlay and Panel structure -->
-<div class="cart-overlay" id="cartOverlay"></div>
-<div class="cart-panel" id="cartPanel">
-	<div class="cart-header">
-		<h2 class="cart-title">YOUR CART</h2>
-		<div class="cart-header-actions">
-			<button class="cart-header-button bag-icon-button">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-					xmlns="http://www.w3.org/2000/svg">
-                    <path
-						d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
-						fill="white" stroke="white" stroke-width="2"
-						stroke-linecap="round" stroke-linejoin="round" />
-                    <line x1="3" y1="6" x2="21" y2="6" stroke="white"
-						stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M16 10a4 4 0 0 1-8 0" stroke="white"
-						stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-			</button>
-			<button class="close-cart" id="closeCart">
-				<span class="close-icon"></span>
-			</button>
-		</div>
-	</div>
-	<div class="empty-cart">
-		<div class="empty-cart-icon">
-			<svg width="50" height="50" viewBox="0 0 24 24" fill="none"
-				xmlns="http://www.w3.org/2000/svg">
-                <path
-					d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
-					stroke="#666" stroke-width="2" stroke-linecap="round"
-					stroke-linejoin="round" />
-                <line x1="3" y1="6" x2="21" y2="6" stroke="#666"
-					stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M16 10a4 4 0 0 1-8 0" stroke="#666"
-					stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-		</div>
-		<h3 class="empty-cart-text">YOUR CART IS EMPTY</h3>
-		<p class="empty-cart-subtext">There are no products in your cart</p>
 
-		<a href="${pageContext.request.contextPath}/cart"
-			class="cart-action-btn view-cart-btn">View Full Cart</a>
+<style>
+.cart-link {
+    position: relative;
+    text-decoration: none;
+}
 
-
-	</div>
-</div>
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    min-width: 16px;
+    text-align: center;
+}
+</style>
 
 <script>
  //// Basic JavaScript for interactive elements
@@ -167,6 +146,15 @@ document.addEventListener('DOMContentLoaded', function() {
             cartOverlay.classList.remove('active');
             document.body.style.overflow = ''; // Restore scrolling
         });
+    }
+
+    // Initialize cart count from session storage
+    const cartCount = document.querySelector('.cart-count');
+    if (cartCount) {
+        const storedCartSize = sessionStorage.getItem('cartSize');
+        if (storedCartSize) {
+            cartCount.textContent = storedCartSize;
+        }
     }
 });
     </script>
