@@ -242,6 +242,7 @@ public class ProductService {
     }
     
     /**
+
      * Checks if a product has sufficient stock for the requested quantity
      * 
      * @param productId the ID of the product to check
@@ -296,6 +297,81 @@ public class ProductService {
             e.printStackTrace();
             return false;
         }
+
+     * Retrieves a limited number of products from the database
+     * 
+     * @param limit the maximum number of products to retrieve
+     * @param sortBy the sorting criteria (price-low-high, price-high-low, relevancy, newest)
+     * @return List of ProductModel objects, or empty list if none found
+     */
+    public List<ProductModel> getLimitedProducts(int limit, String sortBy) {
+        if (isConnectionError) {
+            System.out.println("ProductService - Connection Error!");
+            return new ArrayList<>();
+        }
+        
+        List<ProductModel> products = new ArrayList<>();
+        String query = "SELECT * FROM product LIMIT ?";
+        
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            stmt.setInt(1, limit);
+            ResultSet result = stmt.executeQuery();
+            
+            while (result.next()) {
+                ProductModel product = mapResultSetToProduct(result);
+                products.add(product);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("ProductService - SQL Error retrieving products: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return products;
+    }
+    
+    /**
+     * Retrieves all products from the database with optional sorting
+     * 
+     * @param sortBy the sorting criteria (price-low-high, price-high-low, relevancy, newest)
+     * @return List of ProductModel objects, or empty list if none found
+     */
+    public List<ProductModel> getAllProducts(String sortBy) {
+        if (isConnectionError) {
+            System.out.println("ProductService - Connection Error!");
+            return new ArrayList<>();
+        }
+        List<ProductModel> products = new ArrayList<>();
+        String query = "SELECT * FROM product";
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            ResultSet result = stmt.executeQuery();
+            while (result.next()) {
+                ProductModel product = mapResultSetToProduct(result);
+                products.add(product);
+            }
+            // Sort the products based on the sortBy parameter
+            switch (sortBy) {
+                case "price-low-high":
+                    products.sort((p1, p2) -> p1.getPrice().compareTo(p2.getPrice()));
+                    break;
+                case "price-high-low":
+                    products.sort((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()));
+                    break;
+                case "newest":
+                    products.sort((p1, p2) -> p2.getCreatedAt().compareTo(p1.getCreatedAt()));
+                    break;
+                case "relevancy":
+                default:
+                    // Default sorting by relevancy (could be based on popularity, ratings, etc.)
+                    // For now, we'll keep the original order
+                    break;
+            }
+        } catch (SQLException e) {
+            System.out.println("ProductService - SQL Error retrieving all products: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return products;
+
     }
     
     /**

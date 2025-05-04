@@ -94,7 +94,7 @@ public class LoginController extends HttpServlet {
 			CookieUtil.addCookie(response, "role", role, 5 * 30);
 			if ("admin".equals(role)) {
 				request.setAttribute("success", true);
-				request.getRequestDispatcher("/WEB-INF/pages/admindashboard.jsp").forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/admindashboard");
 			} else {
 				request.setAttribute("success", true);
 				request.getRequestDispatcher("/WEB-INF/pages/home.jsp").forward(request, response);

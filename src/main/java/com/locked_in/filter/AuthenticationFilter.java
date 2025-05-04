@@ -35,10 +35,20 @@ public class AuthenticationFilter implements Filter {
 	private static final String PAYMENT = "/payment";
 	private static final String ITEM = "/item";
 	private static final String CART = "/cart";
+
 	private static final String CHECKOUT = "/checkout";
 	private static final String ORDERS = "/orders";
 
+
+	private static final String ADD = "/addProduct";
+
 	private static final String UPDATE = "/updateProfile";
+	private static final String DELETE = "/deleteProduct";
+	private static final String USER = "/users";
+	private static final String DELETEUSER = "/deleteUser";
+	private static final String UPDATEPRODUCT = "/updateProduct";
+	private static final String PRODUCTLIST = "/productList";
+	
 
 
 	@Override
@@ -87,7 +97,8 @@ public class AuthenticationFilter implements Filter {
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + ADMIN_DASHBOARD);
 			} else if (uri.endsWith(ADMIN_DASHBOARD) || uri.endsWith(ADMIN_ORDER) || uri.endsWith(HOME)
-					|| uri.endsWith(ROOT) || uri.endsWith(LOGOUT)) {
+					|| uri.endsWith(ROOT) || uri.endsWith(LOGOUT) || uri.endsWith(ADD) || uri.endsWith(DELETE) || uri.endsWith(USER) || uri.endsWith(DELETEUSER)
+					|| uri.endsWith(UPDATEPRODUCT) || uri.endsWith(PRODUCTLIST)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(req.getContextPath() + ADMIN_DASHBOARD);

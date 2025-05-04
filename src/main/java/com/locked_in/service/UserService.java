@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.locked_in.config.DbConfig;
 import com.locked_in.model.UserModel;
@@ -111,6 +113,68 @@ public class UserService {
             return rowsAffected > 0;
         } catch (SQLException e) {
             System.out.println("UserService - SQL Error updating user: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    /**
+     * Retrieves all users from the database
+     * @return List of UserModel objects
+     */
+    public List<UserModel> getAllUsers() {
+        List<UserModel> users = new ArrayList<>();
+        if (isConnectionError) {
+            System.out.println("UserService - Connection Error!");
+            return users;
+        }
+        String query = "SELECT user_id, name, nickname, email, password, role, date_of_birth, joined_at, cart_size, profile_picture FROM users";
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            ResultSet result = stmt.executeQuery();
+            while (result.next()) {
+                Integer userId = result.getInt("user_id");
+                String name = result.getString("name");
+                String nickname = result.getString("nickname");
+                String email = result.getString("email");
+                String password = result.getString("password");
+                String role = result.getString("role");
+                LocalDate dateOfBirth = null;
+                if (result.getDate("date_of_birth") != null) {
+                    dateOfBirth = result.getDate("date_of_birth").toLocalDate();
+                }
+                LocalDateTime joinedAt = null;
+                if (result.getTimestamp("joined_at") != null) {
+                    joinedAt = result.getTimestamp("joined_at").toLocalDateTime();
+                }
+                Integer cartSize = result.getInt("cart_size");
+                String profilePicture = result.getString("profile_picture");
+                UserModel user = new UserModel(userId, name, nickname, email, password, role, dateOfBirth, joinedAt, cartSize);
+                user.setProfilePicture(profilePicture);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println("UserService - SQL Error retrieving all users: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return users;
+    }
+    
+    /**
+     * Deletes a user from the database by user ID
+     * @param userId the ID of the user to delete
+     * @return true if successful, false otherwise
+     */
+    public boolean deleteUser(int userId) {
+        if (isConnectionError) {
+            System.out.println("UserService - Connection Error!");
+            return false;
+        }
+        String query = "DELETE FROM users WHERE user_id = ?";
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("UserService - SQL Error deleting user: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
