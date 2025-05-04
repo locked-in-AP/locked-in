@@ -33,11 +33,18 @@ public class SupplementsController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		// Get supplements from the database
-		List<ProductModel> supplements = productService.getProductsByCategory("supplement");
+		// Get the sort parameter from the request, default to "relevancy" if not specified
+		String sortBy = request.getParameter("sort");
+		if (sortBy == null || sortBy.isEmpty()) {
+			sortBy = "relevancy";
+		}
 		
-		// Set the products in the request
+		// Get supplements from the database with sorting
+		List<ProductModel> supplements = productService.getProductsByCategory("supplement", sortBy);
+		
+		// Set the products and sort parameter in the request
 		request.setAttribute("products", supplements);
+		request.setAttribute("currentSort", sortBy);
 		
 		// Forward to the supplements JSP
 		request.getRequestDispatcher("/WEB-INF/pages/supplements.jsp").forward(request, response);

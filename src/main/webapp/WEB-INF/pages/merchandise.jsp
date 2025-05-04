@@ -21,6 +21,11 @@
 
 	<!-- Main Content -->
 	<div class="container">
+		<!-- Add spinner container -->
+		<div class="spinner-container">
+			<div class="spinner"></div>
+		</div>
+
 		<div class="page-title">
 			<h2 class="title-text">MERCHANDISE</h2>
 			<span class="product-count">${products.size()} Products</span>
@@ -44,20 +49,22 @@
 					<div class="filter-options">
 						<div class="filter-option">
 							<input type="radio" id="price-low-high" name="sort"
-								value="price-low-high"> <label for="price-low-high">Price:
-								Low to High</label>
+								value="price-low-high" ${currentSort == 'price-low-high' ? 'checked' : ''}> 
+							<label for="price-low-high">Price: Low to High</label>
 						</div>
 						<div class="filter-option">
 							<input type="radio" id="price-high-low" name="sort"
-								value="price-high-low"> <label for="price-high-low">Price:
-								High to Low</label>
+								value="price-high-low" ${currentSort == 'price-high-low' ? 'checked' : ''}> 
+							<label for="price-high-low">Price: High to Low</label>
 						</div>
 						<div class="filter-option">
 							<input type="radio" id="relevancy" name="sort" value="relevancy"
-								checked> <label for="relevancy">Relevancy</label>
+								${currentSort == 'relevancy' ? 'checked' : ''}> 
+							<label for="relevancy">Relevancy</label>
 						</div>
 						<div class="filter-option">
-							<input type="radio" id="newest" name="sort" value="newest">
+							<input type="radio" id="newest" name="sort" value="newest"
+								${currentSort == 'newest' ? 'checked' : ''}> 
 							<label for="newest">Newest</label>
 						</div>
 					</div>
@@ -132,5 +139,59 @@
 	</div>
 
 	<jsp:include page="footer.jsp" />
+	
+	<script>
+		// Add event listeners to all sort radio buttons
+		document.querySelectorAll('input[name="sort"]').forEach(radio => {
+			radio.addEventListener('change', function() {
+				// Get the current URL and create a URLSearchParams object
+				const url = new URL(window.location.href);
+				const params = new URLSearchParams(url.search);
+				
+				// Update the sort parameter
+				params.set('sort', this.value);
+				
+				// Update the URL search parameters
+				url.search = params.toString();
+				
+				// Update the URL with the new sort parameter without reloading
+				window.history.pushState({}, '', url.toString());
+				
+				// Show loading state
+				const productGrid = document.querySelector('.product-grid');
+				const spinnerContainer = document.querySelector('.spinner-container');
+				productGrid.classList.add('loading');
+				spinnerContainer.style.display = 'block';
+				
+				// Fetch the sorted products
+				fetch(url.toString())
+					.then(response => response.text())
+					.then(html => {
+						// Create a temporary div to parse the HTML
+						const parser = new DOMParser();
+						const doc = parser.parseFromString(html, 'text/html');
+						
+						// Get the new product grid content
+						const newProductGrid = doc.querySelector('.product-grid');
+						
+						// Update the product count
+						const newProductCount = doc.querySelector('.product-count');
+						document.querySelector('.product-count').textContent = newProductCount.textContent;
+						
+						// Update the product grid with new content
+						productGrid.innerHTML = newProductGrid.innerHTML;
+						
+						// Remove loading state
+						productGrid.classList.remove('loading');
+						spinnerContainer.style.display = 'none';
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						productGrid.classList.remove('loading');
+						spinnerContainer.style.display = 'none';
+					});
+			});
+		});
+	</script>
 </body>
 </html>
