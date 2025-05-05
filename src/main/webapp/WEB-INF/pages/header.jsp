@@ -26,7 +26,7 @@
             <a href="${pageContext.request.contextPath}/logout" class="top-bar-item">Logout</a>
         </c:when>
         <c:otherwise>
-            <a href="${pageContext.request.contextPath}/login" class="top-bar-item">Login In</a>
+            <a href="${pageContext.request.contextPath}/login" class="top-bar-item">Log In</a>
         </c:otherwise>
     </c:choose>
     <a href="${pageContext.request.contextPath}/aboutus" class="top-bar-item">About Us</a>

@@ -68,7 +68,7 @@
 					it'll show up here.
 				</div>
 				<div class="button-container">
-					<button class="shop-button" onclick="window.location.href='${pageContext.request.contextPath}/products'">VIEW PRODUCTS</button>
+					<button class="shop-button" onclick="window.location.href='${pageContext.request.contextPath}/orders'">VIEW ORDERS</button>
 				</div>
 			</div>
 
