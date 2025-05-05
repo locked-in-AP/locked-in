@@ -103,6 +103,78 @@
 	.out-of-stock {
 		color: #dc3545;
 	}
+	.reviews-section {
+		margin-top: 2rem;
+		padding: 1rem;
+		background: #f9f9f9;
+		border-radius: 8px;
+	}
+	.average-rating {
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+	.stars {
+		color: #ffd700;
+		font-size: 1.2rem;
+	}
+	.review-button-section {
+		text-align: center;
+		margin: 1rem 0;
+	}
+	.review-item {
+		border-bottom: 1px solid #ddd;
+		padding: 1rem 0;
+	}
+	.review-header {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 0.5rem;
+	}
+	.reviewer-name {
+		font-weight: bold;
+	}
+	.review-date {
+		color: #666;
+	}
+	.rating {
+		margin: 0.5rem 0;
+	}
+	.star {
+		color: #ddd;
+	}
+	.star.filled {
+		color: #ffd700;
+	}
+	.review-text {
+		margin-top: 0.5rem;
+		line-height: 1.4;
+	}
+	#reviewForm {
+		margin: 1rem 0;
+		padding: 1rem;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+	.form-group {
+		margin-bottom: 1rem;
+	}
+	textarea {
+		width: 100%;
+		padding: 0.5rem;
+	}
+	.rating input[type="radio"] {
+		display: none;
+	}
+	.rating label {
+		cursor: pointer;
+		font-size: 1.5rem;
+		color: #ddd;
+	}
+	.rating label:hover,
+	.rating label:hover ~ label,
+	.rating input[type="radio"]:checked ~ label {
+		color: #ffd700;
+	}
 </style>
 </head>
 <body>
@@ -185,43 +257,60 @@
 			</div>
 		</div>
 
+		<!-- Review Section -->
 		<div class="reviews-section">
-			<h2>Customer Reviews</h2>
-
-			<div class="review-form">
-				<h3>Write a Review</h3>
-				<div class="rating-stars" id="ratingStars">
-					<span class="star" data-rating="1">★</span>
-					<span class="star" data-rating="2">★</span>
-					<span class="star" data-rating="3">★</span>
-					<span class="star" data-rating="4">★</span>
-					<span class="star" data-rating="5">★</span>
-				</div>
-				<textarea class="review-textarea" placeholder="Write your review..." id="reviewText"></textarea>
-				<button class="submit-review">Submit Review</button>
+			<h3>Customer Reviews</h3>
+			<div class="average-rating">
+				<c:if test="${product.averageRating != null}">
+					<p>Average Rating: ${String.format("%.1f", product.averageRating)} / 5.0</p>
+					<div class="stars">
+						<c:forEach begin="1" end="5" var="i">
+							<c:choose>
+								<c:when test="${i <= product.averageRating}">
+									<span class="star filled">★</span>
+								</c:when>
+								<c:otherwise>
+									<span class="star">☆</span>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</div>
+				</c:if>
+				<c:if test="${product.averageRating == null}">
+					<p>No ratings yet</p>
+				</c:if>
 			</div>
 
-			<div class="review-list" id="reviewList">
-				<div class="review-card">
-					<div class="review-header">
-						<div class="review-rating">
-							<span style="color: #ffd700">★★★★★</span>
+			<!-- Reviews List -->
+			<div class="reviews-list">
+				<c:forEach items="${product.reviews}" var="review">
+					<div class="review-item">
+						<div class="review-header">
+							<span class="reviewer-name">${review.userName}</span>
+							<span class="review-date">
+								<fmt:formatDate value="${review.reviewDate}" pattern="MMM dd, yyyy"/>
+							</span>
 						</div>
-						<span class="review-author">John D.</span>
-						<span class="review-date">· August 15, 2023</span>
-					</div>
-					<p>Best product I've ever owned! Perfect quality and great value.</p>
-				</div>
-				<div class="review-card">
-					<div class="review-header">
-						<div class="review-rating">
-							<span style="color: #ffd700">★★★★☆</span>
+						<div class="rating">
+							<c:forEach begin="1" end="5" var="i">
+								<c:choose>
+									<c:when test="${i <= review.rating}">
+										<span class="star filled">★</span>
+									</c:when>
+									<c:otherwise>
+										<span class="star">☆</span>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 						</div>
-						<span class="review-author">Jane S.</span>
-						<span class="review-date">· September 01, 2023</span>
+						<div class="review-text">
+							${review.review}
+						</div>
 					</div>
-					<p>Very satisfied with the purchase. Would recommend to others.</p>
-				</div>
+				</c:forEach>
+				<c:if test="${empty product.reviews}">
+					<p>No reviews yet</p>
+				</c:if>
 			</div>
 		</div>
 	</div>

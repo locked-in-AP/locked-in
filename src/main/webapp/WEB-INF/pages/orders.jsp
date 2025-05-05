@@ -241,6 +241,80 @@
                 min-width: 600px;
             }
         }
+
+        .review-section {
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .review-form {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .review-product {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-product img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .review-product h5 {
+            margin: 0;
+            color: #1a1f2c;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rating-stars .star {
+            cursor: pointer;
+            color: #ddd;
+            font-size: 1.5rem;
+            transition: color 0.2s;
+        }
+
+        .rating-stars .star:hover,
+        .rating-stars .star.active {
+            color: #ffd700;
+        }
+
+        .review-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            resize: vertical;
+        }
+
+        .submit-review {
+            background: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .submit-review:hover {
+            background: #218838;
+        }
     </style>
 </head>
 <body>
@@ -323,6 +397,32 @@
                                         <fmt:formatNumber value="${order.totalPrice}" type="currency" currencySymbol="$"/>
                                     </span>
                                 </div>
+                                <c:if test="${order.paymentStatus == 'completed'}">
+                                    <div class="review-section">
+                                        <c:forEach items="${order.items}" var="item">
+                                            <c:if test="${empty item.review}">
+                                                <form action="${pageContext.request.contextPath}/addReview" method="post" class="review-form">
+                                                    <input type="hidden" name="orderId" value="${order.orderId}">
+                                                    <input type="hidden" name="productId" value="${item.product.productId}">
+                                                    <div class="review-product">
+                                                        <img src="${item.product.image}" alt="${item.product.name}" class="product-image">
+                                                        <h5>${item.product.name}</h5>
+                                                    </div>
+                                                    <div class="rating-stars">
+                                                        <span class="star" data-rating="1">★</span>
+                                                        <span class="star" data-rating="2">★</span>
+                                                        <span class="star" data-rating="3">★</span>
+                                                        <span class="star" data-rating="4">★</span>
+                                                        <span class="star" data-rating="5">★</span>
+                                                        <input type="hidden" name="rating" value="0" required>
+                                                    </div>
+                                                    <textarea name="review" placeholder="Write your review..." required></textarea>
+                                                    <button type="submit" class="submit-review">Submit Review</button>
+                                                </form>
+                                            </c:if>
+                                        </c:forEach>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </c:forEach>
@@ -356,6 +456,56 @@
             const notification = document.getElementById('notification');
             notification.style.display = 'none';
         }
+
+        // Function to check for order status updates
+        function checkOrderStatusUpdates() {
+            const orderCards = document.querySelectorAll('.order-card');
+            orderCards.forEach(card => {
+                const orderId = card.id.split('-')[1];
+                const currentStatus = card.querySelector('.order-status').textContent.trim();
+                
+                fetch(`${pageContext.request.contextPath}/getOrderStatus?orderId=${orderId}`)
+                    .then(response => response.text())
+                    .then(status => {
+                        if (status && status !== currentStatus) {
+                            const statusDiv = card.querySelector('.order-status');
+                            statusDiv.classList.remove('pending', 'completed', 'cancelled');
+                            statusDiv.classList.add(status.toLowerCase());
+                            statusDiv.textContent = status;
+                            
+                            showMessage(`Order #${orderId} status updated to ${status}`, false);
+                        }
+                    })
+                    .catch(error => console.error('Error checking order status:', error));
+            });
+        }
+
+        // Check for updates every 30 seconds
+        setInterval(checkOrderStatusUpdates, 30000);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const ratingStars = document.querySelectorAll('.rating-stars');
+            
+            ratingStars.forEach(stars => {
+                const starsList = stars.querySelectorAll('.star');
+                const ratingInput = stars.querySelector('input[name="rating"]');
+                
+                starsList.forEach(star => {
+                    star.addEventListener('click', () => {
+                        const rating = star.dataset.rating;
+                        ratingInput.value = rating;
+                        
+                        starsList.forEach(s => {
+                            if (s.dataset.rating <= rating) {
+                                s.classList.add('active');
+                            } else {
+                                s.classList.remove('active');
+                            }
+                        });
+                    });
+                });
+            });
+        });
     </script>
 
     <jsp:include page="footer.jsp" />

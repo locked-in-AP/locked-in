@@ -24,7 +24,7 @@ public class AuthenticationFilter implements Filter {
 	private static final String ROOT = "/";
 	private static final String ADMIN_DASHBOARD = "/admindashboard";
 	private static final String USER_DASHBOARD = "/userprofile";
-	private static final String ADMIN_ORDER = "/adminOrder";
+	private static final String ADMIN_ORDER = "/admin/orders";
 	private static final String ABOUT = "/aboutus";
 	private static final String SUPPLEMENTS = "/supplements";
 	private static final String MERCHANDISE = "/merchandise";
@@ -35,21 +35,19 @@ public class AuthenticationFilter implements Filter {
 	private static final String PAYMENT = "/payment";
 	private static final String ITEM = "/item";
 	private static final String CART = "/cart";
-
 	private static final String CHECKOUT = "/checkout";
 	private static final String ORDERS = "/orders";
-
-
 	private static final String ADD = "/addProduct";
-
 	private static final String UPDATE = "/updateProfile";
 	private static final String DELETE = "/deleteProduct";
 	private static final String USER = "/users";
 	private static final String DELETEUSER = "/deleteUser";
 	private static final String UPDATEPRODUCT = "/updateProduct";
 	private static final String PRODUCTLIST = "/productList";
-	
-
+	private static final String UPDATE_ORDER_STATUS = "/updateOrderStatus";
+	private static final String ADD_REVIEW = "/addReview";
+	private static final String USER_PROFILE = "/userProfile";
+	private static final String UPDATE_PROFILE = "/updateProfile";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -64,9 +62,17 @@ public class AuthenticationFilter implements Filter {
 		HttpServletResponse res = (HttpServletResponse) response;
 
 		String uri = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String path = uri.substring(contextPath.length());
 
 		// Allow access to resources
-		if (uri.endsWith(".png") || uri.endsWith(".jpg") || uri.endsWith(".css")) {
+		if (path.endsWith(".png") || path.endsWith(".jpg") || path.endsWith(".css")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		// Check if the request is for the home page or login/register pages
+		if (path.equals("/") || path.equals("/login") || path.equals("/register") || path.equals("/aboutus") || path.equals("/contactus")) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -81,12 +87,12 @@ public class AuthenticationFilter implements Filter {
 
 		if (!isLoggedIn) {
 			// Not logged in
-			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(SUPPLEMENTS) || uri.endsWith(EQUIPMENTS)
-					|| uri.endsWith(MERCHANDISE) || uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT)
-					|| uri.endsWith(CONTACT) || uri.endsWith(LOGOUT) || uri.endsWith(ITEM)) {
+			if (path.endsWith(LOGIN) || path.endsWith(REGISTER) || path.endsWith(SUPPLEMENTS) || path.endsWith(EQUIPMENTS)
+					|| path.endsWith(MERCHANDISE) || path.endsWith(HOME) || path.endsWith(ROOT) || path.endsWith(ABOUT)
+					|| path.endsWith(CONTACT) || path.endsWith(LOGOUT) || path.endsWith(ITEM)) {
 				chain.doFilter(request, response);
 			} else {
-				res.sendRedirect(req.getContextPath() + LOGIN);
+				res.sendRedirect(contextPath + LOGIN);
 			}
 			return;
 		}
@@ -94,28 +100,28 @@ public class AuthenticationFilter implements Filter {
 		// User is logged in
 		if ("admin".equals(userRole)) {
 			// Admin user
-			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
-				res.sendRedirect(req.getContextPath() + ADMIN_DASHBOARD);
-			} else if (uri.endsWith(ADMIN_DASHBOARD) || uri.endsWith(ADMIN_ORDER) || uri.endsWith(HOME)
-					|| uri.endsWith(ROOT) || uri.endsWith(LOGOUT) || uri.endsWith(ADD) || uri.endsWith(DELETE) || uri.endsWith(USER) || uri.endsWith(DELETEUSER)
-					|| uri.endsWith(UPDATEPRODUCT) || uri.endsWith(PRODUCTLIST)) {
+			if (path.endsWith(LOGIN) || path.endsWith(REGISTER)) {
+				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
+			} else if (path.endsWith(ADMIN_DASHBOARD) || path.endsWith(ADMIN_ORDER) || path.endsWith(HOME)
+					|| path.endsWith(ROOT) || path.endsWith(LOGOUT) || path.endsWith(ADD) || path.endsWith(DELETE) || path.endsWith(USER) || path.endsWith(DELETEUSER)
+					|| path.endsWith(UPDATEPRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS)) {
 				chain.doFilter(request, response);
 			} else {
-				res.sendRedirect(req.getContextPath() + ADMIN_DASHBOARD);
+				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
 			}
 		} else {
 			// Regular user
-			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
-				res.sendRedirect(req.getContextPath() + HOME);
-			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(CONTACT)
-					|| uri.endsWith(ORDER_LIST) || uri.endsWith(CART) || uri.endsWith(USER_DASHBOARD)
-					|| uri.endsWith(SUPPLEMENTS) || uri.endsWith(EQUIPMENTS) || uri.endsWith(MERCHANDISE)
-					|| uri.endsWith(ITEM) || uri.endsWith(PAYMENT) || uri.endsWith(LOGOUT) || uri.endsWith(UPDATE)
-					|| uri.endsWith(CHECKOUT) || uri.endsWith(ORDERS)) {
+			if (path.endsWith(LOGIN) || path.endsWith(REGISTER)) {
+				res.sendRedirect(contextPath + HOME);
+			} else if (path.endsWith(HOME) || path.endsWith(ROOT) || path.endsWith(ABOUT) || path.endsWith(CONTACT)
+					|| path.endsWith(ORDER_LIST) || path.endsWith(CART) || path.endsWith(USER_DASHBOARD)
+					|| path.endsWith(SUPPLEMENTS) || path.endsWith(EQUIPMENTS) || path.endsWith(MERCHANDISE)
+					|| path.endsWith(ITEM) || path.endsWith(PAYMENT) || path.endsWith(LOGOUT) || path.endsWith(UPDATE)
+					|| path.endsWith(CHECKOUT) || path.endsWith(ORDERS) || path.endsWith(ADD_REVIEW) || path.endsWith(USER_PROFILE) || path.endsWith(UPDATE_PROFILE)) {
 
 				chain.doFilter(request, response);
 			} else {
-				res.sendRedirect(req.getContextPath() + HOME);
+				res.sendRedirect(contextPath + HOME);
 			}
 		}
 	}

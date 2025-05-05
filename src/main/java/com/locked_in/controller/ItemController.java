@@ -12,6 +12,7 @@ import com.locked_in.model.ProductModel;
 import com.locked_in.model.UserModel;
 import com.locked_in.service.CartService;
 import com.locked_in.service.ProductService;
+import com.locked_in.service.ReviewService;
 import com.locked_in.service.UserService;
 import com.locked_in.util.SessionUtil;
 
@@ -24,6 +25,7 @@ public class ItemController extends HttpServlet {
 	private ProductService productService;
 	private CartService cartService;
 	private UserService userService;
+	private ReviewService reviewService;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -33,6 +35,7 @@ public class ItemController extends HttpServlet {
         productService = new ProductService();
         cartService = new CartService();
         userService = new UserService();
+        reviewService = new ReviewService();
     }
 
 	/**
@@ -40,26 +43,39 @@ public class ItemController extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-        String productId = request.getParameter("id");
+        String productIdStr = request.getParameter("id");
         
-        if (productId != null && !productId.isEmpty()) {
-            try {
-                ProductModel product = productService.getProductById(Integer.parseInt(productId));
-                if (product != null) {
-                    request.setAttribute("product", product);
-                    // Check for any messages in the request
-                    String message = request.getParameter("message");
-                    if (message != null && !message.isEmpty()) {
-                        request.setAttribute("message", message);
-                    }
-                    request.getRequestDispatcher("/WEB-INF/pages/item.jsp").forward(request, response);
-                } else {
-                    response.sendRedirect(request.getContextPath() + "/home");
+        try {
+            int productId = Integer.parseInt(productIdStr);
+            ProductModel product = productService.getProductById(productId);
+            
+            if (product != null) {
+                // Get reviews for the product
+                product.setReviews(reviewService.getProductReviews(productId));
+                product.setAverageRating(reviewService.getAverageRating(productId));
+
+                // Check if user is logged in
+                String email = (String) SessionUtil.getAttribute(request, "email");
+                if (email != null) {
+                    int userId = userService.getUserByEmail(email).getUserId();
+                    product.setHasUserOrdered(reviewService.hasUserOrderedProduct(userId, productId));
+                    product.setHasUserReviewed(reviewService.hasReviewed(userId, productId, 0)); // 0 for any order
                 }
-            } catch (NumberFormatException e) {
+                
+                request.setAttribute("product", product);
+                // Check for any messages in the request
+                String message = request.getParameter("message");
+                if (message != null && !message.isEmpty()) {
+                    request.setAttribute("message", message);
+                }
+                request.getRequestDispatcher("/WEB-INF/pages/item.jsp").forward(request, response);
+            } else {
                 response.sendRedirect(request.getContextPath() + "/home");
             }
-        } else {
+        } catch (NumberFormatException e) {
+            response.sendRedirect(request.getContextPath() + "/home");
+        } catch (Exception e) {
+            e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/home");
         }
 	}
