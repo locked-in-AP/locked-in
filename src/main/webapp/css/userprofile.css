@@ -48,8 +48,8 @@ body {
 }
 
 .reward-card {
-	background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-	color: white;
+	background: linear-gradient(to bottom, #d8d8d8 0%, #f5f5f5 100%);
+	color: #333;
 	border-radius: 8px;
 	padding: 20px;
 	text-align: center;
@@ -63,7 +63,7 @@ body {
 
 .header-btn {
 	background-color: white;
-	color: #2575fc;
+	color: #333;
 	border: none;
 	padding: 10px 20px;
 	border-radius: 4px;
@@ -96,7 +96,7 @@ body {
 
 .contact-item i {
 	margin-right: 10px;
-	color: #2575fc;
+	color: #333;
 	width: 20px;
 }
 
@@ -152,7 +152,7 @@ body {
 }
 
 .shop-button {
-	background-color: #2575fc;
+	background-color: #000000;
 	color: white;
 	border: none;
 	padding: 10px 20px;
@@ -163,7 +163,7 @@ body {
 }
 
 .shop-button:hover {
-	background-color: #1a5dc9;
+	background-color: rgb(192, 192, 192);
 	transform: translateY(-2px);
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -203,21 +203,21 @@ body {
 }
 
 .button {
-	background-color: transparent;
-	color: #2575fc;
-	border: 1px solid #2575fc;
-	padding: 8px 15px;
+background-color: #000000;
+	color: white;
+	border: none;
+	padding: 10px 20px;
 	border-radius: 4px;
 	font-weight: bold;
 	cursor: pointer;
 	transition: all 0.3s ease;
+	
 }
 
 .button:hover {
-	background-color: #2575fc;
-	color: white;
+	background-color: rgb(192, 192, 192);
 	transform: translateY(-2px);
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Sign out & update profile buttons */
@@ -231,13 +231,13 @@ body {
 }
 
 .account-action {
-	display: flex;
-	align-items: center;
-	padding: 10px 15px;
-	background-color: #f5f5f5;
+	background-color: #000000;
+	color: white;
+	border: none;
+	padding: 10px 20px;
 	border-radius: 4px;
-	text-decoration: none;
-	color: #333;
+	font-weight: bold;
+	cursor: pointer;
 	transition: all 0.3s ease;
 }
 
@@ -246,9 +246,10 @@ body {
 }
 
 .account-action:hover {
-	background-color: #e5e5e5;
+	background-color: rgb(192, 192, 192);
 	transform: translateY(-2px);
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 /* Responsive adjustments */

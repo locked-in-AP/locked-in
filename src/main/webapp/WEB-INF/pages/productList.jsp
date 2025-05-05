@@ -48,6 +48,7 @@
 				<thead>
 					<tr>
 						<th>ID</th>
+						<th>Image</th>
 						<th>Name</th>
 						<th>Brand</th>
 						<th>Category</th>
@@ -59,6 +60,16 @@
 					<c:forEach var="product" items="${products}">
 						<tr>
 							<td>${product.productId}</td>
+							<td>
+								<c:choose>
+									<c:when test="${product.image.startsWith('http')}">
+										<img src="${product.image}" alt="${product.name}" style="width: 30px; height: 30px; object-fit: cover;">
+									</c:when>
+									<c:otherwise>
+										<img src="${pageContext.request.contextPath}/${product.image}" alt="${product.name}" style="width: 30px; height: 30px; object-fit: cover;">
+									</c:otherwise>
+								</c:choose>
+							</td>
 							<td>${product.name}</td>
 							<td>${product.brand}</td>
 							<td>${product.category}</td>
