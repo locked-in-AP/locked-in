@@ -8,25 +8,24 @@
 <head>
     <title>Your Orders</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/orders.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <jsp:include page="header.jsp" />
     
     <!-- Toast for messages -->
-    <div id="messageToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
+    <div id="messageToast" class="toast">
+        <div class="toast-content">
             <div class="toast-body"></div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="toast-close" onclick="closeToast()">×</button>
         </div>
     </div>
     
-    <div class="container my-5">
-        <h2 class="mb-4">Your Orders</h2>
+    <div class="container">
+        <h2 class="page-title">Your Orders</h2>
         
         <c:choose>
             <c:when test="${empty orders}">
-                <div class="alert alert-info">
+                <div class="alert-info">
                     You haven't placed any orders yet. <a href="${pageContext.request.contextPath}/products">Start shopping</a>
                 </div>
             </c:when>
@@ -60,8 +59,8 @@
                                         <c:forEach items="${order.items}" var="item">
                                             <tr>
                                                 <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="${item.product.image}" alt="${item.product.name}" class="product-image me-3">
+                                                    <div class="product-row">
+                                                        <img src="${item.product.image}" alt="${item.product.name}" class="product-image">
                                                         <div class="item-details">
                                                             <h5>${item.product.name}</h5>
                                                         </div>
@@ -95,12 +94,10 @@
         </c:choose>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Show toast message if there's a message in the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const message = urlParams.get('message');
-        if (message) {
+        // Show message if it exists in the request
+        const message = "${message}";
+        if (message && message.trim() !== "") {
             showMessage(message, false);
         }
 
@@ -108,10 +105,19 @@
             const toast = document.getElementById('messageToast');
             const toastBody = toast.querySelector('.toast-body');
             toastBody.textContent = message;
-            toast.classList.add(isError ? 'bg-danger' : 'bg-success');
-            toast.classList.add('text-white');
-            const bsToast = new bootstrap.Toast(toast);
-            bsToast.show();
+            toast.className = 'toast';
+            toast.classList.add(isError ? 'toast-error' : 'toast-success');
+            toast.style.display = 'block';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 5000);
+        }
+        
+        function closeToast() {
+            const toast = document.getElementById('messageToast');
+            toast.style.display = 'none';
         }
     </script>
 
