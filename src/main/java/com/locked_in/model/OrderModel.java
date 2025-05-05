@@ -3,6 +3,7 @@ package com.locked_in.model;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.ArrayList;
 
 public class OrderModel {
     private int orderId;
@@ -10,6 +11,10 @@ public class OrderModel {
     private BigDecimal totalPrice;
     private String paymentStatus;
     private List<OrderItemModel> items;
+
+    public OrderModel() {
+        this.items = new ArrayList<>();
+    }
 
     public int getOrderId() {
         return orderId;
@@ -49,5 +54,12 @@ public class OrderModel {
 
     public void setItems(List<OrderItemModel> items) {
         this.items = items;
+    }
+
+    public void addItem(OrderItemModel item) {
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+        items.add(item);
     }
 } 

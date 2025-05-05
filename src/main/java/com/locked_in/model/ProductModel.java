@@ -2,6 +2,8 @@ package com.locked_in.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * ProductModel represents a product in the system with all its details.
@@ -19,12 +21,17 @@ public class ProductModel {
     private String image;
     private String dimensions;
     private LocalDateTime createdAt;
+    private List<ReviewModel> reviews;
+    private Double averageRating;
+    private boolean hasUserReviewed;
+    private boolean hasUserOrdered;
 
     /**
      * Default constructor
      */
     public ProductModel() {
         this.createdAt = LocalDateTime.now();
+        this.reviews = new ArrayList<>();
     }
 
     /**
@@ -45,6 +52,7 @@ public class ProductModel {
         this.image = image;
         this.dimensions = dimensions;
         this.createdAt = createdAt;
+        this.reviews = new ArrayList<>();
     }
 
     /**
@@ -64,6 +72,7 @@ public class ProductModel {
         this.image = image;
         this.dimensions = dimensions;
         this.createdAt = LocalDateTime.now();
+        this.reviews = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -161,5 +170,37 @@ public class ProductModel {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<ReviewModel> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewModel> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public boolean isHasUserReviewed() {
+        return hasUserReviewed;
+    }
+
+    public void setHasUserReviewed(boolean hasUserReviewed) {
+        this.hasUserReviewed = hasUserReviewed;
+    }
+
+    public boolean isHasUserOrdered() {
+        return hasUserOrdered;
+    }
+
+    public void setHasUserOrdered(boolean hasUserOrdered) {
+        this.hasUserOrdered = hasUserOrdered;
     }
 } 
