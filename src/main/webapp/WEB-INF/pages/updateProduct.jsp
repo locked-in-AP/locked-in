@@ -43,20 +43,26 @@
         </c:if>
         <form action="${pageContext.request.contextPath}/updateProduct" method="post" enctype="multipart/form-data" class="product-form">
             <div class="form-group">
-                <label for="name">Product Name</label>
-                <input type="text" id="name" name="name" required>
+                <label for="productId">Product ID</label>
+                <input type="text" id="productId" name="productId" required>
             </div>
+            
+            <div class="form-group">
+                <label for="name">Product Name</label>
+                <input type="text" id="name" name="name">
+            </div>
+            
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" rows="4" required></textarea>
+                <textarea id="description" name="description" rows="4"></textarea>
             </div>
             <div class="form-group">
                 <label for="brand">Brand</label>
-                <input type="text" id="brand" name="brand" required>
+                <input type="text" id="brand" name="brand">
             </div>
             <div class="form-group">
                 <label for="category">Category</label>
-                <select id="category" name="category" required>
+                <select id="category" name="category">
                     <option value="equipment">Equipment</option>
                     <option value="supplement">Supplement</option>
                     <option value="merchandise">Merchandise</option>
@@ -64,29 +70,29 @@
             </div>
             <div class="form-group">
                 <label for="tags">Tags (comma separated)</label>
-                <input type="text" id="tags" name="tags" required>
+                <input type="text" id="tags" name="tags">
             </div>
             <div class="form-group">
                 <label for="price">Price ($)</label>
-                <input type="number" id="price" name="price" step="0.01" min="0" required>
+                <input type="number" id="price" name="price" step="0.01" min="0">
             </div>
             <div class="form-group">
                 <label for="stockQuantity">Stock Quantity</label>
-                <input type="number" id="stockQuantity" name="stockQuantity" min="0" required>
+                <input type="number" id="stockQuantity" name="stockQuantity" min="0">
             </div>
             <div class="form-group">
                 <label for="weight">Weight (kg)</label>
-                <input type="number" id="weight" name="weight" step="0.01" min="0" required>
+                <input type="number" id="weight" name="weight" step="0.01" min="0">
             </div>
             <div class="form-group">
                 <label for="image">Product Image</label>
                 <div class="file-input-container">
-                    <input type="file" id="image" name="image" accept="image/*" required>
+                    <input type="file" id="image" name="image" accept="image/*">
                 </div>
             </div>
             <div class="form-group">
                 <label for="dimensions">Dimensions (e.g., 10x10x10)</label>
-                <input type="text" id="dimensions" name="dimensions" required>
+                <input type="text" id="dimensions" name="dimensions">
             </div>
             <div class="form-actions">
                 <button type="submit" class="submit-btn">Update Product</button>
