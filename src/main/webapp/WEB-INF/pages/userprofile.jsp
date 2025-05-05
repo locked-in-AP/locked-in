@@ -25,96 +25,48 @@
 <body>
     <jsp:include page="header.jsp" />
 
-	<div class="account-container">
-		<div class="account-overview-container">
-			<div class="account-name">
-				<img src="<%= profilePicture %>" alt="Profile Picture" class="profile-picture" />
-				<h1>${sessionScope.name != null ? sessionScope.name : 'USERNAME'}</h1>
+	<div class="profile-wrapper">
+		<div class="profile-overview">
+			<div class="rewards-box">
+				<h2 class="box-title">Unlock XP And Rewards</h2>
+				<button class="action-btn">VIEW TIERS AND BENEFITS</button>
 			</div>
-			<div class="account-tier">
-				<div class="reward-card">
-					<h2 class="card-title">Unlock XP And Rewards</h2>
-					<button class="header-btn">VIEW TIERS AND BENEFITS</button>
-				</div>
-			</div>
+		</div>
 
-			<div class="contact-info">
-				<h2>CONTACT INFO</h2>
-				<div class="contact-item">
-					<i class="fas fa-map-marker-alt"></i> 500 Panda, Brazil
+		<div class="profile-content">
+			<div class="orders-section">
+				<div class="orders-box">
+					<h3 class="box-title">Your Orders</h3>
+					<div class="image-wrapper">
+						<img src="${pageContext.request.contextPath}/resources/images/system/orders.png" alt="Orders">
+					</div>
+					<div class="button-wrapper">
+						<a href="${pageContext.request.contextPath}/orders" class="action-btn">VIEW ORDERS</a>
+					</div>
 				</div>
-				<div class="contact-item">
-					<i class="fas fa-phone"></i> 240 Iotos
+
+				<div class="orders-box">
+					<h3 class="box-title">Your Wishlist</h3>
+					<div class="image-wrapper">
+						<img src="${pageContext.request.contextPath}/resources/images/system/wishlist.png" alt="Wishlist">
+					</div>
+					<div class="button-wrapper">
+						<a href="${pageContext.request.contextPath}/wishlist" class="action-btn">VIEW WISHLIST</a>
+					</div>
 				</div>
-				<div class="contact-item">
-					<i class="fas fa-envelope"></i> ${sessionScope.email != null ? sessionScope.email : 'email@example.com'}
+
+				<div class="features-box">
+					<h3 class="box-title">Returns</h3>
+					<button class="action-btn" onclick="alert('Returns feature coming soon!')">START RETURN</button>
+				</div>
+
+				<div class="features-box">
+					<h3 class="box-title">Refer a Friend</h3>
+					<button class="action-btn" onclick="alert('Referral system coming soon!')">REFER NOW</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<div class="card-container">
-		<div class="orders-column">
-			<div class="orders-card">
-				<h2 class="orders-header">ORDERS</h2>
-				<div class="image-container">
-					<img
-						src="${pageContext.request.contextPath}/resources/images/system/orders.png"
-						class="placeholder-image" alt="Orders">
-				</div>
-				<div class="empty-state">
-					You haven't made any orders yet.<br> When you make an order
-					it'll show up here.
-				</div>
-				<div class="button-container">
-					<button class="shop-button" onclick="window.location.href='${pageContext.request.contextPath}/products'">VIEW PRODUCTS</button>
-				</div>
-			</div>
-
-			<div class="orders-card">
-				<h2 class="orders-header">RECENT ACTIVITY</h2>
-				<div class="image-container">
-					<img
-						src="${pageContext.request.contextPath}/resources/images/system/orders.png"
-						class="placeholder-image" alt="Activity">
-				</div>
-				<div class="empty-state">
-					No recent activity found.<br> Your workout history will appear
-					here.
-				</div>
-				<div class="button-container">
-					<button class="shop-button" onclick="window.location.href='${pageContext.request.contextPath}/history'">VIEW HISTORY</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="features-card">
-			<div class="section">
-				<h2>RETURNS</h2>
-				<p>Quick, easy and simple returns with Happy Returns.</p>
-				<button class="button" onclick="alert('Returns feature coming soon!')">START RETURN</button>
-			</div>
-
-			<div class="section">
-				<h2>REFER A FRIEND</h2>
-				<p>Introduce your friends and give them £10 off, and to say
-					thanks we'll give you £10 off your next order too.</p>
-				<button class="button" onclick="alert('Referral system coming soon!')">REFER NOW</button>
-			</div>
-
-			<div class="section">
-				<h2>ADDRESS</h2>
-				<p>Get your orders whenever, wherever you are!</p>
-				<button class="button" onclick="window.location.href='${pageContext.request.contextPath}/updateProfile'">CHANGE ADDRESS</button>
-			</div>
-
-			<div class="section">
-				<h2>WISH LIST</h2>
-				<p>Save your favorite items for later</p>
-				<button class="button" onclick="window.location.href='${pageContext.request.contextPath}/wishlist'">VIEW WISH LIST</button>
-			</div>
-		</div>
-    </div>
 
 	<div class="account-signout-update">
 		<!-- Sign Out Icon -->
@@ -133,15 +85,25 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Handle tiers and benefits button
-        document.querySelector('.header-btn').addEventListener('click', function() {
+        document.querySelector('.action-btn').addEventListener('click', function() {
             alert('Tiers and benefits feature coming soon!');
         });
         
         // Ensure all buttons have proper hover effects
-        const buttons = document.querySelectorAll('.button, .shop-button, .header-btn');
+        const buttons = document.querySelectorAll('.action-btn, .shop-button');
         buttons.forEach(button => {
             button.addEventListener('mouseover', function() {
                 this.style.transition = 'all 0.3s ease';
+            });
+        });
+
+        // Add click event listeners to prevent default action for coming soon features
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.textContent.includes('coming soon')) {
+                    e.preventDefault();
+                    alert('This feature is coming soon!');
+                }
             });
         });
     });

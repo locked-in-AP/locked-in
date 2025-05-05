@@ -24,14 +24,14 @@ public class UpdateOrderStatusController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        response.setContentType("application/json");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 
         // Check if user is logged in
         String email = (String) SessionUtil.getAttribute(request, "email");
         if (email == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"error\":\"Please log in to continue\"}");
+            response.getWriter().write("Please log in to continue");
             return;
         }
 
@@ -40,7 +40,7 @@ public class UpdateOrderStatusController extends HttpServlet {
             String orderIdStr = request.getParameter("orderId");
             if (orderIdStr == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"error\":\"Order ID is required\"}");
+                response.getWriter().write("Order ID is required");
                 return;
             }
 
@@ -49,7 +49,7 @@ public class UpdateOrderStatusController extends HttpServlet {
                 orderId = Integer.parseInt(orderIdStr);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"error\":\"Invalid Order ID\"}");
+                response.getWriter().write("Invalid Order ID");
                 return;
             }
 
@@ -57,15 +57,15 @@ public class UpdateOrderStatusController extends HttpServlet {
             boolean success = orderService.updateOrderStatus(orderId, "completed");
 
             if (success) {
-                response.getWriter().write("{\"success\":true}");
+                response.getWriter().write("success");
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"error\":\"Failed to update order status\"}");
+                response.getWriter().write("Failed to update order status");
             }
         } catch (SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\":\"An error occurred while updating the order status\"}");
+            response.getWriter().write("An error occurred while updating the order status");
         }
     }
 } 
