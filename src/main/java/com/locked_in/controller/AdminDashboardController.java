@@ -18,13 +18,16 @@ import com.locked_in.model.UserModel;
 @WebServlet(asyncSupported = true, urlPatterns = { "/admindashboard" })
 public class AdminDashboardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final ProductService productService;
+	private final UserService userService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AdminDashboardController() {
         super();
-        // TODO Auto-generated constructor stub
+        this.productService = new ProductService();
+        this.userService = new UserService();
     }
 
 	/**
@@ -32,24 +35,27 @@ public class AdminDashboardController extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ProductService productService = new ProductService();
-		UserService userService = new UserService();
-		List<ProductModel> products = productService.getLimitedProducts(5, "newest");
-		List<UserModel> users = userService.getAllUsers();
-		if (users.size() > 5) {
-			users = users.subList(0, 5);
+		try {
+			List<ProductModel> products = productService.getLimitedProducts(5, "newest");
+			List<UserModel> users = userService.getAllUsers();
+			if (users.size() > 5) {
+				users = users.subList(0, 5);
+			}
+			request.setAttribute("products", products);
+			request.setAttribute("users", users);
+			request.getRequestDispatcher("/WEB-INF/pages/admindashboard.jsp").forward(request, response);
+		} catch (Exception e) {
+			System.out.println("AdminDashboardController - Error: " + e.getMessage());
+			e.printStackTrace();
+			request.setAttribute("error", "Error loading dashboard: " + e.getMessage());
+			request.getRequestDispatcher("/WEB-INF/pages/admindashboard.jsp").forward(request, response);
 		}
-		request.setAttribute("products", products);
-		request.setAttribute("users", users);
-		request.getRequestDispatcher("/WEB-INF/pages/admindashboard.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }
