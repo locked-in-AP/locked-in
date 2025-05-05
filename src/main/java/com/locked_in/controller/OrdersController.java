@@ -40,6 +40,13 @@ public class OrdersController extends HttpServlet {
             List<OrderModel> orders = orderService.getUserOrders(userId);
             
             request.setAttribute("orders", orders);
+            
+            // Check if there's a message parameter
+            String message = request.getParameter("message");
+            if (message != null && !message.isEmpty()) {
+                request.setAttribute("message", message);
+            }
+            
             request.getRequestDispatcher("/WEB-INF/pages/orders.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();

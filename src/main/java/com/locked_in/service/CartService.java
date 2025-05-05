@@ -118,17 +118,19 @@ public class CartService {
 
     public void removeFromCart(int userId, int productId) throws SQLException {
         String deleteQuery = "DELETE FROM user_product WHERE user_id = ? AND product_id = ? AND is_currently_in_cart = true";
-        String updateCartSizeQuery = "UPDATE users SET cart_size = cart_size - 1 WHERE user_id = ?";
+        String updateCartSizeQuery = "UPDATE users SET cart_size = GREATEST(cart_size - 1, 0) WHERE user_id = ?";
         
         try (PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery)) {
             deleteStmt.setInt(1, userId);
             deleteStmt.setInt(2, productId);
-            deleteStmt.executeUpdate();
+            int rowsAffected = deleteStmt.executeUpdate();
             
-            // Update cart size
-            try (PreparedStatement updateCartSizeStmt = connection.prepareStatement(updateCartSizeQuery)) {
-                updateCartSizeStmt.setInt(1, userId);
-                updateCartSizeStmt.executeUpdate();
+            // Only update cart size if rows were actually deleted
+            if (rowsAffected > 0) {
+                try (PreparedStatement updateCartSizeStmt = connection.prepareStatement(updateCartSizeQuery)) {
+                    updateCartSizeStmt.setInt(1, userId);
+                    updateCartSizeStmt.executeUpdate();
+                }
             }
         }
     }

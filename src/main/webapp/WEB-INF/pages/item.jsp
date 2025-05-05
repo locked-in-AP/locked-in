@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>Locked IN - ${product.name}</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/item.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
 	#messageToast {
@@ -16,7 +15,37 @@
 		right: 20px;
 		z-index: 1000;
 		display: none;
+        background-color: white;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        min-width: 250px;
+        max-width: 350px;
 	}
+    .toast-content {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+    }
+    .toast-body {
+        flex-grow: 1;
+        padding: 5px 0;
+    }
+    .toast-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0 5px;
+        line-height: 1;
+    }
+    .toast-success {
+        background-color: #28a745;
+        color: white;
+    }
+    .toast-error {
+        background-color: #dc3545;
+        color: white;
+    }
 	.quantity-controls {
 		display: flex;
 		align-items: center;
@@ -71,10 +100,10 @@
 	<jsp:include page="header.jsp" />
 	
 	<!-- Toast for messages -->
-	<div id="messageToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-		<div class="d-flex">
+	<div id="messageToast" class="toast">
+		<div class="toast-content">
 			<div class="toast-body"></div>
-			<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			<button type="button" class="toast-close" onclick="closeToast()">×</button>
 		</div>
 	</div>
 	
@@ -105,31 +134,36 @@
 			<h1 class="product-title">${product.name}</h1>
 			<div class="product-price">$${product.price}</div>
 
-			<div class="quantity-selector">
-				<p>Quantity</p>
-				<div class="quantity-controls">
-					<button class="quantity-btn" onclick="updateQuantity(-1)">-</button>
-					<input type="number" class="quantity-input" value="1" min="1" max="${product.stockQuantity}" id="quantity" readonly>
-					<button class="quantity-btn" onclick="updateQuantity(1)">+</button>
+			<form action="${pageContext.request.contextPath}/item" method="post">
+				<input type="hidden" name="action" value="addToCart">
+				<input type="hidden" name="productId" value="${product.productId}">
+				
+				<div class="quantity-selector">
+					<p>Quantity</p>
+					<div class="quantity-controls">
+						<button type="button" class="quantity-btn" onclick="updateQuantity(-1)">-</button>
+						<input type="number" class="quantity-input" name="quantity" value="1" min="1" max="${product.stockQuantity}" id="quantity" readonly>
+						<button type="button" class="quantity-btn" onclick="updateQuantity(1)">+</button>
+					</div>
+					<div class="stock-status ${product.stockQuantity > 10 ? 'in-stock' : (product.stockQuantity > 0 ? 'low-stock' : 'out-of-stock')}">
+						<c:choose>
+							<c:when test="${product.stockQuantity > 10}">
+								<i class="fas fa-check-circle"></i> In Stock
+							</c:when>
+							<c:when test="${product.stockQuantity > 0}">
+								<i class="fas fa-exclamation-circle"></i> Low Stock - Only ${product.stockQuantity} left
+							</c:when>
+							<c:otherwise>
+								<i class="fas fa-times-circle"></i> Out of Stock
+							</c:otherwise>
+						</c:choose>
+					</div>
 				</div>
-				<div class="stock-status ${product.stockQuantity > 10 ? 'in-stock' : (product.stockQuantity > 0 ? 'low-stock' : 'out-of-stock')}">
-					<c:choose>
-						<c:when test="${product.stockQuantity > 10}">
-							<i class="fas fa-check-circle"></i> In Stock
-						</c:when>
-						<c:when test="${product.stockQuantity > 0}">
-							<i class="fas fa-exclamation-circle"></i> Low Stock - Only ${product.stockQuantity} left
-						</c:when>
-						<c:otherwise>
-							<i class="fas fa-times-circle"></i> Out of Stock
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-
-			<button class="add-to-cart" onclick="addToCart()" ${product.stockQuantity == 0 ? 'disabled' : ''}>
-				${product.stockQuantity == 0 ? 'OUT OF STOCK' : 'ADD TO CART'}
-			</button>
+	
+				<button type="submit" class="add-to-cart" ${product.stockQuantity == 0 ? 'disabled' : ''}>
+					${product.stockQuantity == 0 ? 'OUT OF STOCK' : 'ADD TO CART'}
+				</button>
+			</form>
 
 			<div class="product-description">
 				<p>${product.description}</p>
@@ -185,20 +219,33 @@
 
 	<jsp:include page="footer.jsp" />
 	
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-		const toast = new bootstrap.Toast(document.getElementById('messageToast'));
 		const quantityInput = document.getElementById('quantity');
 		const maxStock = parseInt('${product.stockQuantity}');
-		const productId = parseInt('${product.productId}');
+		
+		// Check if there's a message parameter
+		const message = "${message}";
+		if (message && message.trim() !== "") {
+		    showMessage(message, false);
+		}
 		
 		function showMessage(message, isError = false) {
 			const toastElement = document.getElementById('messageToast');
 			const toastBody = toastElement.querySelector('.toast-body');
 			toastBody.textContent = message;
-			toastElement.classList.remove('bg-success', 'bg-danger', 'text-white');
-			toastElement.classList.add(isError ? 'bg-danger' : 'bg-success', 'text-white');
-			toast.show();
+			toastElement.className = 'toast';
+			toastElement.classList.add(isError ? 'toast-error' : 'toast-success');
+			toastElement.style.display = 'block';
+			
+			// Auto-hide after 5 seconds
+			setTimeout(() => {
+				toastElement.style.display = 'none';
+			}, 5000);
+		}
+		
+		function closeToast() {
+			const toastElement = document.getElementById('messageToast');
+			toastElement.style.display = 'none';
 		}
 		
 		function updateQuantity(change) {
@@ -208,50 +255,6 @@
 			if (newValue >= 1 && newValue <= maxStock) {
 				quantityInput.value = newValue;
 			}
-		}
-		
-		function addToCart() {
-			const quantity = parseInt(quantityInput.value);
-			
-			const formData = new URLSearchParams();
-			formData.append('action', 'add');
-			formData.append('productId', productId);
-			formData.append('quantity', quantity);
-			
-			fetch('${pageContext.request.contextPath}/cart', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				body: formData
-			})
-			.then(async response => {
-				const data = await response.json();
-				if (!response.ok) {
-					if (response.status === 401) {
-						window.location.href = '${pageContext.request.contextPath}/login';
-						throw new Error('Please log in to continue');
-					}
-					showMessage(data.error || 'Server error', true);
-					throw new Error(data.error || 'Server error');
-				}
-				return data;
-			})
-			.then(data => {
-				showMessage(data.message, !data.success);
-				if (data.success) {
-					document.querySelectorAll('.cart-count').forEach(el => {
-						el.textContent = data.cartSize;
-					});
-					sessionStorage.setItem('cartSize', data.cartSize);
-				}
-			})
-			.catch(error => {
-				console.error('Error:', error);
-				if (error.message !== 'Please log in to continue') {
-					showMessage(error.message || 'An error occurred while adding to cart', true);
-				}
-			});
 		}
 	</script>
 </body>
