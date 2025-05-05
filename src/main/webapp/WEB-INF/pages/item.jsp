@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/item.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-	#messageToast {
+	#notification {
 		position: fixed;
 		top: 20px;
 		right: 20px;
@@ -21,16 +21,16 @@
         min-width: 250px;
         max-width: 350px;
 	}
-    .toast-content {
+    .notification-content {
         display: flex;
         align-items: center;
         padding: 10px 15px;
     }
-    .toast-body {
+    .notification-body {
         flex-grow: 1;
         padding: 5px 0;
     }
-    .toast-close {
+    .notification-close {
         background: none;
         border: none;
         font-size: 1.5rem;
@@ -38,11 +38,11 @@
         padding: 0 5px;
         line-height: 1;
     }
-    .toast-success {
+    .notification-success {
         background-color: #28a745;
         color: white;
     }
-    .toast-error {
+    .notification-error {
         background-color: #dc3545;
         color: white;
     }
@@ -52,10 +52,20 @@
 		gap: 10px;
 	}
 	.quantity-btn {
-		padding: 5px 10px;
+		background-color: #f8f9fa;
 		border: 1px solid #dee2e6;
-		background: none;
+		border-radius: 4px;
+		padding: 5px 10px;
 		cursor: pointer;
+		font-size: 1rem;
+		transition: background-color 0.3s;
+	}
+	.quantity-btn:hover {
+		background-color: #e9ecef;
+	}
+	.quantity-btn:disabled {
+		background-color: #e9ecef;
+		cursor: not-allowed;
 	}
 	.quantity-input {
 		width: 60px;
@@ -63,21 +73,20 @@
 		border: 1px solid #dee2e6;
 		padding: 5px;
 	}
-	.add-to-cart {
-		width: 100%;
-		padding: 15px;
+	.add-to-cart-btn {
 		background-color: #1a1f2c;
 		color: white;
 		border: none;
-		border-radius: 5px;
-		margin: 20px 0;
+		border-radius: 4px;
+		padding: 10px 20px;
 		cursor: pointer;
+		font-size: 1rem;
 		transition: background-color 0.3s;
 	}
-	.add-to-cart:hover {
+	.add-to-cart-btn:hover {
 		background-color: #2a2f3c;
 	}
-	.add-to-cart:disabled {
+	.add-to-cart-btn:disabled {
 		background-color: #ccc;
 		cursor: not-allowed;
 	}
@@ -99,11 +108,11 @@
 <body>
 	<jsp:include page="header.jsp" />
 	
-	<!-- Toast for messages -->
-	<div id="messageToast" class="toast">
-		<div class="toast-content">
-			<div class="toast-body"></div>
-			<button type="button" class="toast-close" onclick="closeToast()">×</button>
+	<!-- Notification for messages -->
+	<div id="notification" class="notification">
+		<div class="notification-content">
+			<div class="notification-body"></div>
+			<button type="button" class="notification-close" onclick="closeNotification()">×</button>
 		</div>
 	</div>
 	
@@ -160,7 +169,7 @@
 					</div>
 				</div>
 	
-				<button type="submit" class="add-to-cart" ${product.stockQuantity == 0 ? 'disabled' : ''}>
+				<button type="submit" class="add-to-cart-btn" ${product.stockQuantity == 0 ? 'disabled' : ''}>
 					${product.stockQuantity == 0 ? 'OUT OF STOCK' : 'ADD TO CART'}
 				</button>
 			</form>
@@ -229,23 +238,23 @@
 		    showMessage(message, false);
 		}
 		
-		function showMessage(message, isError = false) {
-			const toastElement = document.getElementById('messageToast');
-			const toastBody = toastElement.querySelector('.toast-body');
-			toastBody.textContent = message;
-			toastElement.className = 'toast';
-			toastElement.classList.add(isError ? 'toast-error' : 'toast-success');
-			toastElement.style.display = 'block';
+		function showMessage(message, isError) {
+			const notification = document.getElementById('notification');
+			const notificationBody = notification.querySelector('.notification-body');
+			notificationBody.textContent = message;
+			notification.className = 'notification';
+			notification.classList.add(isError ? 'notification-error' : 'notification-success');
+			notification.style.display = 'block';
 			
 			// Auto-hide after 5 seconds
 			setTimeout(() => {
-				toastElement.style.display = 'none';
+				notification.style.display = 'none';
 			}, 5000);
 		}
 		
-		function closeToast() {
-			const toastElement = document.getElementById('messageToast');
-			toastElement.style.display = 'none';
+		function closeNotification() {
+			const notification = document.getElementById('notification');
+			notification.style.display = 'none';
 		}
 		
 		function updateQuantity(change) {
