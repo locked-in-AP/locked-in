@@ -51,7 +51,7 @@ INSERT INTO users (
 	name,
 	nickname,
 	email,
-	password,
+	password,	
 	date_of_birth,
 	profile_picture
 )
