@@ -42,7 +42,7 @@ public class AuthenticationFilter implements Filter {
 	private static final String DELETE = "/deleteProduct";
 	private static final String USER = "/users";
 	private static final String DELETEUSER = "/deleteUser";
-	private static final String UPDATEPRODUCT = "/updateProduct";
+	private static final String UPDATE_PRODUCT = "/updateProduct";
 	private static final String PRODUCTLIST = "/productList";
 	private static final String UPDATE_ORDER_STATUS = "/updateOrderStatus";
 	private static final String ADD_REVIEW = "/addReview";
@@ -104,7 +104,7 @@ public class AuthenticationFilter implements Filter {
 				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
 			} else if (path.endsWith(ADMIN_DASHBOARD) || path.endsWith(ADMIN_ORDER) || path.endsWith(HOME)
 					|| path.endsWith(ROOT) || path.endsWith(LOGOUT) || path.endsWith(ADD) || path.endsWith(DELETE) || path.endsWith(USER) || path.endsWith(DELETEUSER)
-					|| path.endsWith(UPDATEPRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS)) {
+					|| path.endsWith(UPDATE_PRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
