@@ -18,6 +18,7 @@ public class UserModel {
 	private LocalDate dateOfBirth;
 	private LocalDateTime joinedAt;
 	private Integer cartSize;
+	private String profilePicture;
 	
 	/**
 	 * @param userId
@@ -42,6 +43,7 @@ public class UserModel {
 		this.dateOfBirth = dateOfBirth;
 		this.joinedAt = joinedAt;
 		this.cartSize = cartSize;
+		this.profilePicture = "resources/images/system/userpfp.png";
 	}
 
 	/**
@@ -58,6 +60,10 @@ public class UserModel {
 		this.email = email;
 		this.password = password;
 		this.dateOfBirth = dateOfBirth;
+		this.role = "customer";
+		this.joinedAt = LocalDateTime.now();
+		this.cartSize = 0;
+		this.profilePicture = "resources/images/system/userpfp.png";
 	}
 
 	/**
@@ -194,6 +200,20 @@ public class UserModel {
 	 */
 	public void setCartSize(Integer cartSize) {
 		this.cartSize = cartSize;
+	}
+
+	/**
+	 * @return the profilePicture
+	 */
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	/**
+	 * @param profilePicture the profilePicture to set
+	 */
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 	
 

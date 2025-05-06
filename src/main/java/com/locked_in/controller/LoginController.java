@@ -1,9 +1,11 @@
 package com.locked_in.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import com.locked_in.model.UserModel;
 import com.locked_in.service.LoginService;
+import com.locked_in.service.CartService;
 import com.locked_in.util.CookieUtil;
 import com.locked_in.util.SessionUtil;
 
@@ -72,13 +74,27 @@ public class LoginController extends HttpServlet {
 		if (loginStatus != null && loginStatus) {
 			SessionUtil.setAttribute(request, "email", email);
 			SessionUtil.setAttribute(request, "name", userModel.getName());
+			SessionUtil.setAttribute(request, "profilePicture", userModel.getProfilePicture());
+			SessionUtil.setAttribute(request, "userId", userModel.getUserId());
+			
+			// Initialize cart size in session
+			CartService cartService = new CartService();
+			try {
+				int cartSize = cartService.getCartSize(userModel.getUserId());
+				SessionUtil.setAttribute(request, "cartSize", cartSize);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				// Don't fail login if cart size can't be retrieved
+				SessionUtil.setAttribute(request, "cartSize", 0);
+			}
+			
 			String role = userModel.getRole();
 			System.out.println("User role from database: " + role);
 			System.out.println("User name from database: " + userModel.getName());
 			CookieUtil.addCookie(response, "role", role, 5 * 30);
 			if ("admin".equals(role)) {
 				request.setAttribute("success", true);
-				request.getRequestDispatcher("/WEB-INF/pages/admindashboard.jsp").forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/admindashboard");
 			} else {
 				request.setAttribute("success", true);
 				request.getRequestDispatcher("/WEB-INF/pages/home.jsp").forward(request, response);

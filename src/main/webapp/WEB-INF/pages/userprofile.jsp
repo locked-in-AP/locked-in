@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,19 +10,26 @@
 <title>User Dashboard</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/userprofile.css">
+	
+<%
+    String profilePicture = (String) session.getAttribute("profilePicture");
+    if (profilePicture == null || profilePicture.isEmpty()) {
+        // Default profile picture
+        profilePicture = "resources/images/system/userpfp.png";
+    }
+%>	
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <jsp:include page="header.jsp" />
 
 	<div class="account-container">
 		<div class="account-overview-container">
 			<div class="account-name">
-				<img
-					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-					alt="Profile">
+				<img src="<%= profilePicture %>" alt="Profile Picture" class="profile-picture" />
 				<h1>${sessionScope.name != null ? sessionScope.name : 'USERNAME'}</h1>
 			</div>
 			<div class="account-tier">
@@ -59,7 +68,7 @@
 					it'll show up here.
 				</div>
 				<div class="button-container">
-					<button class="shop-button" onclick="window.location.href='${pageContext.request.contextPath}/products'">VIEW PRODUCTS</button>
+					<button class="shop-button" onclick="window.location.href='${pageContext.request.contextPath}/orders'">VIEW ORDERS</button>
 				</div>
 			</div>
 
@@ -125,15 +134,25 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Handle tiers and benefits button
-        document.querySelector('.header-btn').addEventListener('click', function() {
+        document.querySelector('.action-btn').addEventListener('click', function() {
             alert('Tiers and benefits feature coming soon!');
         });
         
         // Ensure all buttons have proper hover effects
-        const buttons = document.querySelectorAll('.button, .shop-button, .header-btn');
+        const buttons = document.querySelectorAll('.action-btn, .shop-button');
         buttons.forEach(button => {
             button.addEventListener('mouseover', function() {
                 this.style.transition = 'all 0.3s ease';
+            });
+        });
+
+        // Add click event listeners to prevent default action for coming soon features
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.textContent.includes('coming soon')) {
+                    e.preventDefault();
+                    alert('This feature is coming soon!');
+                }
             });
         });
     });

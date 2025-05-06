@@ -47,7 +47,7 @@ public class LoginService {
 		}
 
 		System.out.println("Attempting login for email: " + userModel.getEmail());
-		String query = "SELECT email, password, role, name FROM users WHERE email = ?";
+		String query = "SELECT user_id, email, password, role, name, profile_picture FROM users WHERE email = ?";
 		try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
 			stmt.setString(1, userModel.getEmail());
 			ResultSet result = stmt.executeQuery();
@@ -79,8 +79,10 @@ public class LoginService {
 	private boolean validatePassword(ResultSet result, UserModel userModel) throws SQLException {
 		String storedPassword = result.getString("password");
 		String providedPassword = userModel.getPassword();
+		Integer userId = result.getInt("user_id");
 		String role = result.getString("role");
 		String name = result.getString("name");
+		String profilePicture = result.getString("profile_picture");
 		
 		System.out.println("Stored password hash: " + storedPassword);
 		System.out.println("Provided password: " + providedPassword);
@@ -88,8 +90,10 @@ public class LoginService {
 		// First try direct comparison for testing
 		if (storedPassword.equals(providedPassword)) {
 			System.out.println("Password matched directly");
+			userModel.setUserId(userId);
 			userModel.setRole(role);
 			userModel.setName(name);
+			userModel.setProfilePicture(profilePicture);
 			return true;
 		}
 		
@@ -99,8 +103,10 @@ public class LoginService {
 		
 		if (decryptedStoredPassword != null && decryptedStoredPassword.equals(providedPassword)) {
 			System.out.println("Password matched after decryption");
+			userModel.setUserId(userId);
 			userModel.setRole(role);
 			userModel.setName(name);
+			userModel.setProfilePicture(profilePicture);
 			return true;
 		}
 		
@@ -110,8 +116,10 @@ public class LoginService {
 		
 		if (storedPassword.equals(encryptedProvidedPassword)) {
 			System.out.println("Password matched after encryption");
+			userModel.setUserId(userId);
 			userModel.setRole(role);
 			userModel.setName(name);
+			userModel.setProfilePicture(profilePicture);
 			return true;
 		}
 		

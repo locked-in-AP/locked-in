@@ -66,6 +66,19 @@ CREATE TABLE orders (
 -- Tracks which products from which users are part of which orders.
 -- Also includes review information.
 -- ===============================================================
+-- CREATE TABLE user_product_order (
+--     user_id INT NOT NULL,
+--     product_id INT NOT NULL,
+--     order_id INT NOT NULL,
+--     order_quantity INT NOT NULL,
+--     review_date DATETIME,
+--     review TEXT,
+--     rating INT CHECK (rating >= 1 AND rating <= 5),
+--     PRIMARY KEY (user_id, product_id, order_id),
+--     FOREIGN KEY (user_id, product_id) REFERENCES user_product(user_id, product_id),
+--     FOREIGN KEY (order_id) REFERENCES orders(order_id)
+-- );
+
 CREATE TABLE user_product_order (
     user_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -75,6 +88,7 @@ CREATE TABLE user_product_order (
     review TEXT,
     rating INT CHECK (rating >= 1 AND rating <= 5),
     PRIMARY KEY (user_id, product_id, order_id),
-    FOREIGN KEY (user_id, product_id) REFERENCES user_product(user_id, product_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (product_id) REFERENCES product(product_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );

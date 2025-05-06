@@ -21,14 +21,14 @@
         </div>
 
         <c:if test="${not empty success}">
-            <p class="success-msg">${success}</p>
-        </c:if>
+               <p class="alert success-msg">${success}</p>       
+                </c:if>
 
         <c:if test="${not empty error}">
-            <p class="error-msg">${error}</p>
+             <p class="alert error-msg">${success}</p>
         </c:if>
 
-        <form action="${pageContext.request.contextPath}/updateProfile" method="post">
+        <form action="${pageContext.request.contextPath}/updateProfile" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Full Name</label>
                 <div class="input-box">
@@ -80,6 +80,16 @@
                     <i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i>
                 </div>
             </div>
+            
+		            <div class="form-group">
+		            
+		    <label for="profilePicture">Upload Profile Picture</label>
+		    <div class="input-box">
+		        <i class="fa-solid fa-image input-icon"></i> <!-- Changed icon to an image icon -->
+		        <input type="file" id="profilePicture" name="profilePicture" accept="image/*" >
+		    </div>
+		</div>
+            
 
             <div class="button-container">
                 <button type="submit" class="update-btn">Update Profile</button>

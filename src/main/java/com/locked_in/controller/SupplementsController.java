@@ -6,6 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+
+import com.locked_in.model.ProductModel;
+import com.locked_in.service.ProductService;
 
 /**
  * @author  Amiks Karki
@@ -14,13 +18,14 @@ import java.io.IOException;
 @WebServlet(asyncSupported = true, urlPatterns = { "/supplements"})
 public class SupplementsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final ProductService productService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SupplementsController() {
         super();
-        // TODO Auto-generated constructor stub
+        this.productService = new ProductService();
     }
 
 	/**
@@ -28,6 +33,20 @@ public class SupplementsController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		// Get the sort parameter from the request, default to "relevancy" if not specified
+		String sortBy = request.getParameter("sort");
+		if (sortBy == null || sortBy.isEmpty()) {
+			sortBy = "relevancy";
+		}
+		
+		// Get supplements from the database with sorting
+		List<ProductModel> supplements = productService.getProductsByCategory("supplement", sortBy);
+		
+		// Set the products and sort parameter in the request
+		request.setAttribute("products", supplements);
+		request.setAttribute("currentSort", sortBy);
+		
+		// Forward to the supplements JSP
 		request.getRequestDispatcher("/WEB-INF/pages/supplements.jsp").forward(request, response);
 	}
 
