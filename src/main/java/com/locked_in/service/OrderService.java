@@ -363,4 +363,46 @@ public class OrderService {
         }
         return orders;
     }
+
+    public BigDecimal getTotalRevenueLast30Days() throws SQLException {
+        String query = "SELECT SUM(total_price) as total_revenue FROM orders " +
+                      "WHERE payment_status = 'completed' " +
+                      "AND order_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                BigDecimal totalRevenue = rs.getBigDecimal("total_revenue");
+                return totalRevenue != null ? totalRevenue : BigDecimal.ZERO;
+            }
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public int getTotalOrdersLast30Days() throws SQLException {
+        String query = "SELECT COUNT(*) as total_orders FROM orders " +
+                      "WHERE payment_status = 'completed' " +
+                      "AND order_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total_orders");
+            }
+        }
+        return 0;
+    }
+
+    public int getPendingDeliveriesCount() throws SQLException {
+        String query = "SELECT COUNT(*) as pending_deliveries FROM orders " +
+                      "WHERE payment_status != 'completed'";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("pending_deliveries");
+            }
+        }
+        return 0;
+    }
 } 
