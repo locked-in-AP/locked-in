@@ -42,6 +42,20 @@ public class UpdateProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String productIdStr = request.getParameter("id");
+        if (productIdStr != null && !productIdStr.isEmpty()) {
+            try {
+                int productId = Integer.parseInt(productIdStr);
+                ProductModel product = productService.getProductById(productId);
+                if (product != null) {
+                    request.setAttribute("product", product);
+                } else {
+                    request.setAttribute("error", "Product not found.");
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid product ID.");
+            }
+        }
         request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
     }
 
@@ -178,6 +192,8 @@ public class UpdateProductController extends HttpServlet {
             boolean updated = productService.updateProduct(product);
             if (updated) {
                 request.setAttribute("success", "Product updated successfully!");
+                response.sendRedirect(request.getContextPath() + "/admindashboard?success=Product updated successfully!");
+                return;
             } else {
                 request.setAttribute("error", "Failed to update product. Please check the ID and try again.");
             }

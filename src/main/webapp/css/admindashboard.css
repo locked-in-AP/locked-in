@@ -304,12 +304,13 @@ th {
 
 .product-form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
 }
 
 .form-group {
     margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 .form-group label {
@@ -355,6 +356,28 @@ th {
 
 .submit-btn:hover {
     background: #2a2f3c;
+}
+
+.edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background-color: #1A1F2C;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #2a2f3c;
+    color: white;
+}
+
+.edit-btn i {
+    font-size: 14px;
 }
 
 .cancel-btn {

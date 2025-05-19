@@ -14,9 +14,7 @@
 <body>
 
 	<jsp:include page="header.jsp" />
-	<c:if test="${not empty success}">
-		<p class="success-msg">You are logged in!</p>
-	</c:if>
+	
 
 	<div class="sidebar">
 		<ul class="nav">
@@ -24,13 +22,19 @@
 			<li><a href="${pageContext.request.contextPath}/users"><span class="icon"><i class="fas fa-user"></i></span>Users</a></li>
 			<li><a href="${pageContext.request.contextPath}/admin/orders"><span class="icon"><i class="fas fa-shopping-cart"></i></span> Orders</a></li>
 			<li><a href="${pageContext.request.contextPath}/addProduct"><span class="icon"><i class="fas fa-pen"></i></span> Add Product</a></li>
-			<li><a href="${pageContext.request.contextPath}/updateProduct"><span class="icon"><i class="fas fa-pen"></i></span> Edit Product</a></li>
 			<li><a href="${pageContext.request.contextPath}/deleteProduct"><span class="icon"><i class="fas fa-trash"></i></span> Delete Product</a></li>
-			
 		</ul>
 	</div>
 
 	<div class="main-content">
+	
+	  <c:if test="${not empty success}">
+                <p class="alert success-msg">${success}</p>
+            </c:if>
+            <c:if test="${not empty error}">
+                <p class="alert error-msg">${error}</p>
+            </c:if>
+	
 		<div class="admin-header">
 			<h1 class="section-title">Admin Dashboard</h1>
 			<div class="right-section">
@@ -103,6 +107,7 @@
 						<th>Category</th>
 						<th>Price</th>
 						<th>Stock</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -125,6 +130,11 @@
 								<td>${product.category}</td>
 								<td>$${product.price}</td>
 								<td>${product.stockQuantity}</td>
+								<td>
+									<a href="${pageContext.request.contextPath}/updateProduct?id=${product.productId}" class="edit-btn">
+										<i class="fas fa-edit"></i> Edit
+									</a>
+								</td>
 							</tr>
 						</c:forEach>
 					</c:if>
