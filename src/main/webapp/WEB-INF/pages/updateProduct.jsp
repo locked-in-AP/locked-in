@@ -93,10 +93,7 @@
 
 				 <div class="form-group">
                 <label for="image">Product Image</label>
-                <div class="file-input-container">
-                    <input type="file" id="image" name="image" accept="image/*">
-                    
-                </div>
+                <input type="text" id="image" name="image" value="${product.image}" placeholder="Enter image URL">
             </div>
 
 				<div class="form-group">
