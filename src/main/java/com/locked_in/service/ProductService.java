@@ -242,7 +242,6 @@ public class ProductService {
     }
     
     /**
-
      * Checks if a product has sufficient stock for the requested quantity
      * 
      * @param productId the ID of the product to check
@@ -297,9 +296,10 @@ public class ProductService {
             e.printStackTrace();
             return false;
         }
-        }
+    }
 
-     /* Retrieves a limited number of products from the database
+    /**
+     * Retrieves a limited number of products from the database
      * 
      * @param limit the maximum number of products to retrieve
      * @param sortBy the sorting criteria (price-low-high, price-high-low, relevancy, newest)
@@ -372,7 +372,77 @@ public class ProductService {
             e.printStackTrace();
         }
         return products;
-
+    }
+    
+    /**
+     * Search products based on query, category, and sort order
+     * @param query The search query
+     * @param category Optional category filter
+     * @param sortBy Sort order
+     * @return List of matching products
+     */
+    public List<ProductModel> searchProducts(String query, String category, String sortBy) {
+        if (isConnectionError) {
+            System.out.println("ProductService - Connection Error!");
+            return new ArrayList<>();
+        }
+        
+        List<ProductModel> products = new ArrayList<>();
+        
+        try {
+            StringBuilder sql = new StringBuilder(
+                "SELECT * FROM product WHERE (name LIKE ? OR description LIKE ? OR brand LIKE ? OR tags LIKE ?)");
+            
+            // Add category filter if specified
+            if (category != null && !category.isEmpty()) {
+                sql.append(" AND category = ?");
+            }
+            
+            // Add sorting
+            sql.append(" ORDER BY ");
+            switch (sortBy) {
+                case "price-low-high":
+                    sql.append("price ASC");
+                    break;
+                case "price-high-low":
+                    sql.append("price DESC");
+                    break;
+                case "newest":
+                    sql.append("created_at DESC");
+                    break;
+                default: // relevancy
+                    sql.append("CASE WHEN name LIKE ? THEN 1 WHEN description LIKE ? THEN 2 ELSE 3 END, name ASC");
+            }
+            
+            try (PreparedStatement stmt = dbConn.prepareStatement(sql.toString())) {
+                String searchPattern = "%" + query + "%";
+                stmt.setString(1, searchPattern);
+                stmt.setString(2, searchPattern);
+                stmt.setString(3, searchPattern);
+                stmt.setString(4, searchPattern);
+                
+                int paramIndex = 5;
+                if (category != null && !category.isEmpty()) {
+                    stmt.setString(paramIndex++, category);
+                }
+                
+                if (sortBy.equals("relevancy")) {
+                    stmt.setString(paramIndex++, searchPattern);
+                    stmt.setString(paramIndex, searchPattern);
+                }
+                
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        products.add(mapResultSetToProduct(rs));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("ProductService - SQL Error searching products: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return products;
     }
     
     /**

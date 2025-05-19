@@ -343,14 +343,50 @@
 	color: #8E9196;
 }
 
-/* Loading Spinner */
+/* Search Box Styles */
+.search-box {
+	position: relative;
+	display: flex;
+	align-items: center;
+	background-color: #f5f5f5;
+	border-radius: 20px;
+	padding: 5px 15px;
+	margin-right: 20px;
+}
+
+.search-form {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.search-input {
+	border: none;
+	background: none;
+	padding: 5px 10px;
+	width: 200px;
+	font-size: 14px;
+	color: #333;
+	outline: none;
+}
+
+.search-input::placeholder {
+	color: #8E9196;
+}
+
+.search-icon {
+	color: #8E9196;
+	margin-right: 5px;
+}
+
+/* Loading State */
 .spinner-container {
+	display: none;
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	z-index: 1000;
-	display: none;
 }
 
 .spinner {
@@ -370,4 +406,87 @@
 .product-grid.loading {
 	opacity: 0.5;
 	pointer-events: none;
+}
+
+/* No Results Styles */
+.no-results {
+	width: 100%;
+	text-align: center;
+	padding: 60px 20px;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin: 20px 0;
+}
+
+.no-results-icon {
+	font-size: 48px;
+	margin-bottom: 20px;
+}
+
+.no-results h3 {
+	font-size: 24px;
+	color: #333;
+	margin-bottom: 10px;
+}
+
+.no-results p {
+	color: #666;
+	margin-bottom: 20px;
+}
+
+.no-results-suggestions {
+	background: #f8f9fa;
+	padding: 20px;
+	border-radius: 6px;
+	margin: 20px auto;
+	max-width: 400px;
+}
+
+.no-results-suggestions p {
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+
+.no-results-suggestions ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.no-results-suggestions li {
+	color: #666;
+	margin: 8px 0;
+	position: relative;
+	padding-left: 20px;
+}
+
+.no-results-suggestions li:before {
+	content: "•";
+	position: absolute;
+	left: 0;
+	color: #007bff;
+}
+
+.back-to-home {
+	display: inline-block;
+	padding: 12px 24px;
+	background: #000000;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	margin-top: 20px;
+	transition: background-color 0.3s ease;
+}
+
+.back-to-home:hover {
+	background: #4d5053;
+}
+
+.product-grid.empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 300px;
+	grid-template-columns: none;
 }

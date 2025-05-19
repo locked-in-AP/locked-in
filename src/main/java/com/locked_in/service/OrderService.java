@@ -210,17 +210,13 @@ public class OrderService {
                       "JOIN user_product_order upo ON o.order_id = upo.order_id " +
                       "JOIN product p ON upo.product_id = p.product_id " +
                       "JOIN users u ON upo.user_id = u.user_id " +
-                      "ORDER BY o.order_date DESC";
-        
+                      "ORDER BY (o.payment_status = 'completed') ASC, o.order_date DESC";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
-            
             Map<Integer, OrderModel> orderMap = new HashMap<>();
-            
             while (rs.next()) {
                 int orderId = rs.getInt("order_id");
                 OrderModel order = orderMap.get(orderId);
-                
                 if (order == null) {
                     order = new OrderModel();
                     order.setOrderId(orderId);
@@ -230,25 +226,20 @@ public class OrderService {
                     order.setItems(new ArrayList<>());
                     orderMap.put(orderId, order);
                 }
-                
                 OrderItemModel item = new OrderItemModel();
                 item.setProductId(rs.getInt("product_id"));
                 item.setQuantity(rs.getInt("order_quantity"));
-                
                 ProductModel product = new ProductModel();
                 product.setProductId(rs.getInt("product_id"));
                 product.setName(rs.getString("name"));
                 product.setDescription(rs.getString("description"));
                 product.setPrice(rs.getBigDecimal("price"));
                 product.setImage(rs.getString("image"));
-                
                 item.setProduct(product);
                 order.getItems().add(item);
             }
-            
             orders.addAll(orderMap.values());
         }
-        
         return orders;
     }
 
@@ -289,5 +280,87 @@ public class OrderService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<OrderModel> getNotCompletedOrders() throws SQLException {
+        List<OrderModel> orders = new ArrayList<>();
+        String query = "SELECT o.*, upo.product_id, upo.order_quantity, p.*, u.name as user_name " +
+                      "FROM orders o " +
+                      "JOIN user_product_order upo ON o.order_id = upo.order_id " +
+                      "JOIN product p ON upo.product_id = p.product_id " +
+                      "JOIN users u ON upo.user_id = u.user_id " +
+                      "WHERE o.payment_status != 'completed' " +
+                      "ORDER BY o.order_date DESC";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            Map<Integer, OrderModel> orderMap = new HashMap<>();
+            while (rs.next()) {
+                int orderId = rs.getInt("order_id");
+                OrderModel order = orderMap.get(orderId);
+                if (order == null) {
+                    order = new OrderModel();
+                    order.setOrderId(orderId);
+                    order.setOrderDate(rs.getTimestamp("order_date"));
+                    order.setTotalPrice(rs.getBigDecimal("total_price"));
+                    order.setPaymentStatus(rs.getString("payment_status"));
+                    order.setItems(new ArrayList<>());
+                    orderMap.put(orderId, order);
+                }
+                OrderItemModel item = new OrderItemModel();
+                item.setProductId(rs.getInt("product_id"));
+                item.setQuantity(rs.getInt("order_quantity"));
+                ProductModel product = new ProductModel();
+                product.setProductId(rs.getInt("product_id"));
+                product.setName(rs.getString("name"));
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getBigDecimal("price"));
+                product.setImage(rs.getString("image"));
+                item.setProduct(product);
+                order.getItems().add(item);
+            }
+            orders.addAll(orderMap.values());
+        }
+        return orders;
+    }
+
+    public List<OrderModel> getCompletedOrders() throws SQLException {
+        List<OrderModel> orders = new ArrayList<>();
+        String query = "SELECT o.*, upo.product_id, upo.order_quantity, p.*, u.name as user_name " +
+                      "FROM orders o " +
+                      "JOIN user_product_order upo ON o.order_id = upo.order_id " +
+                      "JOIN product p ON upo.product_id = p.product_id " +
+                      "JOIN users u ON upo.user_id = u.user_id " +
+                      "WHERE o.payment_status = 'completed' " +
+                      "ORDER BY o.order_date DESC";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            Map<Integer, OrderModel> orderMap = new HashMap<>();
+            while (rs.next()) {
+                int orderId = rs.getInt("order_id");
+                OrderModel order = orderMap.get(orderId);
+                if (order == null) {
+                    order = new OrderModel();
+                    order.setOrderId(orderId);
+                    order.setOrderDate(rs.getTimestamp("order_date"));
+                    order.setTotalPrice(rs.getBigDecimal("total_price"));
+                    order.setPaymentStatus(rs.getString("payment_status"));
+                    order.setItems(new ArrayList<>());
+                    orderMap.put(orderId, order);
+                }
+                OrderItemModel item = new OrderItemModel();
+                item.setProductId(rs.getInt("product_id"));
+                item.setQuantity(rs.getInt("order_quantity"));
+                ProductModel product = new ProductModel();
+                product.setProductId(rs.getInt("product_id"));
+                product.setName(rs.getString("name"));
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getBigDecimal("price"));
+                product.setImage(rs.getString("image"));
+                item.setProduct(product);
+                order.getItems().add(item);
+            }
+            orders.addAll(orderMap.values());
+        }
+        return orders;
     }
 } 

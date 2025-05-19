@@ -274,90 +274,209 @@
             </div>
         </div>
         
-        <c:choose>
-            <c:when test="${empty orders}">
-                <div class="info-message">
-                    <i class="fas fa-info-circle"></i>
-                    <div>No orders found.</div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="orders-list">
-                    <c:forEach items="${orders}" var="order">
-                        <div class="order-card" id="order-${order.orderId}">
-                            <div class="order-header">
-                                <div class="order-info">
-                                    <span class="order-id">Order #${order.orderId}</span>
-                                    <span class="order-date">
-                                        <fmt:formatDate value="${order.orderDate}" pattern="MMM dd, yyyy" />
-                                    </span>
+        <div class="orders-filter-bar" style="margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
+            <label for="orderFilter" style="font-weight: 600;">Show:</label>
+            <select id="orderFilter" style="padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid #ccc;">
+                <option value="all">All Orders</option>
+                <option value="not-completed">Not Completed Orders</option>
+                <option value="completed">Completed Orders</option>
+            </select>
+        </div>
+
+        <div class="orders-list-section" id="notCompletedSection">
+            <h2>Not Completed Orders</h2>
+            <c:choose>
+                <c:when test="${empty notCompletedOrders}">
+                    <div class="info-message">
+                        <i class="fas fa-info-circle"></i>
+                        <div>No not completed orders found.</div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="orders-list">
+                        <c:forEach items="${notCompletedOrders}" var="order">
+                            <div class="order-card" id="order-${order.orderId}">
+                                <div class="order-header">
+                                    <div class="order-info">
+                                        <span class="order-id">Order #${order.orderId}</span>
+                                        <span class="order-date">
+                                            <fmt:formatDate value="${order.orderDate}" pattern="MMM dd, yyyy" />
+                                        </span>
+                                    </div>
+                                    <div class="order-status ${order.paymentStatus.toLowerCase()}">
+                                        ${order.paymentStatus}
+                                    </div>
                                 </div>
-                                <div class="order-status ${order.paymentStatus.toLowerCase()}">
-                                    ${order.paymentStatus}
-                                </div>
-                            </div>
-                            
-                            <div class="order-items">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${order.items}" var="item">
+                                <div class="order-items">
+                                    <table>
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    <div class="product-row">
-                                                        <img src="${item.product.image}" alt="${item.product.name}" class="product-image">
-                                                        <div class="item-details">
-                                                            <h5>${item.product.name}</h5>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>${item.quantity}</td>
-                                                <td>
-                                                    <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="$"/>
-                                                </td>
-                                                <td>
-                                                    <fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="$"/>
-                                                </td>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Total</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="order-footer">
-                                <div class="total">
-                                    <span>Total:</span>
-                                    <span class="amount">
-                                        <fmt:formatNumber value="${order.totalPrice}" type="currency" currencySymbol="$"/>
-                                    </span>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${order.items}" var="item">
+                                                <tr>
+                                                    <td>
+                                                        <div class="product-row">
+                                                            <img src="${item.product.image}" alt="${item.product.name}" class="product-image">
+                                                            <div class="item-details">
+                                                                <h5>${item.product.name}</h5>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>${item.quantity}</td>
+                                                    <td>
+                                                        <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="$"/>
+                                                    </td>
+                                                    <td>
+                                                        <fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="$"/>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="status-actions">
-                                    <c:if test="${order.paymentStatus == 'pending'}">
-                                        <form action="${pageContext.request.contextPath}/updateOrderStatus" method="post" style="display: inline;">
-                                            <input type="hidden" name="orderId" value="${order.orderId}">
-                                            <input type="hidden" name="status" value="completed">
-                                            <button type="submit" class="status-btn complete">Mark as Completed</button>
-                                        </form>
-                                        <form action="${pageContext.request.contextPath}/updateOrderStatus" method="post" style="display: inline;">
-                                            <input type="hidden" name="orderId" value="${order.orderId}">
-                                            <input type="hidden" name="status" value="cancelled">
-                                            <button type="submit" class="status-btn cancel">Cancel Order</button>
-                                        </form>
-                                    </c:if>
+                                <div class="order-footer">
+                                    <div class="total">
+                                        <span>Total:</span>
+                                        <span class="amount">
+                                            <fmt:formatNumber value="${order.totalPrice}" type="currency" currencySymbol="$"/>
+                                        </span>
+                                    </div>
+                                    <div class="status-actions">
+                                        <c:if test="${order.paymentStatus == 'pending'}">
+                                            <form action="${pageContext.request.contextPath}/updateOrderStatus" method="post" style="display: inline;">
+                                                <input type="hidden" name="orderId" value="${order.orderId}">
+                                                <input type="hidden" name="status" value="completed">
+                                                <button type="submit" class="status-btn complete">Mark as Completed</button>
+                                            </form>
+                                            <form action="${pageContext.request.contextPath}/updateOrderStatus" method="post" style="display: inline;">
+                                                <input type="hidden" name="orderId" value="${order.orderId}">
+                                                <input type="hidden" name="status" value="cancelled">
+                                                <button type="submit" class="status-btn cancel">Cancel Order</button>
+                                            </form>
+                                        </c:if>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </c:forEach>
-                </div>
-            </c:otherwise>
-        </c:choose>
+                        </c:forEach>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+        <div class="orders-list-section" id="completedSection">
+            <h2>Completed Orders</h2>
+            <c:choose>
+                <c:when test="${empty completedOrders}">
+                    <div class="info-message">
+                        <i class="fas fa-info-circle"></i>
+                        <div>No completed orders found.</div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="orders-list">
+                        <c:forEach items="${completedOrders}" var="order">
+                            <div class="order-card" id="order-${order.orderId}">
+                                <div class="order-header">
+                                    <div class="order-info">
+                                        <span class="order-id">Order #${order.orderId}</span>
+                                        <span class="order-date">
+                                            <fmt:formatDate value="${order.orderDate}" pattern="MMM dd, yyyy" />
+                                        </span>
+                                    </div>
+                                    <div class="order-status ${order.paymentStatus.toLowerCase()}">
+                                        ${order.paymentStatus}
+                                    </div>
+                                </div>
+                                <div class="order-items">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${order.items}" var="item">
+                                                <tr>
+                                                    <td>
+                                                        <div class="product-row">
+                                                            <img src="${item.product.image}" alt="${item.product.name}" class="product-image">
+                                                            <div class="item-details">
+                                                                <h5>${item.product.name}</h5>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>${item.quantity}</td>
+                                                    <td>
+                                                        <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="$"/>
+                                                    </td>
+                                                    <td>
+                                                        <fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="$"/>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="order-footer">
+                                    <div class="total">
+                                        <span>Total:</span>
+                                        <span class="amount">
+                                            <fmt:formatNumber value="${order.totalPrice}" type="currency" currencySymbol="$"/>
+                                        </span>
+                                    </div>
+                                    <div class="status-actions">
+                                        <c:if test="${order.paymentStatus == 'pending'}">
+                                            <form action="${pageContext.request.contextPath}/updateOrderStatus" method="post" style="display: inline;">
+                                                <input type="hidden" name="orderId" value="${order.orderId}">
+                                                <input type="hidden" name="status" value="completed">
+                                                <button type="submit" class="status-btn complete">Mark as Completed</button>
+                                            </form>
+                                            <form action="${pageContext.request.contextPath}/updateOrderStatus" method="post" style="display: inline;">
+                                                <input type="hidden" name="orderId" value="${order.orderId}">
+                                                <input type="hidden" name="status" value="cancelled">
+                                                <button type="submit" class="status-btn cancel">Cancel Order</button>
+                                            </form>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+        <script>
+            const filterDropdown = document.getElementById('orderFilter');
+            const notCompletedSection = document.getElementById('notCompletedSection');
+            const completedSection = document.getElementById('completedSection');
+
+            function updateOrderSections() {
+                const value = filterDropdown.value;
+                if (value === 'all') {
+                    notCompletedSection.style.display = '';
+                    completedSection.style.display = '';
+                } else if (value === 'not-completed') {
+                    notCompletedSection.style.display = '';
+                    completedSection.style.display = 'none';
+                } else if (value === 'completed') {
+                    notCompletedSection.style.display = 'none';
+                    completedSection.style.display = '';
+                }
+            }
+            filterDropdown.addEventListener('change', updateOrderSections);
+            // Set initial state
+            updateOrderSections();
+        </script>
     </div>
 
     <jsp:include page="../footer.jsp" />
