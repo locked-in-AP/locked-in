@@ -43,6 +43,13 @@ public class AdminDashboardController extends HttpServlet {
 			}
 			request.setAttribute("products", products);
 			request.setAttribute("users", users);
+
+            // Check for success message from redirect
+            String successMessage = request.getParameter("success");
+            if (successMessage != null && !successMessage.isEmpty()) {
+                request.setAttribute("success", successMessage);
+            }
+
 			request.getRequestDispatcher("/WEB-INF/pages/admindashboard.jsp").forward(request, response);
 		} catch (Exception e) {
 			System.out.println("AdminDashboardController - Error: " + e.getMessage());
