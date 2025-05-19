@@ -45,8 +45,11 @@
 	</nav>
 	<div class="right-menu">
 		<div class="search-box">
-			<span class="icon search-icon"></span> <input type="text"
-				class="search-input" placeholder="What are you looking for to...">
+			<span class="icon search-icon"></span>
+			<form action="${pageContext.request.contextPath}/search" method="get" class="search-form">
+				<input type="text" name="q" class="search-input" placeholder="What are you looking for to..." 
+					value="${param.q}" required>
+			</form>
 		</div>
 		<a href="${pageContext.request.contextPath}/wishlist"><span class="icon heart-icon"></span></a>
 		<a href="${pageContext.request.contextPath}/userprofile"><span

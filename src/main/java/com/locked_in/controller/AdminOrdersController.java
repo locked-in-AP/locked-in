@@ -43,10 +43,11 @@ public class AdminOrdersController extends HttpServlet {
                 return;
             }
 
-            // Get all orders
-            List<OrderModel> orders = orderService.getAllOrders();
-            request.setAttribute("orders", orders);
-            
+            // Get not completed and completed orders
+            List<OrderModel> notCompletedOrders = orderService.getNotCompletedOrders();
+            List<OrderModel> completedOrders = orderService.getCompletedOrders();
+            request.setAttribute("notCompletedOrders", notCompletedOrders);
+            request.setAttribute("completedOrders", completedOrders);
             request.getRequestDispatcher("/WEB-INF/pages/admin/orders.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();

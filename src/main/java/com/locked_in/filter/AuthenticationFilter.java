@@ -48,6 +48,7 @@ public class AuthenticationFilter implements Filter {
 	private static final String ADD_REVIEW = "/addReview";
 	private static final String USER_PROFILE = "/userProfile";
 	private static final String UPDATE_PROFILE = "/updateProfile";
+	private static final String SEARCH = "/search";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -72,7 +73,7 @@ public class AuthenticationFilter implements Filter {
 		}
 
 		// Check if the request is for the home page or login/register pages
-		if (path.equals("/") || path.equals("/login") || path.equals("/register") || path.equals("/aboutus") || path.equals("/contactus")) {
+		if (path.equals("/") || path.equals("/login") || path.equals("/register")) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -89,7 +90,7 @@ public class AuthenticationFilter implements Filter {
 			// Not logged in
 			if (path.endsWith(LOGIN) || path.endsWith(REGISTER) || path.endsWith(SUPPLEMENTS) || path.endsWith(EQUIPMENTS)
 					|| path.endsWith(MERCHANDISE) || path.endsWith(HOME) || path.endsWith(ROOT) || path.endsWith(ABOUT)
-					|| path.endsWith(CONTACT) || path.endsWith(LOGOUT) || path.endsWith(ITEM)) {
+					|| path.endsWith(CONTACT) || path.endsWith(LOGOUT) || path.endsWith(ITEM) || path.endsWith(SEARCH)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(contextPath + LOGIN);
@@ -104,7 +105,7 @@ public class AuthenticationFilter implements Filter {
 				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
 			} else if (path.endsWith(ADMIN_DASHBOARD) || path.endsWith(ADMIN_ORDER) || path.endsWith(HOME)
 					|| path.endsWith(ROOT) || path.endsWith(LOGOUT) || path.endsWith(ADD) || path.endsWith(DELETE) || path.endsWith(USER) || path.endsWith(DELETEUSER)
-					|| path.endsWith(UPDATE_PRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS)) {
+					|| path.endsWith(UPDATE_PRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS) || path.endsWith(SEARCH)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
@@ -117,8 +118,8 @@ public class AuthenticationFilter implements Filter {
 					|| path.endsWith(ORDER_LIST) || path.endsWith(CART) || path.endsWith(USER_DASHBOARD)
 					|| path.endsWith(SUPPLEMENTS) || path.endsWith(EQUIPMENTS) || path.endsWith(MERCHANDISE)
 					|| path.endsWith(ITEM) || path.endsWith(PAYMENT) || path.endsWith(LOGOUT) || path.endsWith(UPDATE)
-					|| path.endsWith(CHECKOUT) || path.endsWith(ORDERS) || path.endsWith(ADD_REVIEW) || path.endsWith(USER_PROFILE) || path.endsWith(UPDATE_PROFILE)) {
-
+					|| path.endsWith(CHECKOUT) || path.endsWith(ORDERS) || path.endsWith(ADD_REVIEW) || path.endsWith(USER_PROFILE) 
+					|| path.endsWith(UPDATE_PROFILE) || path.endsWith(SEARCH)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(contextPath + HOME);
