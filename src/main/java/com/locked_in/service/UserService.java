@@ -179,4 +179,17 @@ public class UserService {
             return false;
         }
     }
+
+    public int getTotalCustomersLast30Days() throws SQLException {
+        String query = "SELECT COUNT(*) as total_customers FROM users " +
+                      "WHERE joined_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+        
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total_customers");
+            }
+        }
+        return 0;
+    }
 } 

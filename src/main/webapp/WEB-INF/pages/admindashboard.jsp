@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
 <link rel="stylesheet" type="text/css"
@@ -63,7 +64,9 @@
 						<h3 class="metric-title">Total Revenue</h3>
 						<p class="metric-subtitle">Last 30 days</p>
 					</div>
-					<div class="metric-value revenue">$82,650</div>
+					<div class="metric-value revenue">
+						<fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="$"/>
+					</div>
 				</div>
 
 				<div class="metric-card">
@@ -71,15 +74,15 @@
 						<h3 class="metric-title">Total Orders</h3>
 						<p class="metric-subtitle">Last 30 days</p>
 					</div>
-					<div class="metric-value order">16.45</div>
+					<div class="metric-value order">${totalOrders}</div>
 				</div>
 
 				<div class="metric-card">
 					<div class="metric-content">
-						<h3 class="metric-title">Total Customers</h3>
+						<h3 class="metric-title">Total Users</h3>
 						<p class="metric-subtitle">Last 30 days</p>
 					</div>
-					<div class="metric-value customer">1,462</div>
+					<div class="metric-value customer">${totalCustomers}</div>
 				</div>
 
 				<div class="metric-card">
@@ -87,7 +90,7 @@
 						<h3 class="metric-title">Pending Deliveries</h3>
 						<p class="metric-subtitle">Last 30 days</p>
 					</div>
-					<div class="metric-value delivery">117</div>
+					<div class="metric-value delivery">${pendingDeliveries}</div>
 				</div>
 			</div>
 		</div>

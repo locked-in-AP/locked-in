@@ -11,6 +11,8 @@ import com.locked_in.model.ProductModel;
 import java.util.List;
 import com.locked_in.service.UserService;
 import com.locked_in.model.UserModel;
+import com.locked_in.service.OrderService;
+import java.math.BigDecimal;
 
 /**
  * Servlet implementation class AdminDashboard
@@ -20,6 +22,7 @@ public class AdminDashboardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final ProductService productService;
 	private final UserService userService;
+	private final OrderService orderService;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -28,6 +31,7 @@ public class AdminDashboardController extends HttpServlet {
         super();
         this.productService = new ProductService();
         this.userService = new UserService();
+        this.orderService = new OrderService();
     }
 
 	/**
@@ -41,8 +45,25 @@ public class AdminDashboardController extends HttpServlet {
 			if (users.size() > 5) {
 				users = users.subList(0, 5);
 			}
+			
+			// Get total revenue from completed orders in last 30 days
+			BigDecimal totalRevenue = orderService.getTotalRevenueLast30Days();
+			
+			// Get total orders in last 30 days
+			int totalOrders = orderService.getTotalOrdersLast30Days();
+			
+			// Get total customers in last 30 days
+			int totalCustomers = userService.getTotalCustomersLast30Days();
+			
+			// Get pending deliveries count
+			int pendingDeliveries = orderService.getPendingDeliveriesCount();
+			
 			request.setAttribute("products", products);
 			request.setAttribute("users", users);
+			request.setAttribute("totalRevenue", totalRevenue);
+			request.setAttribute("totalOrders", totalOrders);
+			request.setAttribute("totalCustomers", totalCustomers);
+			request.setAttribute("pendingDeliveries", pendingDeliveries);
 
             // Check for success message from redirect
             String successMessage = request.getParameter("success");
