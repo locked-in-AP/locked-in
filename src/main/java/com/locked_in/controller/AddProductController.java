@@ -56,32 +56,8 @@ public class AddProductController extends HttpServlet {
             String weightStr = request.getParameter("weight");
             String dimensions = request.getParameter("dimensions");
 
-            // Handle file upload
-            Part filePart = request.getPart("image");
-            String fileName = null;
-            if (filePart != null && filePart.getSize() > 0) {
-                // Get the application's real path
-                String appPath = request.getServletContext().getRealPath("");
-                String uploadPath = appPath + File.separator + UPLOAD_DIR;
-                
-                // Create upload directory if it doesn't exist
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdirs();
-                }
-                
-                // Generate unique filename
-                String originalFileName = filePart.getSubmittedFileName();
-                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-                fileName = UUID.randomUUID().toString() + fileExtension;
-                
-                // Save the file
-                Path filePath = Paths.get(uploadPath, fileName);
-                Files.copy(filePart.getInputStream(), filePath);
-                
-                // Set the image path for the database
-                fileName = UPLOAD_DIR + "/" + fileName;
-            }
+            // Handle image URL input
+            String imageUrl = request.getParameter("image");
 
             // Create ProductModel
             ProductModel product = new ProductModel(
@@ -93,7 +69,7 @@ public class AddProductController extends HttpServlet {
                 new BigDecimal(priceStr),
                 Integer.parseInt(stockQuantityStr),
                 new BigDecimal(weightStr),
-                fileName,
+                imageUrl,
                 dimensions
             );
 

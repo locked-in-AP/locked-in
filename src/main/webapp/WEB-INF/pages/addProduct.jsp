@@ -34,7 +34,7 @@
 					<i class="fas fa-sign-out-alt"></i> Logout
 				</a>
 				<img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-					alt="Admin Profile" class="admin-pfp">
+					alt="Admin Profile" class="admin-pfp" height="40" width="40">
 			</div>
 		</div>
 
@@ -49,22 +49,23 @@
 			<form action="${pageContext.request.contextPath}/addProduct" method="post" enctype="multipart/form-data" class="product-form">
 				<div class="form-group">
 					<label for="name">Product Name</label>
-					<input type="text" id="name" name="name" required>
+					<input type="text" id="name" name="name" required placeholder="Enter product name">
 				</div>
 
 				<div class="form-group">
 					<label for="description">Description</label>
-					<textarea id="description" name="description" rows="4" required></textarea>
+					<textarea id="description" name="description" rows="4" required placeholder="Enter product description"></textarea>
 				</div>
 
 				<div class="form-group">
 					<label for="brand">Brand</label>
-					<input type="text" id="brand" name="brand" required>
+					<input type="text" id="brand" name="brand" required placeholder="Enter brand name">
 				</div>
 
 				<div class="form-group">
 					<label for="category">Category</label>
 					<select id="category" name="category" required>
+						<option value="" disabled selected>Select category</option>
 						<option value="equipment">Equipment</option>
 						<option value="supplement">Supplement</option>
 						<option value="merchandise">Merchandise</option>
@@ -73,35 +74,32 @@
 
 				<div class="form-group">
 					<label for="tags">Tags (comma separated)</label>
-					<input type="text" id="tags" name="tags" required>
+					<input type="text" id="tags" name="tags" required placeholder="e.g. protein, whey, isolate">
 				</div>
 
 				<div class="form-group">
 					<label for="price">Price ($)</label>
-					<input type="number" id="price" name="price" step="0.01" min="0" required>
+					<input type="number" id="price" name="price" step="0.01" min="0" required placeholder="Enter price in USD">
 				</div>
 
 				<div class="form-group">
 					<label for="stockQuantity">Stock Quantity</label>
-					<input type="number" id="stockQuantity" name="stockQuantity" min="0" required>
+					<input type="number" id="stockQuantity" name="stockQuantity" min="0" required placeholder="Enter stock quantity">
 				</div>
 
 				<div class="form-group">
 					<label for="weight">Weight (kg)</label>
-					<input type="number" id="weight" name="weight" step="0.01" min="0" required>
+					<input type="number" id="weight" name="weight" step="0.01" min="0" required placeholder="Enter weight in kg">
 				</div>
 
 				 <div class="form-group">
-                <label for="image">Product Image</label>
-                <div class="file-input-container">
-                    <input type="file" id="image" name="image" accept="image/*" required>
-                    
-                </div>
+                <label for="image">Product Image URL</label>
+                <input type="text" id="image" name="image" placeholder="Enter image URL" required>
             </div>
 
 				<div class="form-group">
 					<label for="dimensions">Dimensions (e.g., 10x10x10)</label>
-					<input type="text" id="dimensions" name="dimensions" required>
+					<input type="text" id="dimensions" name="dimensions" required placeholder="e.g., 10x10x10">
 				</div>
 
 				<div class="form-actions">
