@@ -119,8 +119,7 @@ public class AuthenticationFilter implements Filter {
 		}
 
 		boolean isLoggedIn = SessionUtil.getAttribute(req, "email") != null;
-		String userRole = CookieUtil.getCookie(req, "role") != null ? CookieUtil.getCookie(req, "role").getValue()
-				: null;
+		String userRole = (String) SessionUtil.getAttribute(req, "role");
 
 		System.out.println("URI: " + uri);
 		System.out.println("Is logged in: " + isLoggedIn);
