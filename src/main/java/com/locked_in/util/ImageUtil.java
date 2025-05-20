@@ -7,26 +7,29 @@ import jakarta.servlet.http.Part;
 
 /**
  * Utility class for handling image file uploads.
- * <p>
- * This class provides methods for extracting the file name from a {@link Part}
- * object and uploading the image file to a specified directory on the server.
- * </p>
+ * 
+ * This utility class provides methods for:
+ * - Extracting filenames from uploaded files
+ * - Managing image file uploads to server directories
+ * - Handling file system operations for images
+ * 
+ * The class ensures proper file handling by:
+ * - Validating file names and paths
+ * - Creating necessary directories
+ * - Managing file system operations safely
  */
 public class ImageUtil {
 
 	/**
-	 * Extracts the file name from the given {@link Part} object based on the
-	 * "content-disposition" header.
+	 * Extracts the file name from the given Part object.
 	 * 
-	 * <p>
-	 * This method parses the "content-disposition" header to retrieve the file name
-	 * of the uploaded image. If the file name cannot be determined, a default name
-	 * "download.png" is returned.
-	 * </p>
+	 * This method:
+	 * 1. Retrieves the content-disposition header
+	 * 2. Parses the header to find the filename
+	 * 3. Returns a default name if no filename is found
 	 * 
-	 * @param part the {@link Part} object representing the uploaded file.
-	 * @return the extracted file name. If no filename is found, returns a default
-	 *         name "download.png".
+	 * @param part the Part object representing the uploaded file
+	 * @return the extracted file name, or "download.png" if no filename is found
 	 */
 	public String getImageNameFromPart(Part part) {
 		// Retrieve the content-disposition header from the part
@@ -57,19 +60,18 @@ public class ImageUtil {
 	}
 
 	/**
-	 * Uploads the image file from the given {@link Part} object to a specified
-	 * directory on the server.
+	 * Uploads an image file to a specified directory.
 	 * 
-	 * <p>
-	 * This method ensures that the directory where the file will be saved exists
-	 * and creates it if necessary. It writes the uploaded file to the server's file
-	 * system. Returns {@code true} if the upload is successful, and {@code false}
-	 * otherwise.
-	 * </p>
+	 * This method:
+	 * 1. Validates and creates the target directory if needed
+	 * 2. Extracts the image filename
+	 * 3. Writes the file to the server's file system
+	 * 4. Handles any I/O errors that occur
 	 * 
-	 * @param part the {@link Part} object representing the uploaded image file.
-	 * @return {@code true} if the file was successfully uploaded, {@code false}
-	 *         otherwise.
+	 * @param part the Part object containing the uploaded image
+	 * @param rootPath the root path for file storage
+	 * @param saveFolder the subfolder to save the image in
+	 * @return true if the upload was successful, false otherwise
 	 */
 	public boolean uploadImage(Part part, String rootPath, String saveFolder) {
 		String savePath = getSavePath(saveFolder);
@@ -95,6 +97,17 @@ public class ImageUtil {
 		}
 	}
 	
+	/**
+	 * Generates the full path for saving an image.
+	 * 
+	 * Constructs the complete file system path by combining:
+	 * - The web application's resource directory
+	 * - The images subdirectory
+	 * - The specified save folder
+	 * 
+	 * @param saveFolder the subfolder to save the image in
+	 * @return the complete path for saving the image
+	 */
 	public String getSavePath(String saveFolder) {
 		return "C:/Users/Prithivi/eclipse-workspace/islington-student/src/main/webapp/resources/images/"+saveFolder+"/";
 	}

@@ -8,24 +8,41 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import com.locked_in.util.SessionUtil;
+import com.locked_in.service.OrderService;
+import com.locked_in.service.UserService;
 
 /**
- * Controller for handling user activity history
+ * HistoryController handles HTTP requests for order history.
+ * 
+ * It serves the order history page, displaying past orders for authenticated
+ * users with their details, status, and related information.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/history" })
 public class HistoryController extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private OrderService orderService;
+    private UserService userService;
     
     /**
-     * Default constructor
+     * Initializes the HistoryController with instances of required services.
+     * Sets up OrderService for order history operations and UserService for user validation.
      */
     public HistoryController() {
         super();
+        orderService = new OrderService();
+        userService = new UserService();
     }
     
     /**
-     * Handles GET requests to display user history
-     * For now, redirects to user profile as history view is not implemented yet
+     * Handles GET requests to display order history.
+     * 
+     * Retrieves the authenticated user's order history and forwards to the
+     * history view JSP with order details and status information.
+     *
+     * @param request  the HTTP request containing user session information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -45,7 +62,14 @@ public class HistoryController extends HttpServlet {
     }
     
     /**
-     * Handles POST requests for history actions
+     * Handles POST requests for history actions.
+     * 
+     * Currently delegates to doGet as no specific POST functionality is implemented.
+     *
+     * @param request  the HTTP request containing client request information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 

@@ -19,7 +19,11 @@ import com.locked_in.service.UserService;
 import com.locked_in.util.SessionUtil;
 
 /**
- * Servlet implementation class Cart
+ * CartController handles HTTP requests related to shopping cart operations.
+ * 
+ * It manages cart-related functionality including viewing cart contents, adding/removing items,
+ * updating quantities, and processing checkout. Delegates cart operations to CartService
+ * and user-related operations to UserService.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/cart", "/cart/*" })
 public class CartController extends HttpServlet {
@@ -28,7 +32,8 @@ public class CartController extends HttpServlet {
 	private UserService userService;
        
     /**
-     * @see HttpServlet#HttpServlet()
+     * Initializes the CartController with instances of required services.
+     * Sets up CartService for cart operations and UserService for user-related operations.
      */
     public CartController() {
         super();	
@@ -37,8 +42,17 @@ public class CartController extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Handles GET requests to display cart contents.
+	 * 
+	 * Retrieves the current user's cart items and forwards to the cart view JSP.
+	 * If user is not logged in, redirects to login page.
+	 *
+	 * @param request  the HTTP request containing user session information
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String email = (String) SessionUtil.getAttribute(request, "email");
@@ -82,8 +96,18 @@ public class CartController extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Handles POST requests for cart operations.
+	 * 
+	 * Processes cart actions including adding, updating, and removing items.
+	 * Validates user login status, product availability, and quantity.
+	 * Updates cart size in session and redirects with appropriate messages.
+	 *
+	 * @param request  the HTTP request containing cart action data and parameters
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs during processing
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = (String) SessionUtil.getAttribute(request, "email");
 		

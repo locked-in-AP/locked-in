@@ -180,6 +180,15 @@ public class UserService {
         }
     }
 
+    /**
+     * Calculates the total number of new customers in the last 30 days.
+     * 
+     * This method is useful for tracking user growth and can be used
+     * in analytics or dashboard displays.
+     * 
+     * @return the number of new customers in the last 30 days
+     * @throws SQLException if there is an error accessing the database
+     */
     public int getTotalCustomersLast30Days() throws SQLException {
         String query = "SELECT COUNT(*) as total_customers FROM users " +
                       "WHERE joined_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)";

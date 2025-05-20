@@ -11,10 +11,28 @@ import com.locked_in.model.CartModel;
 import com.locked_in.model.ProductModel;
 import com.locked_in.config.DbConfig;
 
+/**
+ * Service class for handling shopping cart operations.
+ * 
+ * This service class manages all aspects of the shopping cart including:
+ * - Cart item management (add, remove, update)
+ * - Stock validation
+ * - Cart size tracking
+ * - Product availability checks
+ * 
+ * The class maintains database connections and collaborates with
+ * ProductService for stock validation and product information.
+ */
 public class CartService {
     private Connection connection;
     private ProductService productService;
 
+    /**
+     * Creates a new CartService instance.
+     * 
+     * Initializes the database connection and ProductService.
+     * Logs any connection errors that occur during initialization.
+     */
     public CartService() {
         try {
             this.connection = DbConfig.getDbConnection();
@@ -25,6 +43,18 @@ public class CartService {
         }
     }
 
+    /**
+     * Retrieves all items in a user's cart.
+     * 
+     * For each cart item, this method:
+     * 1. Gets the basic cart item information
+     * 2. Retrieves the complete product details
+     * 3. Combines them into a CartModel object
+     * 
+     * @param userId the ID of the user whose cart to retrieve
+     * @return List of cart items with complete product details
+     * @throws SQLException if there is an error during database operations
+     */
     public List<CartModel> getCartItems(int userId) throws SQLException {
         List<CartModel> cartItems = new ArrayList<>();
         String query = "SELECT * FROM user_product WHERE user_id = ? AND is_currently_in_cart = true";
@@ -52,6 +82,21 @@ public class CartService {
         return cartItems;
     }
 
+    /**
+     * Adds a product to the user's cart.
+     * 
+     * This method performs the following steps:
+     * 1. Validates product stock availability
+     * 2. Checks if the product is already in the cart
+     * 3. Updates quantity if product exists, or adds new item
+     * 4. Updates the user's cart size
+     * 
+     * @param userId the ID of the user
+     * @param productId the ID of the product to add
+     * @param quantity the quantity to add
+     * @return true if the product was added successfully
+     * @throws SQLException if there is an error during database operations
+     */
     public boolean addToCart(int userId, int productId, int quantity) throws SQLException {
         boolean success = false;
         
@@ -116,6 +161,18 @@ public class CartService {
         return success;
     }
 
+    /**
+     * Removes a product from the user's cart.
+     * 
+     * This method:
+     * 1. Deletes the cart item
+     * 2. Updates the user's cart size
+     * 3. Ensures cart size never goes below zero
+     * 
+     * @param userId the ID of the user
+     * @param productId the ID of the product to remove
+     * @throws SQLException if there is an error during database operations
+     */
     public void removeFromCart(int userId, int productId) throws SQLException {
         String deleteQuery = "DELETE FROM user_product WHERE user_id = ? AND product_id = ? AND is_currently_in_cart = true";
         String updateCartSizeQuery = "UPDATE users SET cart_size = GREATEST(cart_size - 1, 0) WHERE user_id = ?";
@@ -135,6 +192,19 @@ public class CartService {
         }
     }
 
+    /**
+     * Updates the quantity of a product in the user's cart.
+     * 
+     * This method:
+     * 1. Validates that the new quantity is available in stock
+     * 2. Updates the quantity in the cart
+     * 
+     * @param userId the ID of the user
+     * @param productId the ID of the product to update
+     * @param quantity the new quantity
+     * @return true if the quantity was updated successfully
+     * @throws SQLException if there is an error during database operations
+     */
     public boolean updateCartItemQuantity(int userId, int productId, int quantity) throws SQLException {
         // Check if product has enough stock
         if (!productService.hasAvailableStock(productId, quantity)) {
@@ -152,6 +222,16 @@ public class CartService {
         }
     }
 
+    /**
+     * Gets the current size of a user's cart.
+     * 
+     * The cart size represents the number of unique products
+     * currently in the user's cart.
+     * 
+     * @param userId the ID of the user
+     * @return the number of items in the cart
+     * @throws SQLException if there is an error during database operations
+     */
     public int getCartSize(int userId) throws SQLException {
         String query = "SELECT cart_size FROM users WHERE user_id = ?";
         

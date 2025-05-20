@@ -19,30 +19,59 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+/**
+ * AddProductController handles HTTP requests for adding new products.
+ * 
+ * It manages the product creation workflow, including form handling, image upload,
+ * and product data persistence. Delegates product operations to ProductService
+ * and handles multipart form data for file uploads.
+ */
 @WebServlet(asyncSupported = true, urlPatterns = { "/addProduct" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class AddProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private ProductService productService;
+    private final ProductService productService;
     private static final String UPLOAD_DIR = "resources/images/products";
 
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        productService = new ProductService();
+    /**
+     * Initializes the AddProductController with an instance of ProductService.
+     * Sets up the service for handling product creation operations.
+     */
+    public AddProductController() {
+        this.productService = new ProductService();
     }
 
+    /**
+     * Handles GET requests to display the add product form.
+     * 
+     * Forwards the request to the add product JSP located in /WEB-INF/pages/addProduct.jsp.
+     *
+     * @param request  the HTTP request containing client request information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
+     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Forward to the add product form
         request.getRequestDispatcher("/WEB-INF/pages/addProduct.jsp").forward(request, response);
     }
 
+    /**
+     * Handles POST requests for product creation.
+     * 
+     * Processes the product form submission, including image upload and product data.
+     * Creates a new product in the database and handles file storage.
+     *
+     * @param request  the HTTP request containing product form data and image
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
+     */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             // Get form parameters

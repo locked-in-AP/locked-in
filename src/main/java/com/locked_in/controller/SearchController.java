@@ -12,7 +12,10 @@ import com.locked_in.model.ProductModel;
 import com.locked_in.service.ProductService;
 
 /**
- * Controller for handling product search functionality
+ * SearchController handles HTTP requests for product search functionality.
+ * 
+ * It processes search queries and displays matching products based on
+ * various criteria including product name, description, and category.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/search" })
 public class SearchController extends HttpServlet {
@@ -20,7 +23,8 @@ public class SearchController extends HttpServlet {
     private final ProductService productService;
     
     /**
-     * Constructor initializes the ProductService
+     * Initializes the SearchController with an instance of ProductService.
+     * Sets up the service for retrieving product search results.
      */
     public SearchController() {
         super();
@@ -28,7 +32,15 @@ public class SearchController extends HttpServlet {
     }
     
     /**
-     * Handles GET requests for product search
+     * Handles GET requests for product search.
+     * 
+     * Processes the search query, retrieves matching products, and forwards
+     * to the search results view JSP with the results.
+     *
+     * @param request  the HTTP request containing search parameters
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -57,7 +69,14 @@ public class SearchController extends HttpServlet {
     }
     
     /**
-     * Handles POST requests for product search
+     * Handles POST requests for product search.
+     * 
+     * Currently delegates to doGet as no specific POST functionality is implemented.
+     *
+     * @param request  the HTTP request containing client request information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 

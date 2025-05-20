@@ -15,7 +15,11 @@ import com.locked_in.service.OrderService;
 import java.math.BigDecimal;
 
 /**
- * Servlet implementation class AdminDashboard
+ * AdminDashboardController handles HTTP requests for the admin dashboard.
+ * 
+ * It provides administrative functionality including viewing and managing products,
+ * users, and orders. Delegates operations to ProductService, UserService, and OrderService
+ * for handling respective data management tasks.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/admindashboard" })
 public class AdminDashboardController extends HttpServlet {
@@ -25,7 +29,8 @@ public class AdminDashboardController extends HttpServlet {
 	private final OrderService orderService;
        
     /**
-     * @see HttpServlet#HttpServlet()
+     * Initializes the AdminDashboardController with instances of required services.
+     * Sets up ProductService, UserService, and OrderService for handling admin operations.
      */
     public AdminDashboardController() {
         super();
@@ -35,7 +40,15 @@ public class AdminDashboardController extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Handles GET requests to display the admin dashboard.
+	 * 
+	 * Retrieves summary data including total products, users, and orders.
+	 * Forwards the request to the admin dashboard JSP with all necessary data.
+	 *
+	 * @param request  the HTTP request containing admin session information
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -81,7 +94,16 @@ public class AdminDashboardController extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Handles POST requests for admin dashboard actions.
+	 * 
+	 * Currently delegates to doGet as no specific POST functionality is implemented.
+	 * This allows the dashboard to handle any form submissions or AJAX requests
+	 * through the same processing logic as GET requests.
+	 *
+	 * @param request  the HTTP request containing admin action data
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

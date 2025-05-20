@@ -14,6 +14,12 @@ import com.locked_in.service.UserService;
 import com.locked_in.service.OrderService;
 import com.locked_in.util.SessionUtil;
 
+/**
+ * AddReviewController handles HTTP requests related to product reviews.
+ * 
+ * It processes review submissions for products, validating user authentication,
+ * purchase history, and review content before adding new reviews to the database.
+ */
 @WebServlet("/addReview")
 public class AddReviewController extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -21,6 +27,10 @@ public class AddReviewController extends HttpServlet {
     private UserService userService;
     private OrderService orderService;
 
+    /**
+     * Initializes the AddReviewController with instances of required services.
+     * Sets up ReviewService for review operations and UserService for user validation.
+     */
     public AddReviewController() {
         super();
         reviewService = new ReviewService();
@@ -28,8 +38,19 @@ public class AddReviewController extends HttpServlet {
         orderService = new OrderService();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    /**
+     * Handles POST requests for adding new product reviews.
+     * 
+     * Validates user authentication, purchase history, and review content.
+     * Processes the review submission and redirects with appropriate messages.
+     *
+     * @param request  the HTTP request containing review form data
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Check if user is logged in
         String email = (String) SessionUtil.getAttribute(request, "email");
         if (email == null) {
@@ -110,6 +131,19 @@ public class AddReviewController extends HttpServlet {
         }
     }
 
+    /**
+     * Redirects to the orders page with an encoded message and message type.
+     * 
+     * Encodes the message and message type parameters using URL encoding to ensure
+     * safe transmission of special characters. Redirects to the orders page with
+     * the encoded parameters as query strings.
+     *
+     * @param request      the HTTP request containing context path information
+     * @param response     the HTTP response used for redirection
+     * @param message      the message to display to the user
+     * @param messageType  the type of message (e.g., "notification-success", "notification-error")
+     * @throws IOException if an I/O error occurs during redirection
+     */
     private void redirectWithMessage(HttpServletRequest request, HttpServletResponse response, 
                                   String message, String messageType) throws IOException {
         String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8);

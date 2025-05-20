@@ -22,6 +22,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * UpdateProductController handles HTTP requests for product updates.
+ * 
+ * It processes requests to modify existing product information, validating
+ * admin authentication and product existence before performing updates.
+ */
 @WebServlet(asyncSupported = true, urlPatterns = { "/updateProduct" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -32,6 +38,10 @@ public class UpdateProductController extends HttpServlet {
     private UserService userService;
     private static final String UPLOAD_DIR = "resources/images/products";
 
+    /**
+     * Initializes the UpdateProductController with an instance of ProductService.
+     * Sets up the service for handling product update operations.
+     */
     @Override
     public void init() throws ServletException {
         super.init();
@@ -39,6 +49,17 @@ public class UpdateProductController extends HttpServlet {
         userService = new UserService();
     }
 
+    /**
+     * Handles GET requests to display the product update form.
+     * 
+     * Retrieves product information based on the provided ID and forwards
+     * to the update product JSP with the product details.
+     *
+     * @param request  the HTTP request containing product ID
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -59,6 +80,17 @@ public class UpdateProductController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
     }
 
+    /**
+     * Handles POST requests for product updates.
+     * 
+     * Validates admin authentication and processes product information updates.
+     * Updates product details in the database and redirects with appropriate messages.
+     *
+     * @param request  the HTTP request containing updated product information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -179,7 +211,16 @@ public class UpdateProductController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
     }
 
-    // Helper method to use new value if provided, otherwise existing value
+    /**
+     * Retrieves a new value if provided, otherwise returns the existing value.
+     * 
+     * Used to handle form field updates where empty or null values should
+     * preserve the existing data rather than overwriting it with null.
+     *
+     * @param newValue      the new value to check
+     * @param existingValue the existing value to return if newValue is null or empty
+     * @return the new value if provided and non-empty, otherwise the existing value
+     */
     private String getOrDefault(String newValue, String existingValue) {
         if (newValue != null && !newValue.isEmpty()) {
             return newValue;
@@ -187,7 +228,17 @@ public class UpdateProductController extends HttpServlet {
         return existingValue;
     }
 
-    // Helper method for BigDecimal fields
+    /**
+     * Retrieves a new BigDecimal value if provided, otherwise returns the existing value.
+     * 
+     * Used to handle price and weight updates, preserving existing values when
+     * new values are invalid or not provided. Handles NumberFormatException
+     * by returning the existing value.
+     *
+     * @param newValue      the new value to parse and check
+     * @param existingValue the existing value to return if newValue is invalid
+     * @return the parsed new value if valid, otherwise the existing value
+     */
     private BigDecimal getPriceOrDefault(String newValue, BigDecimal existingValue) {
         if (newValue != null && !newValue.isEmpty()) {
             try {
@@ -199,7 +250,17 @@ public class UpdateProductController extends HttpServlet {
         return existingValue;
     }
 
-    // Helper method for integer fields
+    /**
+     * Retrieves a new integer value if provided, otherwise returns the existing value.
+     * 
+     * Used to handle numeric field updates like stock quantity, preserving
+     * existing values when new values are invalid or not provided. Handles
+     * NumberFormatException by returning the existing value.
+     *
+     * @param newValue      the new value to parse and check
+     * @param existingValue the existing value to return if newValue is invalid
+     * @return the parsed new value if valid, otherwise the existing value
+     */
     private int getIntOrDefault(String newValue, int existingValue) {
         if (newValue != null && !newValue.isEmpty()) {
             try {

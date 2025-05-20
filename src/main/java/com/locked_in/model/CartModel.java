@@ -1,5 +1,16 @@
 package com.locked_in.model;
 
+/**
+ * CartModel represents an item in a user's shopping cart.
+ * 
+ * This model class encapsulates all cart item-related data including:
+ * - User identification (user ID)
+ * - Product information (product ID, product details)
+ * - Cart state (quantity, current cart status)
+ * 
+ * The class provides constructors for different initialization scenarios
+ * and maintains encapsulation through getters and setters.
+ */
 public class CartModel {
     private int userId;
     private int productId;

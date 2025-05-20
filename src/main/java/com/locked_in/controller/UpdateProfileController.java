@@ -19,7 +19,10 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 /**
- * Controller for handling user profile updates
+ * UpdateProfileController handles HTTP requests for user profile updates.
+ * 
+ * It processes requests to modify user profile information, including
+ * personal details and profile picture, with proper validation.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/updateProfile" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -31,15 +34,23 @@ public class UpdateProfileController extends HttpServlet {
     private final UserService userService;
     
     /**
-     * Constructor initializes the UserService
+     * Initializes the UpdateProfileController with an instance of UserService.
+     * Sets up the service for handling user profile update operations.
      */
     public UpdateProfileController() {
         this.userService = new UserService();
     }
     
     /**
-     * Handles GET requests to display the update profile form
-     * Retrieves user details and forwards to the update profile JSP
+     * Handles GET requests to display the update profile form.
+     * 
+     * Retrieves user details and forwards to the update profile JSP.
+     * Validates user authentication before displaying the form.
+     *
+     * @param request  the HTTP request containing user session information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -78,8 +89,15 @@ public class UpdateProfileController extends HttpServlet {
     }
     
     /**
-     * Handles POST requests to process the form submission
-     * Updates user profile details if the current password is correct
+     * Handles POST requests for profile updates.
+     * 
+     * Validates user authentication and processes profile information updates.
+     * Updates user details in the database and redirects with appropriate messages.
+     *
+     * @param request  the HTTP request containing updated profile information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -196,7 +214,16 @@ public class UpdateProfileController extends HttpServlet {
     }
     
     /**
-     * Helper method to verify the user's password
+     * Verifies if the provided password matches the user's stored password.
+     * 
+     * Attempts multiple password verification methods:
+     * 1. Direct comparison with stored password
+     * 2. Decryption of stored password and comparison
+     * 3. Encryption of provided password and comparison with stored
+     *
+     * @param user     the user model containing stored password information
+     * @param password the password to verify
+     * @return true if the password matches, false otherwise
      */
     private boolean verifyPassword(UserModel user, String password) {
         // Direct comparison for testing
@@ -216,7 +243,17 @@ public class UpdateProfileController extends HttpServlet {
     }
     
     /**
-     * Helper method to handle update errors
+     * Handles profile update errors by preserving user data and displaying error messages.
+     * 
+     * Retrieves the current user's details and forwards back to the update profile page
+     * with the error message. This allows users to correct their input without losing
+     * previously entered data.
+     *
+     * @param request       the HTTP request containing user session information
+     * @param response      the HTTP response for forwarding
+     * @param errorMessage  the error message to display
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
      */
     private void handleUpdateError(HttpServletRequest request, HttpServletResponse response, String errorMessage) 
             throws ServletException, IOException {

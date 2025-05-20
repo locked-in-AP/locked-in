@@ -19,6 +19,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+/**
+ * RegisterController handles HTTP requests related to user registration.
+ * 
+ * It serves the registration page and processes registration form submissions
+ * by validating user input and creating new user accounts.
+ */
 @WebServlet(asyncSupported = true, urlPatterns = { "/register" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
 maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -28,12 +34,41 @@ public class RegisterController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final RegisterService registerService = new RegisterService();
 
+    /**
+     * Initializes the RegisterController with an instance of RegisterService.
+     * Sets up the service for handling user registration operations.
+     */
+    public RegisterController() {
+        super();
+    }
+
+    /**
+     * Handles GET requests to display the registration page.
+     * 
+     * Forwards the request to the registration JSP located in /WEB-INF/pages/register.jsp.
+     *
+     * @param request  the HTTP request containing client request information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(request, response);
     }
 
+    /**
+     * Handles POST requests for user registration.
+     * 
+     * Processes the registration form submission, validates user input,
+     * creates a new user account, and redirects with appropriate messages.
+     *
+     * @param request  the HTTP request containing registration form data
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -122,6 +157,19 @@ public class RegisterController extends HttpServlet {
         }
     }
 
+    /**
+     * Handles successful registration by forwarding to the specified page with a success message.
+     * 
+     * Sets the success message in the request attributes and forwards to the specified
+     * JSP page, typically the login page after successful registration.
+     *
+     * @param request  the HTTP request to set attributes and forward
+     * @param response the HTTP response for forwarding
+     * @param message  the success message to display
+     * @param page     the JSP page to forward to
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
+     */
     private void handleSuccess(HttpServletRequest request, HttpServletResponse response,
                                String message, String page)
             throws ServletException, IOException {
@@ -129,6 +177,19 @@ public class RegisterController extends HttpServlet {
         request.getRequestDispatcher(page).forward(request, response);
     }
 
+    /**
+     * Handles registration errors by preserving form data and displaying error messages.
+     * 
+     * Preserves all form input values in the request attributes and forwards back to
+     * the registration page with the error message. This allows users to correct
+     * their input without losing previously entered data.
+     *
+     * @param request  the HTTP request containing form data and for setting attributes
+     * @param response the HTTP response for forwarding
+     * @param message  the error message to display
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
+     */
     private void handleError(HttpServletRequest request, HttpServletResponse response, String message)
             throws ServletException, IOException {
     	request.setAttribute("name", request.getParameter("name"));
