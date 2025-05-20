@@ -36,7 +36,7 @@
 
 ## Technologies Used
 
-- Frontend: [JSP/HTML/Javascript]
+- Frontend: [JSP,HTML,Javascript]
 - Backend: [JSP]
 - Database: [XAMPP,MySQL]
 - Styling: [CSS]
