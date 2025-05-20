@@ -29,9 +29,8 @@
 			method="post"  enctype="multipart/form-data">
 			<div class="input-box">
 				<input type="text" name="name" placeholder="Enter your Name"
-					required class="${not empty nameError ? 'error-border' : ''}"
+					class="${not empty nameError ? 'error-border' : ''}"
 					value="${name != null ? name : ''}">
-
 			</div>
 			<c:if test="${not empty nameError}">
 				<p class="field-error">${nameError}</p>
@@ -42,7 +41,6 @@
 					placeholder="Enter preferred Nickname"
 					class="${not empty nicknameError ? 'error-border' : ''}"
 					value="${nickname != null ? nickname : ''}">
-
 			</div>
 			<c:if test="${not empty nicknameError}">
 				<p class="field-error">${nicknameError}</p>
@@ -50,20 +48,18 @@
 
 			<div class="input-box">
 				<input type="email" name="email" placeholder="Enter your Email"
-					required class="${not empty emailError ? 'error-border' : ''}"
+					class="${not empty emailError ? 'error-border' : ''}"
 					value="${email != null ? email : ''}">
-
 			</div>
 			<c:if test="${not empty emailError}">
 				<label class="field-error">${emailError}</label>
-
 			</c:if>
 
 			<div class="input-box disappearing-label">
-				<input type="date" name="dateOfBirth" id="dateOfBirth" required
+				<input type="date" name="dateOfBirth" id="dateOfBirth"
 					class="${not empty dateOfBirthError ? 'error-border' : ''}"
-					value="${dateOfBirth != null ? dateOfBirth : ''}"> <label
-					for="dateOfBirth">Date of birth</label>
+					value="${dateOfBirth != null ? dateOfBirth : ''}"> 
+				<label for="dateOfBirth">Date of birth</label>
 			</div>
 			<c:if test="${not empty dateOfBirthError}">
 				<p class="field-error">${dateOfBirthError}</p>
@@ -71,9 +67,9 @@
 
 			<div class="input-box">
 				<input type="password" name="password" placeholder="Enter Password"
-					value="${password != null ? password : ''}" required
-					class="${not empty passwordError ? 'error-border' : ''}"> <i
-					class="fa-solid fa-eye toggle-password"></i>
+					value="${password != null ? password : ''}"
+					class="${not empty passwordError ? 'error-border' : ''}"> 
+				<i class="fa-solid fa-eye toggle-password"></i>
 			</div>
 			<c:if test="${not empty passwordError}">
 				<p class="field-error">${passwordError}</p>
@@ -82,7 +78,7 @@
 			<div class="input-box">
 				<input type="password" name="repassword"
 					value="${repassword != null ? repassword : ''}"
-					placeholder="Confirm Password" required
+					placeholder="Confirm Password"
 					class="${not empty repasswordError ? 'error-border' : ''}">
 				<i class="fa-solid fa-eye toggle-password"></i>
 			</div>
