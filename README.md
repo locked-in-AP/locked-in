@@ -14,7 +14,7 @@
 
 ## Overview
 
-**locked-in** is a comprehensive e-commerce application designed for gym and fitness enthusiasts. The platform allows users to browse, purchase, and review fitness products, as well as access personalized workout plans and nutrition guides. Developed as a group project for an undergraduate semester, this app aims to provide a seamless shopping and fitness experience.
+**locked-in** is a comprehensive e-commerce application designed for gym and fitness enthusiasts. The platform allows users to browse, purchase, and review fitness products. This app aims to provide a seamless shopping and fitness experience AND HELP YOU GET LOCKED IN.
 
 ## Features
 
