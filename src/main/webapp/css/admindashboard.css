@@ -315,7 +315,8 @@ th {
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
+    margin-top: 20px;
     font-weight: 600;
     color: #333;
 }

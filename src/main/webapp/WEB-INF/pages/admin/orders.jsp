@@ -235,6 +235,10 @@
         .notification-error {
             border-left: 4px solid #dc3545;
         }
+
+        .orders-list-section h2 {
+            margin-top: 2rem;
+        }
     </style>
 </head>
 <body>
@@ -274,7 +278,7 @@
             </div>
         </div>
         
-        <div class="orders-filter-bar" style="margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="orders-filter-bar" style="margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;margin-top: 2rem">
             <label for="orderFilter" style="font-weight: 600;">Show:</label>
             <select id="orderFilter" style="padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid #ccc;">
                 <option value="all">All Orders</option>
@@ -369,7 +373,7 @@
             </c:choose>
         </div>
 
-        <div class="orders-list-section" id="completedSection">
+        <div class="orders-list-section" id="completedSection" style="margin-top: 3rem;">
             <h2>Completed Orders</h2>
             <c:choose>
                 <c:when test="${empty completedOrders}">
