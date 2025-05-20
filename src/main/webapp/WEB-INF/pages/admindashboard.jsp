@@ -24,7 +24,6 @@
 			<li><a href="${pageContext.request.contextPath}/admin/orders"><span class="icon"><i class="fas fa-shopping-cart"></i></span> Orders</a></li>
 			<li><a href="${pageContext.request.contextPath}/productList"><span class="icon"><i class="fas fa-box"></i></span> View Product</a></li>
 			<li><a href="${pageContext.request.contextPath}/addProduct"><span class="icon"><i class="fas fa-pen"></i></span> Add Product</a></li>
-			<li><a href="${pageContext.request.contextPath}/deleteProduct"><span class="icon"><i class="fas fa-trash"></i></span> Delete Product</a></li>
 		</ul>
 	</div>
 
@@ -62,7 +61,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Total Revenue</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">All Time</p>
 					</div>
 					<div class="metric-value revenue">
 						<fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="$"/>
@@ -71,8 +70,8 @@
 
 				<div class="metric-card">
 					<div class="metric-content">
-						<h3 class="metric-title">Total Orders</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<h3 class="metric-title">Orders Completed</h3>
+						<p class="metric-subtitle">Completed Orders</p>
 					</div>
 					<div class="metric-value order">${totalOrders}</div>
 				</div>
@@ -80,7 +79,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Total Users</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">Registered Users</p>
 					</div>
 					<div class="metric-value customer">${totalCustomers}</div>
 				</div>
@@ -88,7 +87,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Pending Deliveries</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">Incomplete Orders</p>
 					</div>
 					<div class="metric-value delivery">${pendingDeliveries}</div>
 				</div>
