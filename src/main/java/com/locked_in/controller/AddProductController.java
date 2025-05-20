@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import com.locked_in.model.ProductModel;
 import com.locked_in.service.ProductService;
+import com.locked_in.util.ValidationUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -73,49 +74,231 @@ public class AddProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            // Get form parameters
-            String name = request.getParameter("name");
-            String description = request.getParameter("description");
-            String brand = request.getParameter("brand");
-            String category = request.getParameter("category");
-            String tags = request.getParameter("tags");
-            String priceStr = request.getParameter("price");
-            String stockQuantityStr = request.getParameter("stockQuantity");
-            String weightStr = request.getParameter("weight");
-            String dimensions = request.getParameter("dimensions");
+        int errors = 0;
 
-            // Handle image URL input
-            String imageUrl = request.getParameter("image");
+        // Get form parameters
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String brand = request.getParameter("brand");
+        String category = request.getParameter("category");
+        String tags = request.getParameter("tags");
+        String priceStr = request.getParameter("price");
+        String stockQuantityStr = request.getParameter("stockQuantity");
+        String weightStr = request.getParameter("weight");
+        String dimensions = request.getParameter("dimensions");
+        String imageUrl = request.getParameter("image");
 
-            // Create ProductModel
-            ProductModel product = new ProductModel(
-                name,
-                description,
-                brand,
-                category,
-                tags,
-                new BigDecimal(priceStr),
-                Integer.parseInt(stockQuantityStr),
-                new BigDecimal(weightStr),
-                imageUrl,
-                dimensions
-            );
-
-            // Add product to database
-            boolean success = productService.createProduct(product);
-
-            if (success) {
-                request.setAttribute("success", "Product added successfully!");
-            } else {
-                request.setAttribute("error", "Failed to add product. Please try again.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "An error occurred while adding the product: " + e.getMessage());
+        // Validate name
+        if (ValidationUtil.isNullOrEmpty(name)) {
+            request.setAttribute("nameError", "Product name is required.");
+            errors++;
+        } else if (!ValidationUtil.isAlphanumericStartingWithLetter(name)) {
+            request.setAttribute("nameError", "Product name must start with a letter and contain only letters and numbers.");
+            errors++;
+        } else if (name.length() < 3 || name.length() > 100) {
+            request.setAttribute("nameError", "Product name must be between 3 and 100 characters.");
+            errors++;
         }
 
-        // Forward back to the form
+        // Validate description
+        if (ValidationUtil.isNullOrEmpty(description)) {
+            request.setAttribute("descriptionError", "Product description is required.");
+            errors++;
+        } else if (description.length() < 10 || description.length() > 1000) {
+            request.setAttribute("descriptionError", "Description must be between 10 and 1000 characters.");
+            errors++;
+        }
+
+        // Validate brand
+        if (ValidationUtil.isNullOrEmpty(brand)) {
+            request.setAttribute("brandError", "Brand name is required.");
+            errors++;
+        } else if (!ValidationUtil.isAlphanumericStartingWithLetter(brand)) {
+            request.setAttribute("brandError", "Brand name must start with a letter and contain only letters and numbers.");
+            errors++;
+        } else if (brand.length() < 2 || brand.length() > 50) {
+            request.setAttribute("brandError", "Brand name must be between 2 and 50 characters.");
+            errors++;
+        }
+
+        // Validate category
+        if (ValidationUtil.isNullOrEmpty(category)) {
+            request.setAttribute("categoryError", "Category is required.");
+            errors++;
+        } else if (!category.matches("^(equipment|supplement|merchandise)$")) {
+            request.setAttribute("categoryError", "Invalid category selected.");
+            errors++;
+        }
+
+        // Validate tags
+        if (ValidationUtil.isNullOrEmpty(tags)) {
+            request.setAttribute("tagsError", "At least one tag is required.");
+            errors++;
+        } else {
+            String[] tagArray = tags.split(",");
+            for (String tag : tagArray) {
+                if (!ValidationUtil.isAlphanumericStartingWithLetter(tag.trim())) {
+                    request.setAttribute("tagsError", "Each tag must start with a letter and contain only letters and numbers.");
+                    errors++;
+                    break;
+                } else if (tag.trim().length() < 2 || tag.trim().length() > 20) {
+                    request.setAttribute("tagsError", "Each tag must be between 2 and 20 characters.");
+                    errors++;
+                    break;
+                }
+            }
+        }
+
+        // Validate price
+        BigDecimal price = null;
+        try {
+            if (ValidationUtil.isNullOrEmpty(priceStr)) {
+                request.setAttribute("priceError", "Price is required.");
+                errors++;
+            } else {
+                price = new BigDecimal(priceStr);
+                if (price.compareTo(BigDecimal.ZERO) <= 0) {
+                    request.setAttribute("priceError", "Price must be greater than 0.");
+                    errors++;
+                } else if (price.compareTo(new BigDecimal("999999.99")) > 0) {
+                    request.setAttribute("priceError", "Price cannot exceed $999,999.99.");
+                    errors++;
+                }
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("priceError", "Invalid price format.");
+            errors++;
+        }
+
+        // Validate stock quantity
+        Integer stockQuantity = null;
+        try {
+            if (ValidationUtil.isNullOrEmpty(stockQuantityStr)) {
+                request.setAttribute("stockQuantityError", "Stock quantity is required.");
+                errors++;
+            } else {
+                stockQuantity = Integer.parseInt(stockQuantityStr);
+                if (stockQuantity < 0) {
+                    request.setAttribute("stockQuantityError", "Stock quantity cannot be negative.");
+                    errors++;
+                } else if (stockQuantity > 10000) {
+                    request.setAttribute("stockQuantityError", "Stock quantity cannot exceed 10,000.");
+                    errors++;
+                }
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("stockQuantityError", "Invalid stock quantity format.");
+            errors++;
+        }
+
+        // Validate weight
+        BigDecimal weight = null;
+        try {
+            if (ValidationUtil.isNullOrEmpty(weightStr)) {
+                request.setAttribute("weightError", "Weight is required.");
+                errors++;
+            } else {
+                weight = new BigDecimal(weightStr);
+                if (weight.compareTo(BigDecimal.ZERO) <= 0) {
+                    request.setAttribute("weightError", "Weight must be greater than 0.");
+                    errors++;
+                } else if (weight.compareTo(new BigDecimal("1000")) > 0) {
+                    request.setAttribute("weightError", "Weight cannot exceed 1000 kg.");
+                    errors++;
+                }
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("weightError", "Invalid weight format.");
+            errors++;
+        }
+
+        // Validate dimensions
+        if (ValidationUtil.isNullOrEmpty(dimensions)) {
+            request.setAttribute("dimensionsError", "Dimensions are required.");
+            errors++;
+        } else if (!dimensions.matches("^\\d+x\\d+x\\d+$")) {
+            request.setAttribute("dimensionsError", "Dimensions must be in format: length x width x height (e.g., 10x10x10)");
+            errors++;
+        }
+
+        // Validate image URL
+        if (ValidationUtil.isNullOrEmpty(imageUrl)) {
+            request.setAttribute("imageError", "Image URL is required.");
+            errors++;
+        } else if (!imageUrl.matches("^(https?://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$")) {
+            request.setAttribute("imageError", "Please enter a valid image URL.");
+            errors++;
+        }
+
+        // If there are validation errors, preserve form data and return to form
+        if (errors > 0) {
+            handleError(request, response, "You have " + errors + " invalid field(s).");
+            return;
+        }
+
+        // Create product model
+        ProductModel product = new ProductModel(
+            name,
+            description,
+            brand,
+            category,
+            tags,
+            price,
+            stockQuantity,
+            weight,
+            imageUrl,
+            dimensions
+        );
+
+        // Add product to database
+        boolean success = productService.createProduct(product);
+        if (success) {
+            handleSuccess(request, response, "Product added successfully!", "/admindashboard");
+        } else {
+            handleError(request, response, "Failed to add product. Please try again.");
+        }
+    }
+
+    /**
+     * Handles successful product addition by redirecting to the specified page with a success message.
+     * 
+     * @param request  the HTTP request
+     * @param response the HTTP response
+     * @param message  the success message to display
+     * @param page     the page to redirect to
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while redirecting
+     */
+    private void handleSuccess(HttpServletRequest request, HttpServletResponse response,
+                             String message, String page)
+            throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + page + "?success=" + message);
+    }
+
+    /**
+     * Handles product addition errors by preserving form data and displaying error messages.
+     * 
+     * @param request  the HTTP request containing form data and for setting attributes
+     * @param response the HTTP response for forwarding
+     * @param message  the error message to display
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs while forwarding
+     */
+    private void handleError(HttpServletRequest request, HttpServletResponse response, String message)
+            throws ServletException, IOException {
+        // Preserve form data
+        request.setAttribute("name", request.getParameter("name"));
+        request.setAttribute("description", request.getParameter("description"));
+        request.setAttribute("brand", request.getParameter("brand"));
+        request.setAttribute("category", request.getParameter("category"));
+        request.setAttribute("tags", request.getParameter("tags"));
+        request.setAttribute("price", request.getParameter("price"));
+        request.setAttribute("stockQuantity", request.getParameter("stockQuantity"));
+        request.setAttribute("weight", request.getParameter("weight"));
+        request.setAttribute("dimensions", request.getParameter("dimensions"));
+        request.setAttribute("image", request.getParameter("image"));
+        
+        request.setAttribute("error", message);
         request.getRequestDispatcher("/WEB-INF/pages/addProduct.jsp").forward(request, response);
     }
 } 

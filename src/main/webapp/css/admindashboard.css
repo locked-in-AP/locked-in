@@ -396,16 +396,32 @@ th {
     background: #e0e0e0;
 }
 
+/* Form validation styles */
+.error-border {
+    border: 2px solid #dc3545 !important;
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
 .error-msg {
-	color: #ff0000;
-	background: #ffeeee;
-	padding: 10px;
-	border-radius: 5px;
+    color: #dc3545;
+    background: #f8d7da;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
 }
 
 .success-msg {
-	color: #008000;
-	background: #eeffee;
-	padding: 10px;
-	border-radius: 5px;
+    color: #155724;
+    background: #d4edda;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border: 1px solid #c3e6cb;
 }
