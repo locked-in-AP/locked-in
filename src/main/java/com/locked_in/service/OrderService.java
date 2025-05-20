@@ -461,15 +461,14 @@ public class OrderService {
     }
 
     /**
-     * Calculates the total revenue from completed orders in the last 30 days.
+     * Calculates the total revenue from all completed orders.
      * 
      * @return the total revenue amount
      * @throws SQLException if there is an error during database operations
      */
     public BigDecimal getTotalRevenueLast30Days() throws SQLException {
         String query = "SELECT SUM(total_price) as total_revenue FROM orders " +
-                      "WHERE payment_status = 'completed' " +
-                      "AND order_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+                      "WHERE payment_status = 'completed'";
         
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
@@ -482,15 +481,14 @@ public class OrderService {
     }
 
     /**
-     * Calculates the total number of orders placed in the last 30 days.
+     * Calculates the total number of completed orders.
      * 
      * @return the number of orders
      * @throws SQLException if there is an error during database operations
      */
     public int getTotalOrdersLast30Days() throws SQLException {
         String query = "SELECT COUNT(*) as total_orders FROM orders " +
-                      "WHERE payment_status = 'completed' " +
-                      "AND order_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+                      "WHERE payment_status = 'completed'";
         
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();

@@ -60,17 +60,23 @@ public class DeleteProductController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String productIdStr = request.getParameter("productId");
+        
+        if (productIdStr == null || productIdStr.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/admindashboard?error=Product ID is required");
+            return;
+        }
+
         try {
             int productId = Integer.parseInt(productIdStr);
             boolean deleted = productService.deleteProduct(productId);
+            
             if (deleted) {
-                request.setAttribute("success", "Product deleted successfully!");
+                response.sendRedirect(request.getContextPath() + "/admindashboard?success=Product deleted successfully");
             } else {
-                request.setAttribute("error", "Failed to delete product. Please check the ID and try again.");
+                response.sendRedirect(request.getContextPath() + "/admindashboard?error=Failed to delete product");
             }
-        } catch (Exception e) {
-            request.setAttribute("error", "An error occurred: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            response.sendRedirect(request.getContextPath() + "/admindashboard?error=Invalid product ID");
         }
-        request.getRequestDispatcher("/WEB-INF/pages/deleteProduct.jsp").forward(request, response);
     }
 } 

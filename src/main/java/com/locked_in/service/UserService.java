@@ -181,23 +181,30 @@ public class UserService {
     }
 
     /**
-     * Calculates the total number of new customers in the last 30 days.
+     * Gets the total number of users in the database.
      * 
      * This method is useful for tracking user growth and can be used
      * in analytics or dashboard displays.
      * 
-     * @return the number of new customers in the last 30 days
+     * @return the number of new users  
      * @throws SQLException if there is an error accessing the database
      */
-    public int getTotalCustomersLast30Days() throws SQLException {
-        String query = "SELECT COUNT(*) as total_customers FROM users " +
-                      "WHERE joined_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+    public int getTotalCustomersLast30Days() {
+        if (isConnectionError) {
+            System.out.println("UserService - Connection Error!");
+            return 0;
+        }
+        
+        String query = "SELECT COUNT(*) as total_users FROM users";
         
         try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("total_customers");
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                return result.getInt("total_users");
             }
+        } catch (SQLException e) {
+            System.out.println("UserService - SQL Error getting total users: " + e.getMessage());
+            e.printStackTrace();
         }
         return 0;
     }

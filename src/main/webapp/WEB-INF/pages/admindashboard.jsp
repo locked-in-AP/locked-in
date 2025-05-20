@@ -62,7 +62,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Total Revenue</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">All time</p>
 					</div>
 					<div class="metric-value revenue">
 						<fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="$"/>
@@ -71,8 +71,8 @@
 
 				<div class="metric-card">
 					<div class="metric-content">
-						<h3 class="metric-title">Total Orders</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<h3 class="metric-title">Completed Orders</h3>
+						<p class="metric-subtitle">All time</p>
 					</div>
 					<div class="metric-value order">${totalOrders}</div>
 				</div>
@@ -80,7 +80,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Total Users</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">All time</p>
 					</div>
 					<div class="metric-value customer">${totalCustomers}</div>
 				</div>
@@ -88,7 +88,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Pending Deliveries</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">All time</p>
 					</div>
 					<div class="metric-value delivery">${pendingDeliveries}</div>
 				</div>
@@ -138,6 +138,14 @@
 									<a href="${pageContext.request.contextPath}/updateProduct?id=${product.productId}" class="edit-btn">
 										<i class="fas fa-edit"></i> Edit
 									</a>
+									
+									<form action="${pageContext.request.contextPath}/deleteProduct" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+										<input type="hidden" name="productId" value="${product.productId}">
+										<button type="submit" class="edit-btn" style="border: none; cursor: pointer;">
+											<i class="fas fa-trash"></i> Remove
+										</button>
+									</form>
+									
 								</td>
 							</tr>
 						</c:forEach>
