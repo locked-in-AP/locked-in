@@ -81,6 +81,14 @@
 									<a href="${pageContext.request.contextPath}/updateProduct?id=${product.productId}" class="edit-btn">
 										<i class="fas fa-edit"></i> Edit
 									</a>
+									
+									<form action="${pageContext.request.contextPath}/deleteProduct" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+										<input type="hidden" name="productId" value="${product.productId}">
+										<button type="submit" class="edit-btn" style="border: none; cursor: pointer;">
+											<i class="fas fa-trash"></i> Remove
+										</button>
+									</form>
+									
 								</td>
 						</tr>
 					</c:forEach>
