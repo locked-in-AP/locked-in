@@ -16,7 +16,7 @@
     <c:choose>
         <c:when test="${sessionScope.email != null}">
             <c:choose>
-                <c:when test="${cookie.role.value eq 'admin'}">
+                <c:when test="${sessionScope.role eq 'admin'}">
                     <span class="top-bar-item greeting">Hi, Admin</span>
                 </c:when>
                 <c:otherwise>

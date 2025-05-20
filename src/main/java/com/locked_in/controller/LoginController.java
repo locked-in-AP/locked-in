@@ -76,6 +76,7 @@ public class LoginController extends HttpServlet {
 			SessionUtil.setAttribute(request, "name", userModel.getName());
 			SessionUtil.setAttribute(request, "profilePicture", userModel.getProfilePicture());
 			SessionUtil.setAttribute(request, "userId", userModel.getUserId());
+			SessionUtil.setAttribute(request, "role", userModel.getRole());
 			
 			// Initialize cart size in session
 			CartService cartService = new CartService();
@@ -91,7 +92,7 @@ public class LoginController extends HttpServlet {
 			String role = userModel.getRole();
 			System.out.println("User role from database: " + role);
 			System.out.println("User name from database: " + userModel.getName());
-			CookieUtil.addCookie(response, "role", role, 5 * 30);
+			CookieUtil.addCookie(response, "role", role, 30 * 24 * 60);
 			if ("admin".equals(role)) {
 				request.setAttribute("success", true);
 				response.sendRedirect(request.getContextPath() + "/admindashboard");
