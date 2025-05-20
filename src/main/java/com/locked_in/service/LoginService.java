@@ -10,8 +10,16 @@ import com.locked_in.model.UserModel;
 import com.locked_in.util.PasswordUtil;
 
 /**
- * Service class for handling login operations. 
- * Connects to the database, verifies user credentials, and returns login status.
+ * Service class for handling user authentication operations.
+ * 
+ * This service class manages all aspects of user login including:
+ * - Credential validation
+ * - Password verification
+ * - User session initialization
+ * - Security checks
+ * 
+ * The class maintains database connections and collaborates with
+ * PasswordUtil for secure password handling.
  */
 public class LoginService {
 
@@ -19,8 +27,10 @@ public class LoginService {
 	private boolean isConnectionError = false;
 
 	/**
-	 * Constructor initializes the database connection. 
-	 * Sets the connection error flag if the connection fails.
+	 * Creates a new LoginService instance.
+	 * 
+	 * Initializes the database connection and sets the connection error flag
+	 * if the connection fails.
 	 */
 	public LoginService() {
 		try {
@@ -34,11 +44,16 @@ public class LoginService {
 	}
 
 	/**
-	 * Validates the user credentials against the database records.
-	 *
+	 * Authenticates a user's login attempt.
+	 * 
+	 * This method performs the following steps:
+	 * 1. Retrieves user information from the database
+	 * 2. Validates the provided password
+	 * 3. Updates the user model with additional information if successful
+	 * 
 	 * @param userModel the UserModel object containing user credentials
-	 * @return true if the user credentials are valid, false otherwise; null if a
-	 *         connection error occurs
+	 * @return true if authentication is successful, false if credentials are invalid,
+	 *         null if a database error occurs
 	 */
 	public Boolean loginUser(UserModel userModel) {
 		if (isConnectionError) {
@@ -68,13 +83,23 @@ public class LoginService {
 	}
 
 	/**
-	 * Validates the password retrieved from the database.
-	 *
-	 * @param result    the ResultSet containing the email and password from
-	 *                  the database
-	 * @param userModel the UserModel object containing user credentials
-	 * @return true if the passwords match, false otherwise
-	 * @throws SQLException if a database access error occurs
+	 * Validates a user's password against the stored credentials.
+	 * 
+	 * This method attempts multiple password validation strategies:
+	 * 1. Direct comparison (for testing)
+	 * 2. Decryption of stored password
+	 * 3. Encryption of provided password
+	 * 
+	 * If validation is successful, the user model is updated with:
+	 * - User ID
+	 * - Role
+	 * - Name
+	 * - Profile picture
+	 * 
+	 * @param result the ResultSet containing the stored user data
+	 * @param userModel the UserModel object containing the provided credentials
+	 * @return true if the password is valid, false otherwise
+	 * @throws SQLException if there is an error accessing the ResultSet data
 	 */
 	private boolean validatePassword(ResultSet result, UserModel userModel) throws SQLException {
 		String storedPassword = result.getString("password");

@@ -12,8 +12,11 @@ import com.locked_in.model.ProductModel;
 import com.locked_in.service.ProductService;
 
 /**
- * @author  Amiks Karki
- * Servlet implementation class Home
+ * SupplementsController handles HTTP requests related to supplement products.
+ * 
+ * It manages the display and sorting of supplement products, delegating product
+ * operations to ProductService. The controller handles both viewing supplements
+ * and processing supplement-related actions.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/supplements"})
 public class SupplementsController extends HttpServlet {
@@ -21,7 +24,8 @@ public class SupplementsController extends HttpServlet {
 	private final ProductService productService;
        
     /**
-     * @see HttpServlet#HttpServlet()
+     * Initializes the SupplementsController with an instance of ProductService.
+     * Sets up the service for handling supplement product operations.
      */
     public SupplementsController() {
         super();
@@ -29,8 +33,18 @@ public class SupplementsController extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Handles GET requests to display supplements.
+	 * 
+	 * Retrieves supplements from the database with optional sorting and forwards
+	 * to the supplements JSP. Supports different sorting options via the 'sort'
+	 * parameter.
+	 *
+	 * @param request  the HTTP request containing sorting preferences
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		// Get the sort parameter from the request, default to "relevancy" if not specified
@@ -51,11 +65,18 @@ public class SupplementsController extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Handles POST requests for supplement actions.
+	 * 
+	 * Currently delegates to doGet as no specific POST functionality is implemented.
+	 *
+	 * @param request  the HTTP request containing supplement action data
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

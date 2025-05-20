@@ -18,6 +18,22 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * Utility class for password encryption and decryption operations.
+ * 
+ * This utility class provides secure password handling using:
+ * - AES/GCM encryption with NoPadding
+ * - PBKDF2 key derivation with HMAC-SHA256
+ * - Secure random number generation for IVs and salts
+ * - Base64 encoding for encrypted data storage
+ * 
+ * The class implements industry-standard security practices including:
+ * - 256-bit AES keys
+ * - 128-bit authentication tags
+ * - 12-byte initialization vectors
+ * - 16-byte salt values
+ * - 65,536 PBKDF2 iterations
+ */
 public class PasswordUtil {
 	private static final String ENCRYPT_ALGO = "AES/GCM/NoPadding";
 
@@ -27,20 +43,47 @@ public class PasswordUtil {
     private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
    
+    /**
+     * Generates a cryptographically secure random nonce.
+     * 
+     * Uses SecureRandom to generate a random byte array
+     * suitable for use as an initialization vector or salt.
+     * 
+     * @param numBytes the length of the nonce in bytes
+     * @return a random byte array of the specified length
+     */
     public static byte[] getRandomNonce(int numBytes) {
         byte[] nonce = new byte[numBytes];
         new SecureRandom().nextBytes(nonce);
         return nonce;
     }
 
-    // AES secret key
+    /**
+     * Generates a new AES secret key.
+     * 
+     * Creates a cryptographically secure AES key using
+     * the specified key size and a strong random number generator.
+     * 
+     * @param keysize the size of the key in bits (must be valid AES key size)
+     * @return a new AES SecretKey
+     * @throws NoSuchAlgorithmException if the AES algorithm is not available
+     */
     public static SecretKey getAESKey(int keysize) throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(keysize, SecureRandom.getInstanceStrong());
         return keyGen.generateKey();
     }
 
-    // Password derived AES 256 bits secret key
+    /**
+     * Derives an AES key from a password and salt.
+     * 
+     * Uses PBKDF2 with HMAC-SHA256 to derive a secure key from the password.
+     * Implements key stretching with 65,536 iterations for security.
+     * 
+     * @param password the password to derive the key from
+     * @param salt the salt to use in key derivation
+     * @return a SecretKey derived from the password and salt
+     */
     public static SecretKey getAESKeyFromPassword(char[] password, byte[] salt){
            	try {
            		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
@@ -57,7 +100,20 @@ public class PasswordUtil {
        		return null;
     }
 
-    // return a base64 encoded AES encrypted text
+    /**
+     * Encrypts a password using AES-GCM.
+     * 
+     * This method:
+     * 1. Generates a random salt and IV
+     * 2. Derives an AES key from the employee ID and salt
+     * 3. Encrypts the password using AES-GCM
+     * 4. Combines IV, salt, and ciphertext
+     * 5. Returns the result as a Base64-encoded string
+     * 
+     * @param employee_id used as the key derivation password
+     * @param password the password to encrypt
+     * @return Base64-encoded encrypted password, or null if encryption fails
+     */
     public static String encrypt(String employee_id, String password){
     	try {
 		    // 16 bytes salt
@@ -92,6 +148,19 @@ public class PasswordUtil {
     }
 
     
+    /**
+     * Decrypts an encrypted password.
+     * 
+     * This method:
+     * 1. Decodes the Base64-encoded input
+     * 2. Extracts the IV and salt
+     * 3. Derives the AES key from the username and salt
+     * 4. Decrypts the ciphertext using AES-GCM
+     * 
+     * @param encryptedPassword the Base64-encoded encrypted password
+     * @param username used as the key derivation password
+     * @return the decrypted password, or null if decryption fails
+     */
     public static String decrypt(String encryptedPassword, String username) {
 		try {
 			byte[] decode = Base64.getDecoder().decode(encryptedPassword.getBytes(UTF_8));

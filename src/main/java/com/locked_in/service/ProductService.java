@@ -273,11 +273,14 @@ public class ProductService {
     }
     
     /**
-     * Updates the stock quantity of a product
+     * Updates the stock quantity of a product.
+     * 
+     * This method can be used to both increase and decrease stock quantities.
+     * For decreasing stock, pass a negative quantityChange value.
      * 
      * @param productId the ID of the product to update
-     * @param quantityChange the change in quantity (negative for decrease, positive for increase)
-     * @return true if successful, false otherwise
+     * @param quantityChange the amount to change the stock by (positive or negative)
+     * @return true if the update was successful, false otherwise
      */
     public boolean updateStockQuantity(Integer productId, int quantityChange) {
         if (isConnectionError) {
@@ -299,11 +302,14 @@ public class ProductService {
     }
 
     /**
-     * Retrieves a limited number of products from the database
+     * Retrieves a limited number of products with optional sorting.
+     * 
+     * This method is useful for displaying featured products or creating
+     * product previews on various pages.
      * 
      * @param limit the maximum number of products to retrieve
      * @param sortBy the sorting criteria (price-low-high, price-high-low, relevancy, newest)
-     * @return List of ProductModel objects, or empty list if none found
+     * @return List of sorted products, limited to the specified count
      */
     public List<ProductModel> getLimitedProducts(int limit, String sortBy) {
         if (isConnectionError) {
@@ -332,10 +338,13 @@ public class ProductService {
     }
     
     /**
-     * Retrieves all products from the database with optional sorting
+     * Retrieves all products with optional sorting.
+     * 
+     * This method returns the complete product catalog, sorted according
+     * to the specified criteria.
      * 
      * @param sortBy the sorting criteria (price-low-high, price-high-low, relevancy, newest)
-     * @return List of ProductModel objects, or empty list if none found
+     * @return List of all products, sorted according to the criteria
      */
     public List<ProductModel> getAllProducts(String sortBy) {
         if (isConnectionError) {
@@ -375,11 +384,17 @@ public class ProductService {
     }
     
     /**
-     * Search products based on query, category, and sort order
-     * @param query The search query
-     * @param category Optional category filter
-     * @param sortBy Sort order
-     * @return List of matching products
+     * Searches for products based on query, category, and sorting criteria.
+     * 
+     * This method performs a flexible search that can:
+     * - Filter by category if specified
+     * - Search across product names, descriptions, and tags
+     * - Sort results according to the specified criteria
+     * 
+     * @param query the search query string
+     * @param category optional category filter (can be null)
+     * @param sortBy the sorting criteria (price-low-high, price-high-low, relevancy, newest)
+     * @return List of matching products, sorted according to the criteria
      */
     public List<ProductModel> searchProducts(String query, String category, String sortBy) {
         if (isConnectionError) {
@@ -446,7 +461,14 @@ public class ProductService {
     }
     
     /**
-     * Helper method to map a ResultSet row to a ProductModel object
+     * Maps a database ResultSet row to a ProductModel object.
+     * 
+     * This private helper method extracts all product fields from a database
+     * result row and creates a corresponding ProductModel instance.
+     * 
+     * @param result the ResultSet containing the product data
+     * @return a new ProductModel instance with the data from the ResultSet
+     * @throws SQLException if there is an error accessing the ResultSet data
      */
     private ProductModel mapResultSetToProduct(ResultSet result) throws SQLException {
         return new ProductModel(

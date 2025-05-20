@@ -12,18 +12,41 @@ import com.locked_in.service.OrderService;
 import com.locked_in.service.UserService;
 import com.locked_in.util.SessionUtil;
 
+/**
+ * CheckoutController handles HTTP requests related to the checkout process.
+ * 
+ * It manages the order checkout workflow, including order creation, validation,
+ * and processing. Delegates order operations to OrderService and user-related
+ * operations to UserService.
+ */
 @WebServlet("/checkout")
 public class CheckoutController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private OrderService orderService;
     private UserService userService;
 
+    /**
+     * Initializes the CheckoutController with instances of required services.
+     * Sets up OrderService for order processing and UserService for user operations.
+     */
     public CheckoutController() {
         super();
         orderService = new OrderService();
         userService = new UserService();
     }
 
+    /**
+     * Handles POST requests for order checkout processing.
+     * 
+     * Processes the checkout form submission, creates a new order, and handles
+     * the payment workflow. Redirects to appropriate pages based on the result.
+     *
+     * @param request  the HTTP request containing order and payment information
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
+     */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String email = (String) SessionUtil.getAttribute(request, "email");

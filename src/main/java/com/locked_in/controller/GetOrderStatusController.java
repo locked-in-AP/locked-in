@@ -10,18 +10,39 @@ import java.sql.SQLException;
 
 import com.locked_in.service.OrderService;
 
+/**
+ * GetOrderStatusController handles HTTP requests for retrieving order status.
+ * 
+ * It processes requests to fetch the current status of orders, validating
+ * user authentication and order existence before returning status information.
+ */
 @WebServlet("/getOrderStatus")
 public class GetOrderStatusController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private OrderService orderService;
 
+    /**
+     * Initializes the GetOrderStatusController with an instance of OrderService.
+     * Sets up the service for retrieving order status information.
+     */
     public GetOrderStatusController() {
         super();
         orderService = new OrderService();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    /**
+     * Handles GET requests for order status information.
+     * 
+     * Validates user authentication and retrieves the current status
+     * of the specified order. Returns status information as JSON response.
+     *
+     * @param request  the HTTP request containing order ID
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 

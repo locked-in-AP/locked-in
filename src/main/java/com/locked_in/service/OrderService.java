@@ -17,11 +17,29 @@ import com.locked_in.model.OrderModel;
 import com.locked_in.model.OrderItemModel;
 import com.locked_in.model.ProductModel;
 
+/**
+ * Service class for handling order-related operations.
+ * 
+ * This service class manages all aspects of order processing including:
+ * - Order creation and checkout
+ * - Order status management
+ * - Order retrieval and filtering
+ * - Order analytics and reporting
+ * 
+ * The class maintains database connections and collaborates with
+ * CartService for order processing.
+ */
 public class OrderService {
     private Connection connection;
     private CartService cartService;
     private boolean isConnectionError = false;
 
+    /**
+     * Creates a new OrderService instance.
+     * 
+     * Initializes the database connection and CartService.
+     * Sets the connection error flag if the connection fails.
+     */
     public OrderService() {
         try {
             this.connection = DbConfig.getDbConnection();
@@ -34,6 +52,20 @@ public class OrderService {
         }
     }
 
+    /**
+     * Processes a user's checkout by creating an order from their cart.
+     * 
+     * This method performs the following operations in a transaction:
+     * 1. Retrieves cart items and calculates total price
+     * 2. Creates a new order record
+     * 3. Moves cart items to order items
+     * 4. Clears the user's cart
+     * 5. Updates the user's cart size
+     * 
+     * @param userId the ID of the user checking out
+     * @return true if checkout was successful, false otherwise
+     * @throws SQLException if there is an error during database operations
+     */
     public boolean processCheckout(int userId) throws SQLException {
         // Start transaction
         connection.setAutoCommit(false);
@@ -111,6 +143,17 @@ public class OrderService {
         }
     }
 
+    /**
+     * Retrieves all orders for a specific user.
+     * 
+     * Orders are returned with complete details including:
+     * - Order information (ID, date, total price, status)
+     * - Product details for each item
+     * - Review information if available
+     * 
+     * @param userId the ID of the user whose orders to retrieve
+     * @return List of orders with complete details
+     */
     public List<OrderModel> getUserOrders(int userId) {
         if (isConnectionError) {
             System.err.println("Cannot fetch user orders: Database connection error");
@@ -178,6 +221,14 @@ public class OrderService {
         }
     }
 
+    /**
+     * Updates the payment status of an order.
+     * 
+     * @param orderId the ID of the order to update
+     * @param status the new payment status
+     * @return true if the update was successful, false otherwise
+     * @throws SQLException if there is an error during database operations
+     */
     public boolean updateOrderStatus(int orderId, String status) throws SQLException {
         if (isConnectionError || connection == null) {
             System.out.println("OrderService - Connection Error!");
@@ -203,6 +254,19 @@ public class OrderService {
         }
     }
 
+    /**
+     * Retrieves all orders in the system.
+     * 
+     * Orders are returned with complete details including:
+     * - Order information (ID, date, total price, status)
+     * - Product details for each item
+     * - User information
+     * 
+     * Orders are sorted by completion status and date.
+     * 
+     * @return List of all orders with complete details
+     * @throws SQLException if there is an error during database operations
+     */
     public List<OrderModel> getAllOrders() throws SQLException {
         List<OrderModel> orders = new ArrayList<>();
         String query = "SELECT o.*, upo.product_id, upo.order_quantity, p.*, u.name as user_name " +
@@ -243,6 +307,13 @@ public class OrderService {
         return orders;
     }
 
+    /**
+     * Retrieves the current payment status of an order.
+     * 
+     * @param orderId the ID of the order to check
+     * @return the current payment status
+     * @throws SQLException if there is an error during database operations
+     */
     public String getOrderStatus(int orderId) throws SQLException {
         String query = "SELECT payment_status FROM orders WHERE order_id = ?";
         
@@ -258,6 +329,15 @@ public class OrderService {
         return null;
     }
 
+    /**
+     * Checks if an order has been completed.
+     * 
+     * An order is considered completed when its payment status
+     * is set to 'completed'.
+     * 
+     * @param orderId the ID of the order to check
+     * @return true if the order is completed, false otherwise
+     */
     public boolean isOrderCompleted(int orderId) {
         if (isConnectionError) {
             System.err.println("Cannot check order status: Database connection error");
@@ -282,6 +362,14 @@ public class OrderService {
         }
     }
 
+    /**
+     * Retrieves all orders that have not been completed.
+     * 
+     * Orders are returned with complete details and sorted by date.
+     * 
+     * @return List of incomplete orders
+     * @throws SQLException if there is an error during database operations
+     */
     public List<OrderModel> getNotCompletedOrders() throws SQLException {
         List<OrderModel> orders = new ArrayList<>();
         String query = "SELECT o.*, upo.product_id, upo.order_quantity, p.*, u.name as user_name " +
@@ -323,6 +411,14 @@ public class OrderService {
         return orders;
     }
 
+    /**
+     * Retrieves all completed orders.
+     * 
+     * Orders are returned with complete details and sorted by date.
+     * 
+     * @return List of completed orders
+     * @throws SQLException if there is an error during database operations
+     */
     public List<OrderModel> getCompletedOrders() throws SQLException {
         List<OrderModel> orders = new ArrayList<>();
         String query = "SELECT o.*, upo.product_id, upo.order_quantity, p.*, u.name as user_name " +
@@ -364,6 +460,12 @@ public class OrderService {
         return orders;
     }
 
+    /**
+     * Calculates the total revenue from completed orders in the last 30 days.
+     * 
+     * @return the total revenue amount
+     * @throws SQLException if there is an error during database operations
+     */
     public BigDecimal getTotalRevenueLast30Days() throws SQLException {
         String query = "SELECT SUM(total_price) as total_revenue FROM orders " +
                       "WHERE payment_status = 'completed' " +
@@ -379,6 +481,12 @@ public class OrderService {
         return BigDecimal.ZERO;
     }
 
+    /**
+     * Calculates the total number of orders placed in the last 30 days.
+     * 
+     * @return the number of orders
+     * @throws SQLException if there is an error during database operations
+     */
     public int getTotalOrdersLast30Days() throws SQLException {
         String query = "SELECT COUNT(*) as total_orders FROM orders " +
                       "WHERE payment_status = 'completed' " +
@@ -393,6 +501,12 @@ public class OrderService {
         return 0;
     }
 
+    /**
+     * Counts the number of orders that are pending delivery.
+     * 
+     * @return the number of pending deliveries
+     * @throws SQLException if there is an error during database operations
+     */
     public int getPendingDeliveriesCount() throws SQLException {
         String query = "SELECT COUNT(*) as pending_deliveries FROM orders " +
                       "WHERE payment_status != 'completed'";

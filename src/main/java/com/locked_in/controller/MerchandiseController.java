@@ -12,7 +12,10 @@ import com.locked_in.model.ProductModel;
 import com.locked_in.service.ProductService;
 
 /**
- * Controller for handling merchandise-related requests
+ * MerchandiseController handles HTTP requests for the merchandise products page.
+ * 
+ * It serves the merchandise products listing page, displaying all available
+ * merchandise items with their details and filtering options.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/merchandise"})
 public class MerchandiseController extends HttpServlet {
@@ -20,7 +23,8 @@ public class MerchandiseController extends HttpServlet {
 	private final ProductService productService;
        
 	/**
-	 * Constructor initializes the ProductService
+	 * Initializes the MerchandiseController with an instance of ProductService.
+	 * Sets up the service for retrieving merchandise product information.
 	 */
 	public MerchandiseController() {
 		super();
@@ -28,8 +32,15 @@ public class MerchandiseController extends HttpServlet {
 	}
 
 	/**
-	 * Handles GET requests to display merchandise
-	 * Retrieves merchandise from the database and forwards to the merchandise JSP
+	 * Handles GET requests to display merchandise products.
+	 * 
+	 * Retrieves all merchandise products and forwards to the merchandise products view JSP.
+	 * Includes product details, categories, and filtering options.
+	 *
+	 * @param request  the HTTP request containing any filter parameters
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get the sort parameter from the request, default to "relevancy" if not specified
@@ -50,7 +61,14 @@ public class MerchandiseController extends HttpServlet {
 	}
 
 	/**
-	 * Handles POST requests for merchandise actions
+	 * Handles POST requests for merchandise actions.
+	 * 
+	 * Currently delegates to doGet as no specific POST functionality is implemented.
+	 *
+	 * @param request  the HTTP request containing client request information
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

@@ -8,15 +8,29 @@ import com.locked_in.config.DbConfig;
 import com.locked_in.model.UserModel;
 
 /**
- * RegisterService handles the registration of new users. It manages database
- * interactions for user registration.
+ * Service class for handling user registration operations.
+ * 
+ * This service class manages all aspects of user registration including:
+ * - User data validation
+ * - Database connection management
+ * - User record creation
+ * - Error handling and logging
+ * 
+ * The class maintains database connections and collaborates with
+ * UserModel for data transfer and validation.
  */
 public class RegisterService {
 
 	private Connection dbConn;
 
 	/**
-	 * Constructor initializes the database connection.
+	 * Creates a new RegisterService instance.
+	 * 
+	 * Initializes the database connection using DbConfig.
+	 * Logs connection status and any errors that occur during initialization.
+	 * 
+	 * @throws SQLException if there is an error establishing the database connection
+	 * @throws ClassNotFoundException if the database driver class cannot be found
 	 */
 	public RegisterService() {
 		try {
@@ -30,9 +44,25 @@ public class RegisterService {
 
 	/**
 	 * Registers a new user in the database.
-	 *
-	 * @param userModel the user details to be registered
+	 * 
+	 * This method performs the following steps:
+	 * 1. Validates database connection
+	 * 2. Prepares and executes the user insertion query
+	 * 3. Logs the registration attempt and result
+	 * 4. Handles any database errors that occur
+	 * 
+	 * The method includes detailed logging for debugging purposes,
+	 * tracking the entire registration process from attempt to completion.
+	 * 
+	 * @param userModel the user details to be registered, including:
+	 *                 - name
+	 *                 - nickname
+	 *                 - email
+	 *                 - password (should be pre-hashed)
+	 *                 - date of birth
+	 *                 - profile picture
 	 * @return String error message if registration fails, null if successful
+	 * @throws SQLException if there is an error during database operations
 	 */
 	public String addUser(UserModel userModel) {
 		if (dbConn == null) {

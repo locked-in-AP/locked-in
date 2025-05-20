@@ -12,18 +12,41 @@ import com.locked_in.service.OrderService;
 import com.locked_in.service.UserService;
 import com.locked_in.util.SessionUtil;
 
+/**
+ * UpdateOrderStatusController handles HTTP requests for updating order statuses.
+ * 
+ * It manages the order status update workflow, allowing administrators to change
+ * the status of customer orders. Delegates order operations to OrderService and
+ * user-related operations to UserService.
+ */
 @WebServlet("/updateOrderStatus")
 public class UpdateOrderStatusController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private OrderService orderService;
     private UserService userService;
 
+    /**
+     * Initializes the UpdateOrderStatusController with instances of required services.
+     * Sets up OrderService for order status updates and UserService for user operations.
+     */
     public UpdateOrderStatusController() {
         super();
         orderService = new OrderService();
         userService = new UserService();
     }
 
+    /**
+     * Handles POST requests for order status updates.
+     * 
+     * Processes the status update request, validates admin permissions, and updates
+     * the order status in the database. Redirects to appropriate pages based on the result.
+     *
+     * @param request  the HTTP request containing order ID and new status
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
+     */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         // Check if user is logged in
@@ -90,6 +113,15 @@ public class UpdateOrderStatusController extends HttpServlet {
         }
     }
 
+    /**
+     * Validates if the provided order status is one of the allowed values.
+     * 
+     * Checks if the status matches one of the predefined valid order statuses:
+     * "pending", "completed", or "cancelled". The comparison is case-insensitive.
+     *
+     * @param status the order status to validate
+     * @return true if the status is valid, false otherwise
+     */
     private boolean isValidStatus(String status) {
         return "pending".equalsIgnoreCase(status) || "completed".equalsIgnoreCase(status) || "cancelled".equalsIgnoreCase(status);
     }

@@ -15,6 +15,19 @@ import java.io.IOException;
 import com.locked_in.util.CookieUtil;
 import com.locked_in.util.SessionUtil;
 
+/**
+ * AuthenticationFilter implements request filtering for authentication and authorization.
+ * 
+ * This filter intercepts all incoming requests to enforce security rules and access control.
+ * It manages user authentication state and role-based access restrictions:
+ * - Public resources (images, CSS) and pages (home, login, register) are always accessible
+ * - Unauthenticated users are restricted to public pages and redirected to login
+ * - Admin users have access to administrative pages and functions
+ * - Regular users have access to customer-facing pages and functions
+ * 
+ * The filter uses session attributes for authentication state and cookies for role
+ * information, working in conjunction with LoginController for user sessions.
+ */
 @WebFilter(asyncSupported = true, urlPatterns = "/*")
 public class AuthenticationFilter implements Filter {
 
@@ -50,11 +63,38 @@ public class AuthenticationFilter implements Filter {
 	private static final String UPDATE_PROFILE = "/updateProfile";
 	private static final String SEARCH = "/search";
 
+	/**
+	 * Initializes the AuthenticationFilter with the given filter configuration.
+	 * 
+	 * This method is called by the web container to indicate to a filter that it
+	 * is being placed into service. Currently, no initialization logic is required.
+	 *
+	 * @param filterConfig the filter configuration object used by a servlet container
+	 *                    to pass information to a filter during initialization
+	 * @throws ServletException if an error occurs during initialization
+	 */
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// Initialization logic, if required
 	}
 
+	/**
+	 * Filters requests to enforce authentication and authorization rules.
+	 * 
+	 * Processes each request to check user authentication status and role-based
+	 * access control. Handles different scenarios:
+	 * 1. Resource access (images, CSS) - always allowed
+	 * 2. Public pages (home, login, register) - always allowed
+	 * 3. Unauthenticated users - redirected to login
+	 * 4. Admin users - restricted to admin pages
+	 * 5. Regular users - restricted to user pages
+	 *
+	 * @param request  the servlet request to be filtered
+	 * @param response the servlet response to be filtered
+	 * @param chain    the filter chain for invoking the next filter
+	 * @throws IOException      if an I/O error occurs during processing
+	 * @throws ServletException if a servlet-related error occurs
+	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -127,6 +167,12 @@ public class AuthenticationFilter implements Filter {
 		}
 	}
 
+	/**
+	 * Destroys the AuthenticationFilter instance.
+	 * 
+	 * Called by the web container to indicate to a filter that it is being
+	 * taken out of service. Currently, no cleanup logic is required.
+	 */
 	@Override
 	public void destroy() {
 		// Cleanup logic, if required

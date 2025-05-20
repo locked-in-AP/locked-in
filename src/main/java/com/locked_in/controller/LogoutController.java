@@ -13,24 +13,36 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class LogoutController
+ * LogoutController handles HTTP requests for user logout.
+ * 
+ * It processes logout requests by invalidating the user's session and
+ * clearing any associated cookies before redirecting to the home page.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/logout" })
 public class LogoutController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Handles GET requests to log the user out by invalidating the session,
-	 * removing the role cookie, and redirecting to the login page.
+	 * Initializes the LogoutController.
+	 * This controller does not require any service dependencies.
+	 */
+	public LogoutController() {
+		super();
+	}
+
+	/**
+	 * Handles GET requests for user logout.
+	 * 
+	 * Invalidates the current user session, clears session attributes,
+	 * and redirects to the home page.
 	 *
-	 * @param request  HttpServletRequest object
-	 * @param response HttpServletResponse object
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @param request  the HTTP request containing session information
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs during processing
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get the session and invalidate it
 		HttpSession session = request.getSession(false);
 		if (session != null) {

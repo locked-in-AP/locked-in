@@ -17,7 +17,11 @@ import com.locked_in.service.UserService;
 import com.locked_in.util.SessionUtil;
 
 /**
- * Servlet implementation class Item
+ * ItemController handles HTTP requests related to individual product items.
+ * 
+ * It serves the item details page and processes item-related actions by delegating to
+ * various services (ProductService, CartService, UserService, ReviewService) to manage
+ * product details, cart operations, user information, and reviews.
  */
 @WebServlet("/item")
 public class ItemController extends HttpServlet {
@@ -28,7 +32,9 @@ public class ItemController extends HttpServlet {
 	private ReviewService reviewService;
        
     /**
-     * @see HttpServlet#HttpServlet()
+     * Initializes the ItemController with instances of required services.
+     * Sets up ProductService, CartService, UserService, and ReviewService for handling
+     * various item-related operations.
      */
     public ItemController() {
         super();
@@ -39,9 +45,18 @@ public class ItemController extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Handles GET requests to display item details.
+	 * 
+	 * Retrieves product information, user details, and reviews for the specified item.
+	 * Forwards the request to the item details JSP with all necessary data.
+	 *
+	 * @param request  the HTTP request containing item ID and other parameters
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
         String productIdStr = request.getParameter("id");
         
@@ -81,8 +96,18 @@ public class ItemController extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Handles POST requests for item-related actions.
+	 * 
+	 * Processes actions such as adding items to cart. Validates user login status,
+	 * product availability, and quantity. Updates cart size in session and redirects
+	 * with appropriate success/error messages.
+	 *
+	 * @param request  the HTTP request containing item action data and parameters
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs during processing
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		

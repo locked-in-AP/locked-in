@@ -12,15 +12,19 @@ import com.locked_in.model.ProductModel;
 import com.locked_in.service.ProductService;
 
 /**
- * Controller for handling equipment-related requests
+ * EquipmentsController handles HTTP requests for the equipment products page.
+ * 
+ * It serves the equipment products listing page, displaying all available
+ * equipment items with their details and filtering options.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/equipments"})
 public class EquipmentsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final ProductService productService;
+	private ProductService productService;
        
 	/**
-	 * Constructor initializes the ProductService
+	 * Initializes the EquipmentsController with an instance of ProductService.
+	 * Sets up the service for retrieving equipment product information.
 	 */
 	public EquipmentsController() {
 		super();
@@ -28,8 +32,15 @@ public class EquipmentsController extends HttpServlet {
 	}
 
 	/**
-	 * Handles GET requests to display equipment
-	 * Retrieves equipment from the database and forwards to the equipments JSP
+	 * Handles GET requests to display equipment products.
+	 * 
+	 * Retrieves equipment products from the database with optional sorting and forwards
+	 * to the equipments JSP. Supports different sorting options via the 'sort' parameter.
+	 *
+	 * @param request  the HTTP request containing sorting preferences
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get the sort parameter from the request, default to "relevancy" if not specified
@@ -50,7 +61,16 @@ public class EquipmentsController extends HttpServlet {
 	}
 
 	/**
-	 * Handles POST requests for equipment actions
+	 * Handles POST requests for equipment actions.
+	 * 
+	 * Currently delegates to doGet as no specific POST functionality is implemented.
+	 * This allows the equipment page to handle any form submissions or AJAX requests
+	 * through the same processing logic as GET requests.
+	 *
+	 * @param request  the HTTP request containing equipment action data
+	 * @param response the HTTP response for sending data to the client
+	 * @throws ServletException if a servlet-related error occurs
+	 * @throws IOException      if an I/O error occurs while forwarding
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
