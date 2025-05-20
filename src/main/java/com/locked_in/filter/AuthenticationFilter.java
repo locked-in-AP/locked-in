@@ -142,9 +142,9 @@ public class AuthenticationFilter implements Filter {
 			// Admin user
 			if (path.endsWith(LOGIN) || path.endsWith(REGISTER)) {
 				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
-			} else if (path.endsWith(ADMIN_DASHBOARD) || path.endsWith(ADMIN_ORDER) || path.endsWith(HOME)
+			} else if (path.endsWith(ADMIN_DASHBOARD) || path.endsWith(ADMIN_ORDER)
 					|| path.endsWith(ROOT) || path.endsWith(LOGOUT) || path.endsWith(ADD) || path.endsWith(DELETE) || path.endsWith(USER) || path.endsWith(DELETEUSER)
-					|| path.endsWith(UPDATE_PRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS) || path.endsWith(SEARCH)) {
+					|| path.endsWith(UPDATE_PRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
