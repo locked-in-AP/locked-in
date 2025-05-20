@@ -62,7 +62,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Total Revenue</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">All time</p>
 					</div>
 					<div class="metric-value revenue">
 						<fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="$"/>
@@ -71,8 +71,8 @@
 
 				<div class="metric-card">
 					<div class="metric-content">
-						<h3 class="metric-title">Total Orders</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<h3 class="metric-title">Completed Orders</h3>
+						<p class="metric-subtitle">All time</p>
 					</div>
 					<div class="metric-value order">${totalOrders}</div>
 				</div>
@@ -80,7 +80,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Total Users</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">All time</p>
 					</div>
 					<div class="metric-value customer">${totalCustomers}</div>
 				</div>
@@ -88,7 +88,7 @@
 				<div class="metric-card">
 					<div class="metric-content">
 						<h3 class="metric-title">Pending Deliveries</h3>
-						<p class="metric-subtitle">Last 30 days</p>
+						<p class="metric-subtitle">All time</p>
 					</div>
 					<div class="metric-value delivery">${pendingDeliveries}</div>
 				</div>
