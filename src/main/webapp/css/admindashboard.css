@@ -1,41 +1,64 @@
 @charset "UTF-8";
  body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     background-color: #ffffff;
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    display: flex; /* Use flexbox for layout */
 }
 
 .sidebar {
-    width: 220px;
+    width: 250px;
     background-color: #ffffff;
-    margin-top: 20px;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    position: absolute;
-    top: 100px;
+    justify-content: flex-start;
+    position: fixed;
+    top: 0;
     left: 0;
+    height: 100vh;
     border-right: 1px solid #ddd;
     z-index: 1000;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.sidebar-title {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.sidebar-title .main-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1A1F2C;
+    display: block;
+    letter-spacing: 1px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.sidebar-title .sub-title {
+    font-size: 14px;
+    color: #666;
+    display: block;
+    margin-top: 5px;
+    font-weight: 400;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .sidebar .nav {
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin: 50px 0 0 0;
     width: 100%;
-    display:inline-block;
-    top: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar .nav li {
-    margin: 15px;
-    
-    
-    
+    margin: 8px 0;
 }
 
 .sidebar .nav li a {
@@ -44,34 +67,38 @@
     display: flex;
     align-items: center;
     font-size: 16px;
-    padding: 6px;
-    margin: 20px
+    padding: 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar .nav li a:hover {
+    background-color: #f5f5f5;
 }
 
 .logout-btn {
-	margin: 10px;
-	color: #333;
+    margin: 10px;
+    color: #333;
 }
 
-
 .sidebar .nav li a .icon {
-    margin: 10px;
-    
+    margin-right: 12px;
     font-size: 18px;
     font-weight: bold;
     color: #333;
 }
-
 
 .nav-button:hover {
     opacity: 0.9;
 }
 
 .main-content {
-    margin-left: 220px;
+    flex: 1;
+    margin-left: 280px; /* Increase margin to shift content right */
     padding: 32px 40px;
     background: #f8f9fa;
     min-height: 100vh;
+    width: calc(100% - 280px);
 }
 
 .admin-header {
@@ -80,8 +107,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    margin-bottom: 0;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .admin-header h1 {
@@ -143,9 +171,11 @@
 }
 
 .dashboard-container {
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     padding: 24px;
     margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .section-title {
@@ -167,6 +197,9 @@
     justify-content: space-between;
     align-items: center;
     height: 100px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
 }
 
 .metric-content {
@@ -194,9 +227,11 @@
 }
 
 .table-container {
-    background: #f5f5f5;
-    padding: 20px;
+    background: #ffffff;
+    padding: 24px;
     margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 h2 {
@@ -211,14 +246,14 @@ table {
 
 th, td {
     padding: 12px;
-    border: 1px solid #333;
+    border: 1px solid #eaeaea;
     background-color: #ffffff;
     text-align: left;
     font-size: 14px;
 }
 
 th {
-    background-color: #dcdcdc;
+    background-color: #f5f5f5;
 }
 
 .status {
@@ -251,6 +286,36 @@ th {
     opacity: 0.9;
 }
 
+/* Product list specific styles */
+.product-thumbnail {
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.inline-form {
+    display: inline-block;
+}
+
+.remove-btn {
+    border: none;
+    cursor: pointer;
+}
+
+.action-bar {
+    margin-top: 16px;
+    text-align: right;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Rest of the CSS remains unchanged */
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -294,7 +359,7 @@ th {
 
 /* Form Styles */
 .form-container {
-    max-width: 800px;
+    max-width: 700px;
     margin: 30px auto;
     padding: 20px;
     background: #fff;
@@ -306,6 +371,8 @@ th {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+    max-width: 90%;
+    margin: 0 auto;
 }
 
 .form-group {
@@ -324,11 +391,12 @@ th {
 .form-group input,
 .form-group select,
 .form-group textarea {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .form-group textarea {

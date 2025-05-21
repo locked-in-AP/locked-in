@@ -2,59 +2,52 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - LockedIN</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/admindashboard.css" />
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<meta charset="UTF-8">
-<title>Admin Dashboard - LockedIN</title>
 </head>
 <body>
 
-	<jsp:include page="header.jsp" />
-	
-
 	<div class="sidebar">
+		<div class="sidebar-title">
+			<span class="main-title">LockedIN</span>
+			<span class="sub-title">Admin Dashboard</span>
+		</div>
 		<ul class="nav">
 			<li><a href="${pageContext.request.contextPath}/admindashboard"><span class="icon"><i class="fas fa-home"></i></span> Dashboard</a></li>
 			<li><a href="${pageContext.request.contextPath}/users"><span class="icon"><i class="fas fa-user"></i></span>Users</a></li>
 			<li><a href="${pageContext.request.contextPath}/admin/orders"><span class="icon"><i class="fas fa-shopping-cart"></i></span> Orders</a></li>
 			<li><a href="${pageContext.request.contextPath}/productList"><span class="icon"><i class="fas fa-box"></i></span> View Product</a></li>
 			<li><a href="${pageContext.request.contextPath}/addProduct"><span class="icon"><i class="fas fa-pen"></i></span> Add Product</a></li>
-			<li><a href="${pageContext.request.contextPath}/deleteProduct"><span class="icon"><i class="fas fa-trash"></i></span> Delete Product</a></li>
 		</ul>
 	</div>
 
 	<div class="main-content">
-	
-	  <c:if test="${not empty success}">
-                <p class="alert success-msg">${success}</p>
-            </c:if>
-            <c:if test="${not empty error}">
-                <p class="alert error-msg">${error}</p>
-            </c:if>
+		<c:if test="${not empty success}">
+			<p class="alert success-msg">${success}</p>
+		</c:if>
+		<c:if test="${not empty error}">
+			<p class="alert error-msg">${error}</p>
+		</c:if>
 	
 		<div class="admin-header">
 			<h1 class="section-title">Admin Dashboard</h1>
 			<div class="right-section">
-				<p>Welcome, Admin</p>
-
+				<p>Welcome, ${sessionScope.name}</p>
 				<a href="${pageContext.request.contextPath}/logout"
 					class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
-				</a> <img
-					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+				</a> 
+				<img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
 					alt="Admin Profile" class="admin-pfp">
 			</div>
 		</div>
-
-		<c:if test="${not empty error}">
-			<div class="error-message">
-				<i class="fas fa-exclamation-circle"></i> ${error}
-			</div>
-		</c:if>
 
 		<div class="dashboard-container">
 			<h1 class="section-title">Overview</h1>
@@ -99,7 +92,6 @@
 			<h2>Product List</h2>
 			<div style="margin-bottom: 10px; text-align: right;">
 				<a href="${pageContext.request.contextPath}/productList" class="btn btn-primary">View All Products</a>
-				
 			</div>
 			<table>
 				<thead>
@@ -145,21 +137,20 @@
 											<i class="fas fa-trash"></i> Remove
 										</button>
 									</form>
-									
 								</td>
 							</tr>
 						</c:forEach>
 					</c:if>
 					<c:if test="${empty products}">
 						<tr>
-							<td colspan="7" style="text-align: center;">No products found</td>
+							<td colspan="8" style="text-align: center;">No products found</td>
 						</tr>
 					</c:if>
 				</tbody>
 			</table>
 		</div>
 		
-			<div class="table-container">
+		<div class="table-container">
 			<h2>Users List</h2>
 			<div style="margin-bottom: 10px; text-align: right;">
 				<a href="${pageContext.request.contextPath}/users" class="btn btn-primary" style="margin-left: 8px;">View All Users</a>
@@ -200,11 +191,6 @@
 				</tbody>
 			</table>
 		</div>
-		
 	</div>
-	
-	
-	<jsp:include page="footer.jsp" />
-	
 </body>
 </html>
