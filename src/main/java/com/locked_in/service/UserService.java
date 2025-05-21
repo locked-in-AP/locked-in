@@ -208,4 +208,73 @@ public class UserService {
         }
         return 0;
     }
+
+    /**
+     * Updates an admin's profile information in the database
+     * 
+     * @param user the UserModel containing updated admin information
+     * @return true if the update was successful, false otherwise
+     */
+    public boolean updateAdminDetails(UserModel user) {
+        if (isConnectionError) {
+            System.out.println("UserService - Connection Error during admin update!");
+            return false;
+        }
+        
+        System.out.println("UserService - Updating admin: Email=" + user.getEmail() + 
+                         ", Name=" + user.getName() + 
+                         ", Nickname=" + user.getNickname() + 
+                         ", DateOfBirth=" + user.getDateOfBirth() + 
+                         ", ProfilePicture=" + user.getProfilePicture());
+        
+        String query = "UPDATE users SET name = ?, nickname = ?, email = ?, date_of_birth = ?, profile_picture = ? WHERE email = ? AND role = 'admin'";
+        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getNickname());
+            stmt.setString(3, user.getEmail());
+            
+            // Handle date of birth
+            if (user.getDateOfBirth() != null) {
+                stmt.setDate(4, java.sql.Date.valueOf(user.getDateOfBirth()));
+                System.out.println("Setting date of birth: " + user.getDateOfBirth());
+            } else {
+                stmt.setNull(4, java.sql.Types.DATE);
+                System.out.println("Setting date of birth to NULL");
+            }
+            
+            stmt.setString(5, user.getProfilePicture());
+            stmt.setString(6, user.getEmail());
+            
+            System.out.println("Executing SQL: " + query);
+            System.out.println("Parameters: name=" + user.getName() + 
+                             ", nickname=" + user.getNickname() + 
+                             ", email=" + user.getEmail() + 
+                             ", profilePicture=" + user.getProfilePicture());
+            
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("UserService - Admin update result: " + rowsAffected + " rows affected");
+            
+            if (rowsAffected == 0) {
+                System.out.println("No rows were updated. This might mean the user is not an admin or the email doesn't exist.");
+                // Verify if the user exists and is an admin
+                String verifyQuery = "SELECT role FROM users WHERE email = ?";
+                try (PreparedStatement verifyStmt = dbConn.prepareStatement(verifyQuery)) {
+                    verifyStmt.setString(1, user.getEmail());
+                    ResultSet rs = verifyStmt.executeQuery();
+                    if (rs.next()) {
+                        String role = rs.getString("role");
+                        System.out.println("User exists with role: " + role);
+                    } else {
+                        System.out.println("User does not exist with email: " + user.getEmail());
+                    }
+                }
+            }
+            
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("UserService - SQL Error updating admin: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 } 

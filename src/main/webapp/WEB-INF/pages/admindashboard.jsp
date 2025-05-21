@@ -44,7 +44,18 @@
 				<a href="${pageContext.request.contextPath}/logout"
 					class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
 				</a> 
-				<img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+
+				
+				
+					<a href="${pageContext.request.contextPath}/adminProfile"
+					class="logout-btn"> <i class="fas fa-user"></i> Profile
+				</a>
+				
+				
+				<img
+					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+
+				
 					alt="Admin Profile" class="admin-pfp">
 			</div>
 		</div>
