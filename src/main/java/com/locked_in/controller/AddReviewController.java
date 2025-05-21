@@ -68,12 +68,11 @@ public class AddReviewController extends HttpServlet {
             // Get parameters
             String orderIdStr = request.getParameter("orderId");
             String productIdStr = request.getParameter("productId");
-            String review = request.getParameter("review");
             String ratingStr = request.getParameter("rating");
 
             // Validate parameters
-            if (orderIdStr == null || productIdStr == null || review == null || ratingStr == null) {
-                message = "All fields are required";
+            if (orderIdStr == null || productIdStr == null || ratingStr == null) {
+                message = "Please select a rating for the product";
                 messageType = "notification-error";
                 redirectWithMessage(request, response, message, messageType);
                 return;
@@ -85,7 +84,16 @@ public class AddReviewController extends HttpServlet {
 
             // Validate rating
             if (rating < 1 || rating > 5) {
-                message = "Rating must be between 1 and 5";
+                message = "Please select a valid rating between 1 and 5 stars";
+                messageType = "notification-error";
+                redirectWithMessage(request, response, message, messageType);
+                return;
+            }
+
+            // Validate review text
+            String review = request.getParameter("review");
+            if (review == null || review.trim().isEmpty()) {
+                message = "Please write your review before submitting";
                 messageType = "notification-error";
                 redirectWithMessage(request, response, message, messageType);
                 return;

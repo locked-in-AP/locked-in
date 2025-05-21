@@ -50,11 +50,13 @@
 				</a>
 				
 				
+
 				<img
 					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
 
 				
 					alt="Admin Profile" class="admin-pfp">
+
 			</div>
 		</div>
 

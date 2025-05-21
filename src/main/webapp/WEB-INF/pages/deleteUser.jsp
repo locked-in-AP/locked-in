@@ -27,6 +27,7 @@
 		</ul>
 	</div>
     <div class="main-content">
+
      	<div class="admin-header">
 			<h1 class="section-title">Delete User</h1>
 			<div class="right-section">
@@ -37,10 +38,12 @@
 
 				
 				
+
 					<a href="${pageContext.request.contextPath}/adminProfile"
 					class="logout-btn"> <i class="fas fa-user"></i> Profile
 				</a>
 				
+
 				
 				<img
 					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
@@ -49,6 +52,7 @@
 					alt="Admin Profile" class="admin-pfp">
 			</div>
 		</div>
+
         <c:if test="${not empty success}">
               <p class="alert success-msg">${success}</p>
         </c:if>

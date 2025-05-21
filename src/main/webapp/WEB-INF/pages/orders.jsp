@@ -414,10 +414,12 @@
                                                         <span class="star" data-rating="3">★</span>
                                                         <span class="star" data-rating="4">★</span>
                                                         <span class="star" data-rating="5">★</span>
-                                                        <input type="hidden" name="rating" value="0" required>
+                                                        <input type="hidden" name="rating" value="0" id="rating-input" required>
                                                     </div>
-                                                    <textarea name="review" placeholder="Write your review..." required></textarea>
-                                                    <button type="submit" class="submit-review">Submit Review</button>
+                                                    <div class="validation-message" id="rating-error" style="color: #dc3545; font-size: 0.9rem; margin-bottom: 1rem; display: none;">Please select a rating</div>
+                                                    <textarea name="review" placeholder="Write your review..."></textarea>
+                                                    <div class="validation-message" id="review-error" style="color: #dc3545; font-size: 0.9rem; margin-bottom: 1rem; display: none;">Please write your review</div>
+                                                    <button type="submit" class="submit-review" id="submit-review-btn" disabled>Submit Review</button>
                                                 </form>
                                             </c:if>
                                         </c:forEach>
@@ -489,11 +491,23 @@
             ratingStars.forEach(stars => {
                 const starsList = stars.querySelectorAll('.star');
                 const ratingInput = stars.querySelector('input[name="rating"]');
+                const submitBtn = stars.closest('form').querySelector('.submit-review');
+                const ratingError = stars.closest('form').querySelector('#rating-error');
+                const reviewError = stars.closest('form').querySelector('#review-error');
+                const reviewTextarea = stars.closest('form').querySelector('textarea[name="review"]');
+                
+                // Add input event listener for review textarea
+                reviewTextarea.addEventListener('input', function() {
+                    if (this.value.trim() !== '') {
+                        reviewError.style.display = 'none';
+                    }
+                });
                 
                 starsList.forEach(star => {
                     star.addEventListener('click', () => {
                         const rating = star.dataset.rating;
                         ratingInput.value = rating;
+                        ratingError.style.display = 'none';
                         
                         starsList.forEach(s => {
                             if (s.dataset.rating <= rating) {
@@ -502,7 +516,32 @@
                                 s.classList.remove('active');
                             }
                         });
+                        
+                        // Enable submit button when rating is selected
+                        submitBtn.disabled = false;
                     });
+                });
+
+                // Add form submit validation
+                const form = stars.closest('form');
+                form.addEventListener('submit', function(e) {
+                    let isValid = true;
+                    
+                    // Check rating
+                    if (ratingInput.value === '0') {
+                        ratingError.style.display = 'block';
+                        isValid = false;
+                    }
+                    
+                    // Check review text
+                    if (reviewTextarea.value.trim() === '') {
+                        reviewError.style.display = 'block';
+                        isValid = false;
+                    }
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                    }
                 });
             });
         });

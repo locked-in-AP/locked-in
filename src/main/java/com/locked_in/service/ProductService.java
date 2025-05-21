@@ -16,22 +16,26 @@ import com.locked_in.model.ProductModel;
  */
 public class ProductService {
     
-    private Connection dbConn;
-    private boolean isConnectionError = false;
+    private final Connection dbConn;
+    private final boolean isConnectionError;
+    private final ReviewService reviewService;
     
     /**
      * Constructor initializes the database connection.
      * Sets the connection error flag if the connection fails.
      */
     public ProductService() {
+        Connection tempConn = null;
+        boolean connectionError = true;
         try {
-            dbConn = DbConfig.getDbConnection();
-            System.out.println("Database connection successful in ProductService");
-        } catch (SQLException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-            isConnectionError = true;
-            System.out.println("Database connection failed in ProductService: " + ex.getMessage());
+            tempConn = DbConfig.getDbConnection();
+            connectionError = false;
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("ProductService - Connection Error: " + e.getMessage());
         }
+        this.dbConn = tempConn;
+        this.isConnectionError = connectionError;
+        this.reviewService = new ReviewService();
     }
     
     /**
@@ -471,19 +475,23 @@ public class ProductService {
      * @throws SQLException if there is an error accessing the ResultSet data
      */
     private ProductModel mapResultSetToProduct(ResultSet result) throws SQLException {
-        return new ProductModel(
-            result.getInt("product_id"),
-            result.getString("name"),
-            result.getString("description"),
-            result.getString("brand"),
-            result.getString("category"),
-            result.getString("tags"),
-            result.getBigDecimal("price"),
-            result.getInt("stock_quantity"),
-            result.getBigDecimal("weight"),
-            result.getString("image"),
-            result.getString("dimensions"),
-            result.getTimestamp("created_at").toLocalDateTime()
-        );
+        ProductModel product = new ProductModel();
+        product.setProductId(result.getInt("product_id"));
+        product.setName(result.getString("name"));
+        product.setDescription(result.getString("description"));
+        product.setBrand(result.getString("brand"));
+        product.setCategory(result.getString("category"));
+        product.setTags(result.getString("tags"));
+        product.setPrice(result.getBigDecimal("price"));
+        product.setStockQuantity(result.getInt("stock_quantity"));
+        product.setWeight(result.getBigDecimal("weight"));
+        product.setImage(result.getString("image"));
+        product.setDimensions(result.getString("dimensions"));
+        product.setCreatedAt(result.getTimestamp("created_at").toLocalDateTime());
+        
+        // Get average rating for the product
+        product.setAverageRating(reviewService.getAverageRating(product.getProductId()));
+        
+        return product;
     }
 } 

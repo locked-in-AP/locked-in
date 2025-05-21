@@ -27,6 +27,7 @@
 		</ul>
 	</div>
     <div class="main-content">
+
       	<div class="admin-header">
 			<h1 class="section-title">Update Product</h1>
 			<div class="right-section">
@@ -36,14 +37,21 @@
 				</a> 
 
 				
-				
+
 					<a href="${pageContext.request.contextPath}/adminProfile"
 					class="logout-btn"> <i class="fas fa-user"></i> Profile
 				</a>
 				
+
 				
-				<img
-					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+			
+                
+                
+                <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+                    alt="Admin Profile" class="admin-pfp" width="40" height="40">
+            </div>
+        </div>
+
 
 				
 					alt="Admin Profile" class="admin-pfp">
