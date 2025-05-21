@@ -110,165 +110,200 @@ public class UpdateProductController extends HttpServlet {
                 return;
             }
 
+            int errors = 0;
+
+            // Get form parameters
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            String brand = request.getParameter("brand");
+            String category = request.getParameter("category");
+            String tags = request.getParameter("tags");
+            String priceStr = request.getParameter("price");
+            String stockQuantityStr = request.getParameter("stockQuantity");
+            String weightStr = request.getParameter("weight");
+            String dimensions = request.getParameter("dimensions");
+            String imageUrl = request.getParameter("image");
+
             // Create a new product model with only the updated values
             ProductModel product = new ProductModel();
             product.setProductId(productId);
-            
-            // Only set fields that have been provided
-            String name = request.getParameter("name");
+
+            // Validate name if provided
             if (name != null && !name.isEmpty()) {
-                product.setName(name);
+                if (!ValidationUtil.isAlphanumericStartingWithLetter(name)) {
+                    request.setAttribute("nameError", "Product name must start with a letter and contain only letters and numbers.");
+                    errors++;
+                } else if (name.length() < 3 || name.length() > 100) {
+                    request.setAttribute("nameError", "Product name must be between 3 and 100 characters.");
+                    errors++;
+                } else {
+                    product.setName(name);
+                }
             }
-            
-            String description = request.getParameter("description");
+
+            // Validate description if provided
             if (description != null && !description.isEmpty()) {
-                product.setDescription(description);
+                if (description.length() < 10 || description.length() > 1000) {
+                    request.setAttribute("descriptionError", "Description must be between 10 and 1000 characters.");
+                    errors++;
+                } else {
+                    product.setDescription(description);
+                }
             }
-            
-            String brand = request.getParameter("brand");
+
+            // Validate brand if provided
             if (brand != null && !brand.isEmpty()) {
-                product.setBrand(brand);
+                if (!ValidationUtil.isAlphanumericStartingWithLetter(brand)) {
+                    request.setAttribute("brandError", "Brand name must start with a letter and contain only letters and numbers.");
+                    errors++;
+                } else if (brand.length() < 2 || brand.length() > 50) {
+                    request.setAttribute("brandError", "Brand name must be between 2 and 50 characters.");
+                    errors++;
+                } else {
+                    product.setBrand(brand);
+                }
             }
-            
-            String category = request.getParameter("category");
+
+            // Validate category if provided
             if (category != null && !category.isEmpty()) {
-                product.setCategory(category);
+                if (!category.matches("^(equipment|supplement|merchandise)$")) {
+                    request.setAttribute("categoryError", "Invalid category selected.");
+                    errors++;
+                } else {
+                    product.setCategory(category);
+                }
             }
-            
-            String tags = request.getParameter("tags");
+
+            // Validate tags if provided
             if (tags != null && !tags.isEmpty()) {
-                product.setTags(tags);
+                String[] tagArray = tags.split(",");
+                boolean tagsValid = true;
+                for (String tag : tagArray) {
+                    if (!ValidationUtil.isAlphanumericStartingWithLetter(tag.trim())) {
+                        request.setAttribute("tagsError", "Each tag must start with a letter and contain only letters and numbers.");
+                        tagsValid = false;
+                        errors++;
+                        break;
+                    } else if (tag.trim().length() < 2 || tag.trim().length() > 20) {
+                        request.setAttribute("tagsError", "Each tag must be between 2 and 20 characters.");
+                        tagsValid = false;
+                        errors++;
+                        break;
+                    }
+                }
+                if (tagsValid) {
+                    product.setTags(tags);
+                }
             }
-            
-            String priceStr = request.getParameter("price");
+
+            // Validate price if provided
             if (priceStr != null && !priceStr.isEmpty()) {
                 try {
-                    product.setPrice(new BigDecimal(priceStr));
+                    BigDecimal price = new BigDecimal(priceStr);
+                    if (price.compareTo(BigDecimal.ZERO) <= 0) {
+                        request.setAttribute("priceError", "Price must be greater than 0.");
+                        errors++;
+                    } else if (price.compareTo(new BigDecimal("999999.99")) > 0) {
+                        request.setAttribute("priceError", "Price cannot exceed $999,999.99.");
+                        errors++;
+                    } else {
+                        product.setPrice(price);
+                    }
                 } catch (NumberFormatException e) {
-                    request.setAttribute("error", "Invalid price format.");
-                    request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
-                    return;
+                    request.setAttribute("priceError", "Invalid price format.");
+                    errors++;
                 }
             }
-            
-            String stockQuantityStr = request.getParameter("stockQuantity");
+
+            // Validate stock quantity if provided
             if (stockQuantityStr != null && !stockQuantityStr.isEmpty()) {
                 try {
-                    product.setStockQuantity(Integer.parseInt(stockQuantityStr));
+                    int stockQuantity = Integer.parseInt(stockQuantityStr);
+                    if (stockQuantity < 0) {
+                        request.setAttribute("stockQuantityError", "Stock quantity cannot be negative.");
+                        errors++;
+                    } else if (stockQuantity > 10000) {
+                        request.setAttribute("stockQuantityError", "Stock quantity cannot exceed 10,000.");
+                        errors++;
+                    } else {
+                        product.setStockQuantity(stockQuantity);
+                    }
                 } catch (NumberFormatException e) {
-                    request.setAttribute("error", "Invalid stock quantity format.");
-                    request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
-                    return;
+                    request.setAttribute("stockQuantityError", "Invalid stock quantity format.");
+                    errors++;
                 }
             }
-            
-            String weightStr = request.getParameter("weight");
+
+            // Validate weight if provided
             if (weightStr != null && !weightStr.isEmpty()) {
                 try {
-                    product.setWeight(new BigDecimal(weightStr));
+                    BigDecimal weight = new BigDecimal(weightStr);
+                    if (weight.compareTo(BigDecimal.ZERO) <= 0) {
+                        request.setAttribute("weightError", "Weight must be greater than 0.");
+                        errors++;
+                    } else if (weight.compareTo(new BigDecimal("1000")) > 0) {
+                        request.setAttribute("weightError", "Weight cannot exceed 1000 kg.");
+                        errors++;
+                    } else {
+                        product.setWeight(weight);
+                    }
                 } catch (NumberFormatException e) {
-                    request.setAttribute("error", "Invalid weight format.");
-                    request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
-                    return;
+                    request.setAttribute("weightError", "Invalid weight format.");
+                    errors++;
                 }
             }
-            
-            // Handle image URL input
-            String imageUrl = request.getParameter("image");
-            if (imageUrl != null && !imageUrl.isEmpty()) {
-                product.setImage(imageUrl);
-            }
-            
-            String dimensions = request.getParameter("dimensions");
+
+            // Validate dimensions if provided
             if (dimensions != null && !dimensions.isEmpty()) {
-                product.setDimensions(dimensions);
+                if (!dimensions.matches("^\\d+x\\d+x\\d+$")) {
+                    request.setAttribute("dimensionsError", "Dimensions must be in format: length x width x height (e.g., 10x10x10)");
+                    errors++;
+                } else {
+                    product.setDimensions(dimensions);
+                }
             }
 
-            // Merge with existing values for fields not entered
-            if (product.getName() == null) product.setName(existing.getName());
-            if (product.getDescription() == null) product.setDescription(existing.getDescription());
-            if (product.getBrand() == null) product.setBrand(existing.getBrand());
-            if (product.getCategory() == null) product.setCategory(existing.getCategory());
-            if (product.getTags() == null) product.setTags(existing.getTags());
-            if (product.getPrice() == null) product.setPrice(existing.getPrice());
-            if (product.getStockQuantity() == null) product.setStockQuantity(existing.getStockQuantity());
-            if (product.getWeight() == null) product.setWeight(existing.getWeight());
-            if (product.getImage() == null) product.setImage(existing.getImage());
-            if (product.getDimensions() == null) product.setDimensions(existing.getDimensions());
+            // Validate image URL if provided
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                if (!imageUrl.matches("^(https?://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$")) {
+                    request.setAttribute("imageError", "Please enter a valid image URL.");
+                    errors++;
+                } else {
+                    product.setImage(imageUrl);
+                }
+            }
 
-            boolean updated = productService.updateProduct(product);
-            if (updated) {
-                request.setAttribute("success", "Product updated successfully!");
-                response.sendRedirect(request.getContextPath() + "/admindashboard?success=Product updated successfully!");
+            // If there are validation errors, preserve form data and return to form
+            if (errors > 0) {
+                // Preserve form data, using existing values as fallback
+                request.setAttribute("product", existing);
+                request.setAttribute("name", name != null && !name.isEmpty() ? name : existing.getName());
+                request.setAttribute("description", description != null && !description.isEmpty() ? description : existing.getDescription());
+                request.setAttribute("brand", brand != null && !brand.isEmpty() ? brand : existing.getBrand());
+                request.setAttribute("category", category != null && !category.isEmpty() ? category : existing.getCategory());
+                request.setAttribute("tags", tags != null && !tags.isEmpty() ? tags : existing.getTags());
+                request.setAttribute("price", priceStr != null && !priceStr.isEmpty() ? priceStr : existing.getPrice().toString());
+                request.setAttribute("stockQuantity", stockQuantityStr != null && !stockQuantityStr.isEmpty() ? stockQuantityStr : String.valueOf(existing.getStockQuantity()));
+                request.setAttribute("weight", weightStr != null && !weightStr.isEmpty() ? weightStr : existing.getWeight().toString());
+                request.setAttribute("dimensions", dimensions != null && !dimensions.isEmpty() ? dimensions : existing.getDimensions());
+                request.setAttribute("image", imageUrl != null && !imageUrl.isEmpty() ? imageUrl : existing.getImage());
+                request.setAttribute("error", "You have " + errors + " invalid field(s).");
+                request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
                 return;
+            }
+
+            // Update product in database
+            boolean success = productService.updateProduct(product);
+            if (success) {
+                response.sendRedirect(request.getContextPath() + "/admindashboard?success=Product updated successfully");
             } else {
-                request.setAttribute("error", "Failed to update product. Please check the ID and try again.");
+                request.setAttribute("error", "Failed to update product. Please try again.");
+                request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "An error occurred: " + e.getMessage());
-        }
-        request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
-    }
 
-    /**
-     * Retrieves a new value if provided, otherwise returns the existing value.
-     * 
-     * Used to handle form field updates where empty or null values should
-     * preserve the existing data rather than overwriting it with null.
-     *
-     * @param newValue      the new value to check
-     * @param existingValue the existing value to return if newValue is null or empty
-     * @return the new value if provided and non-empty, otherwise the existing value
-     */
-    private String getOrDefault(String newValue, String existingValue) {
-        if (newValue != null && !newValue.isEmpty()) {
-            return newValue;
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid product ID format.");
+            request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
         }
-        return existingValue;
-    }
-
-    /**
-     * Retrieves a new BigDecimal value if provided, otherwise returns the existing value.
-     * 
-     * Used to handle price and weight updates, preserving existing values when
-     * new values are invalid or not provided. Handles NumberFormatException
-     * by returning the existing value.
-     *
-     * @param newValue      the new value to parse and check
-     * @param existingValue the existing value to return if newValue is invalid
-     * @return the parsed new value if valid, otherwise the existing value
-     */
-    private BigDecimal getPriceOrDefault(String newValue, BigDecimal existingValue) {
-        if (newValue != null && !newValue.isEmpty()) {
-            try {
-                return new BigDecimal(newValue);
-            } catch (NumberFormatException e) {
-                return existingValue;
-            }
-        }
-        return existingValue;
-    }
-
-    /**
-     * Retrieves a new integer value if provided, otherwise returns the existing value.
-     * 
-     * Used to handle numeric field updates like stock quantity, preserving
-     * existing values when new values are invalid or not provided. Handles
-     * NumberFormatException by returning the existing value.
-     *
-     * @param newValue      the new value to parse and check
-     * @param existingValue the existing value to return if newValue is invalid
-     * @return the parsed new value if valid, otherwise the existing value
-     */
-    private int getIntOrDefault(String newValue, int existingValue) {
-        if (newValue != null && !newValue.isEmpty()) {
-            try {
-                return Integer.parseInt(newValue);
-            } catch (NumberFormatException e) {
-                return existingValue;
-            }
-        }
-        return existingValue;
     }
 } 

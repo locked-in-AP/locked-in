@@ -4,8 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage orders in the LockedIN admin dashboard">
+    <meta name="keywords" content="orders management, admin, locked in">
     <title>Admin - Order Management</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admindashboard.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -242,7 +246,7 @@
     </style>
 </head>
 <body>
-    <jsp:include page="../header.jsp" />
+    
     
     <!-- Notification for messages -->
     <c:if test="${not empty message}">
@@ -255,13 +259,16 @@
     </c:if>
 
     <div class="sidebar">
+        <div class="sidebar-title">
+            <span class="main-title">LockedIN</span>
+            <span class="sub-title">Admin Dashboard</span>
+        </div>
         <ul class="nav">
             <li><a href="${pageContext.request.contextPath}/admindashboard"><span class="icon"><i class="fas fa-home"></i></span> Dashboard</a></li>
             <li><a href="${pageContext.request.contextPath}/users"><span class="icon"><i class="fas fa-user"></i></span>Users</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/orders"><span class="icon"><i class="fas fa-shopping-cart"></i></span> Orders</a></li>
             <li><a href="${pageContext.request.contextPath}/productList"><span class="icon"><i class="fas fa-box"></i></span> View Product</a></li>
             <li><a href="${pageContext.request.contextPath}/addProduct"><span class="icon"><i class="fas fa-pen"></i></span> Add Product</a></li>
-            <li><a href="${pageContext.request.contextPath}/deleteProduct"><span class="icon"><i class="fas fa-trash"></i></span> Delete Product</a></li>
         </ul>
     </div>
     
@@ -269,12 +276,12 @@
         <div class="admin-header">
             <h1 class="section-title">Order Management</h1>
             <div class="right-section">
-                <p>Welcome, Admin</p>
+                <p>Welcome, ${sessionScope.name}</p>
                 <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
                 <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-                    alt="Admin Profile" class="admin-pfp">
+                    alt="Admin Profile" class="admin-pfp" width="40" height="40">
             </div>
         </div>
         
@@ -482,7 +489,5 @@
             updateOrderSections();
         </script>
     </div>
-
-    <jsp:include page="../footer.jsp" />
 </body>
 </html> 
