@@ -144,9 +144,10 @@
 	transform: translateY(-5px);
 }
 
-/* Update existing card-content to stay on top of image */
+
 .card-content {
 	position: relative;
+	bottom: 0;
 	z-index: 1;
 	width: 100%;
 	padding: 2rem;

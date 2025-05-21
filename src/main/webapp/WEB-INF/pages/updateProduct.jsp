@@ -97,8 +97,14 @@
 				</div>
 
 				<div class="form-group">
-                    <label for="image">Product Image</label>
+                    <label for="image">Product Image URL</label>
                     <input type="text" id="image" name="image" value="${product.image}" placeholder="Enter image URL">
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageFile">Upload New Image</label>
+                    <input type="file" id="imageFile" name="imageFile" accept="image/*">
+                    <p class="field-hint">You can upload a new image or use the URL above</p>
                 </div>
 
 				<div class="form-group">

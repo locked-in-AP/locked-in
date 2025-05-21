@@ -476,6 +476,13 @@ th {
     display: block;
 }
 
+.field-hint {
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 5px;
+    font-style: italic;
+}
+
 .error-msg {
     color: #dc3545;
     background: #f8d7da;
