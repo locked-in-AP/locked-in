@@ -121,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadMoreBtn = document.querySelector('.load-more-btn');
     if (loadMoreBtn) {
         loadMoreBtn.addEventListener('click', function() {
-            alert('Load more functionality would be implemented here');
         });
     }
 

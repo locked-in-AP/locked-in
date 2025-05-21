@@ -54,11 +54,25 @@ public class SupplementsController extends HttpServlet {
 		}
 		
 		// Get supplements from the database with sorting
-		List<ProductModel> supplements = productService.getProductsByCategory("supplement", sortBy);
+		List<ProductModel> allSupplements = productService.getProductsByCategory("supplement", sortBy);
+		
+		// Check if this is an AJAX request for loading more products
+		String isAjax = request.getParameter("ajax");
+		if ("true".equals(isAjax)) {
+			// For AJAX requests, send all products
+			request.setAttribute("products", allSupplements);
+			request.getRequestDispatcher("/WEB-INF/pages/product-grid.jsp").forward(request, response);
+			return;
+		}
+		
+		// For initial page load, show only first 6 products
+		List<ProductModel> initialSupplements = allSupplements.size() > 6 ? 
+			allSupplements.subList(0, 6) : allSupplements;
 		
 		// Set the products and sort parameter in the request
-		request.setAttribute("products", supplements);
+		request.setAttribute("products", initialSupplements);
 		request.setAttribute("currentSort", sortBy);
+		request.setAttribute("totalProducts", allSupplements.size());
 		
 		// Forward to the supplements JSP
 		request.getRequestDispatcher("/WEB-INF/pages/supplements.jsp").forward(request, response);

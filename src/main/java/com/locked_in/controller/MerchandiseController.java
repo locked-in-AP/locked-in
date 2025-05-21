@@ -50,11 +50,25 @@ public class MerchandiseController extends HttpServlet {
 		}
 		
 		// Get merchandise from the database with sorting
-		List<ProductModel> merchandise = productService.getProductsByCategory("merchandise", sortBy);
+		List<ProductModel> allMerchandise = productService.getProductsByCategory("merchandise", sortBy);
+		
+		// Check if this is an AJAX request for loading more products
+		String isAjax = request.getParameter("ajax");
+		if ("true".equals(isAjax)) {
+			// For AJAX requests, send all products
+			request.setAttribute("products", allMerchandise);
+			request.getRequestDispatcher("/WEB-INF/pages/product-grid.jsp").forward(request, response);
+			return;
+		}
+		
+		// For initial page load, show only first 6 products
+		List<ProductModel> initialMerchandise = allMerchandise.size() > 6 ? 
+			allMerchandise.subList(0, 6) : allMerchandise;
 		
 		// Set the products and sort parameter in the request
-		request.setAttribute("products", merchandise);
+		request.setAttribute("products", initialMerchandise);
 		request.setAttribute("currentSort", sortBy);
+		request.setAttribute("totalProducts", allMerchandise.size());
 		
 		// Forward to the merchandise JSP
 		request.getRequestDispatcher("/WEB-INF/pages/merchandise.jsp").forward(request, response);

@@ -50,11 +50,25 @@ public class EquipmentsController extends HttpServlet {
 		}
 		
 		// Get equipment from the database with sorting
-		List<ProductModel> equipment = productService.getProductsByCategory("equipment", sortBy);
+		List<ProductModel> allEquipment = productService.getProductsByCategory("equipment", sortBy);
+		
+		// Check if this is an AJAX request for loading more products
+		String isAjax = request.getParameter("ajax");
+		if ("true".equals(isAjax)) {
+			// For AJAX requests, send all products
+			request.setAttribute("products", allEquipment);
+			request.getRequestDispatcher("/WEB-INF/pages/product-grid.jsp").forward(request, response);
+			return;
+		}
+		
+		// For initial page load, show only first 6 products
+		List<ProductModel> initialEquipment = allEquipment.size() > 6 ? 
+			allEquipment.subList(0, 6) : allEquipment;
 		
 		// Set the products and sort parameter in the request
-		request.setAttribute("products", equipment);
+		request.setAttribute("products", initialEquipment);
 		request.setAttribute("currentSort", sortBy);
+		request.setAttribute("totalProducts", allEquipment.size());
 		
 		// Forward to the equipments JSP
 		request.getRequestDispatcher("/WEB-INF/pages/equipments.jsp").forward(request, response);

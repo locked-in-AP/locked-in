@@ -28,7 +28,7 @@
 
 		<div class="page-title">
 			<h2 class="title-text">SUPPLEMENTS</h2>
-			<span class="product-count">${products.size()} Products</span>
+			<span class="product-count">${totalProducts} Products</span>
 		</div>
 
 		<div class="content-wrapper">
@@ -147,9 +147,10 @@
 
 		<!-- Pagination -->
 		<div class="pagination">
-			<button class="load-more-btn">LOAD MORE</button>
-			<a href="#" class="view-all">View all</a>
-			<p class="pagination-info">Viewing 1 - ${products.size()} of ${products.size()} products</p>
+			<c:if test="${totalProducts > 6}">
+				<button class="load-more-btn" id="loadMoreBtn">LOAD MORE</button>
+			</c:if>
+			<p class="pagination-info">Viewing 1 - ${products.size()} of ${totalProducts} products</p>
 		</div>
 	</div>
 
@@ -196,6 +197,16 @@
 						// Update the product grid with new content
 						productGrid.innerHTML = newProductGrid.innerHTML;
 						
+						// Update pagination info
+						const newPaginationInfo = doc.querySelector('.pagination-info');
+						document.querySelector('.pagination-info').textContent = newPaginationInfo.textContent;
+						
+						// Update load more button visibility
+						const loadMoreBtn = document.getElementById('loadMoreBtn');
+						if (loadMoreBtn) {
+							loadMoreBtn.style.display = newProductGrid.children.length >= 6 ? 'block' : 'none';
+						}
+						
 						// Remove loading state
 						productGrid.classList.remove('loading');
 						spinnerContainer.style.display = 'none';
@@ -207,6 +218,60 @@
 					});
 			});
 		});
+
+		// Add event listener for Load More button
+		const loadMoreBtn = document.getElementById('loadMoreBtn');
+		if (loadMoreBtn) {
+			loadMoreBtn.addEventListener('click', function() {
+				// Get the current URL and create a URLSearchParams object
+				const url = new URL(window.location.href);
+				const params = new URLSearchParams(url.search);
+				
+				// Add ajax parameter
+				params.set('ajax', 'true');
+				
+				// Update the URL search parameters
+				url.search = params.toString();
+				
+				// Show loading state
+				const productGrid = document.querySelector('.product-grid');
+				const spinnerContainer = document.querySelector('.spinner-container');
+				productGrid.classList.add('loading');
+				spinnerContainer.style.display = 'block';
+				
+				// Fetch all products
+				fetch(url.toString())
+					.then(response => response.text())
+					.then(html => {
+						// Create a temporary div to parse the HTML
+						const parser = new DOMParser();
+						const doc = parser.parseFromString(html, 'text/html');
+						
+						// Get the new product grid content
+						const newProductGrid = doc.querySelector('.product-grid');
+						
+						// Update the product grid with all products
+						productGrid.innerHTML = newProductGrid.innerHTML;
+						
+						// Update pagination info
+						const totalProducts = parseInt('${totalProducts}');
+						document.querySelector('.pagination-info').textContent = 
+							`Viewing 1 - ${totalProducts} of ${totalProducts} products`;
+						
+						// Hide load more button
+						loadMoreBtn.style.display = 'none';
+						
+						// Remove loading state
+						productGrid.classList.remove('loading');
+						spinnerContainer.style.display = 'none';
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						productGrid.classList.remove('loading');
+						spinnerContainer.style.display = 'none';
+					});
+			});
+		}
 	</script>
 </body>
 </html>
