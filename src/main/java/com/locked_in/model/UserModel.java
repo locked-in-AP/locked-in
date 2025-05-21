@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  * 
  * The class provides constructors for different user creation scenarios
  * and maintains default values for new users.
+ * 
  */
 public class UserModel {
 

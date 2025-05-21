@@ -143,187 +143,205 @@ public class UpdateProductController extends HttpServlet {
             String dimensions = request.getParameter("dimensions");
             String imageUrl = request.getParameter("image");
 
-            // Create a new product model with only the updated values
+            // Check if any field is empty
+            if (name == null || name.trim().isEmpty() ||
+                description == null || description.trim().isEmpty() ||
+                brand == null || brand.trim().isEmpty() ||
+                category == null || category.trim().isEmpty() ||
+                tags == null || tags.trim().isEmpty() ||
+                priceStr == null || priceStr.trim().isEmpty() ||
+                stockQuantityStr == null || stockQuantityStr.trim().isEmpty() ||
+                weightStr == null || weightStr.trim().isEmpty() ||
+                dimensions == null || dimensions.trim().isEmpty() ||
+                imageUrl == null || imageUrl.trim().isEmpty()) {
+                request.setAttribute("error", "All fields are required. Please fill in all fields.");
+                request.setAttribute("product", existing);
+                request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
+                return;
+            }
+
+            // Check if any field has changed
+            boolean hasChanges = false;
+            if (!name.equals(existing.getName()) ||
+                !description.equals(existing.getDescription()) ||
+                !brand.equals(existing.getBrand()) ||
+                !category.equals(existing.getCategory()) ||
+                !tags.equals(existing.getTags()) ||
+                !priceStr.equals(existing.getPrice().toString()) ||
+                !stockQuantityStr.equals(String.valueOf(existing.getStockQuantity())) ||
+                !weightStr.equals(existing.getWeight().toString()) ||
+                !dimensions.equals(existing.getDimensions()) ||
+                !imageUrl.equals(existing.getImage())) {
+                hasChanges = true;
+            }
+
+            if (!hasChanges) {
+                // Get admin's email from session and set user details
+                String email = (String) SessionUtil.getAttribute(request, "email");
+                if (email != null) {
+                    UserModel adminUser = userService.getUserByEmail(email);
+                    if (adminUser != null) {
+                        request.setAttribute("userDetails", adminUser);
+                    }
+                }
+                
+                request.setAttribute("error", "No changes detected. Please modify at least one field to update the product.");
+                request.setAttribute("product", existing);
+                request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
+                return;
+            }
+
+            // Create a new product model with the updated values
             ProductModel product = new ProductModel();
             product.setProductId(productId);
 
-            // Validate name if provided
-            if (name != null && !name.isEmpty()) {
-                if (name.length() < 3 || name.length() > 100) {
-                    request.setAttribute("nameError", "Product name must be between 3 and 100 characters.");
+            // Validate name
+            if (name.length() < 3 || name.length() > 100) {
+                request.setAttribute("nameError", "Product name must be between 3 and 100 characters.");
+                errors++;
+            } else {
+                product.setName(name);
+            }
+
+            // Validate description
+            if (description.length() < 10 || description.length() > 1000) {
+                request.setAttribute("descriptionError", "Description must be between 10 and 1000 characters.");
+                errors++;
+            } else {
+                product.setDescription(description);
+            }
+
+            // Validate brand
+            if (brand.length() < 2 || brand.length() > 50) {
+                request.setAttribute("brandError", "Brand name must be between 2 and 50 characters.");
+                errors++;
+            } else {
+                product.setBrand(brand);
+            }
+
+            // Validate category
+            if (!category.matches("^(equipment|supplement|merchandise)$")) {
+                request.setAttribute("categoryError", "Invalid category selected.");
+                errors++;
+            } else {
+                product.setCategory(category);
+            }
+
+            // Validate tags
+            String[] tagArray = tags.split(",");
+            boolean tagsValid = true;
+            for (String tag : tagArray) {
+                String trimmed = tag.trim();
+                if (trimmed.length() < 2 || trimmed.length() > 20) {
+                    request.setAttribute("tagsError", "Each tag must be between 2 and 20 characters.");
+                    tagsValid = false;
+                    errors++;
+                    break;
+                }
+            }
+            if (tagsValid) {
+                product.setTags(tags);
+            }
+
+            // Validate price
+            try {
+                BigDecimal price = new BigDecimal(priceStr);
+                if (price.compareTo(BigDecimal.ZERO) <= 0) {
+                    request.setAttribute("priceError", "Price must be greater than 0.");
+                    errors++;
+                } else if (price.compareTo(new BigDecimal("999999.99")) > 0) {
+                    request.setAttribute("priceError", "Price cannot exceed $999,999.99.");
                     errors++;
                 } else {
-                    product.setName(name);
+                    product.setPrice(price);
                 }
-            } else {
-                product.setName(existing.getName());
+            } catch (NumberFormatException e) {
+                request.setAttribute("priceError", "Invalid price format.");
+                errors++;
             }
 
-            // Validate description if provided
-            if (description != null && !description.isEmpty()) {
-                if (description.length() < 10 || description.length() > 1000) {
-                    request.setAttribute("descriptionError", "Description must be between 10 and 1000 characters.");
+            // Validate stock quantity
+            try {
+                int stockQuantity = Integer.parseInt(stockQuantityStr);
+                if (stockQuantity < 0) {
+                    request.setAttribute("stockQuantityError", "Stock quantity cannot be negative.");
+                    errors++;
+                } else if (stockQuantity > 10000) {
+                    request.setAttribute("stockQuantityError", "Stock quantity cannot exceed 10,000.");
                     errors++;
                 } else {
-                    product.setDescription(description);
+                    product.setStockQuantity(stockQuantity);
                 }
-            } else {
-                product.setDescription(existing.getDescription());
+            } catch (NumberFormatException e) {
+                request.setAttribute("stockQuantityError", "Invalid stock quantity format.");
+                errors++;
             }
 
-            // Validate brand if provided
-            if (brand != null && !brand.isEmpty()) {
-                if (brand.length() < 2 || brand.length() > 50) {
-                    request.setAttribute("brandError", "Brand name must be between 2 and 50 characters.");
+            // Validate weight
+            try {
+                BigDecimal weight = new BigDecimal(weightStr);
+                if (weight.compareTo(BigDecimal.ZERO) <= 0) {
+                    request.setAttribute("weightError", "Weight must be greater than 0.");
+                    errors++;
+                } else if (weight.compareTo(new BigDecimal("1000")) > 0) {
+                    request.setAttribute("weightError", "Weight cannot exceed 1000 kg.");
                     errors++;
                 } else {
-                    product.setBrand(brand);
+                    product.setWeight(weight);
                 }
-            } else {
-                product.setBrand(existing.getBrand());
+            } catch (NumberFormatException e) {
+                request.setAttribute("weightError", "Invalid weight format.");
+                errors++;
             }
 
-            // Validate category if provided
-            if (category != null && !category.isEmpty()) {
-                if (!category.matches("^(equipment|supplement|merchandise)$")) {
-                    request.setAttribute("categoryError", "Invalid category selected.");
-                    errors++;
-                } else {
-                    product.setCategory(category);
-                }
+            // Validate dimensions
+            if (!dimensions.matches("^\\d+x\\d+x\\d+$")) {
+                request.setAttribute("dimensionsError", "Dimensions must be in format: length x width x height (e.g., 10x10x10)");
+                errors++;
             } else {
-                product.setCategory(existing.getCategory());
-            }
-
-            // Validate tags if provided
-            if (tags != null && !tags.isEmpty()) {
-                String[] tagArray = tags.split(",");
-                boolean tagsValid = true;
-                for (String tag : tagArray) {
-                    String trimmed = tag.trim();
-                    if (trimmed.length() < 2 || trimmed.length() > 20) {
-                        request.setAttribute("tagsError", "Each tag must be between 2 and 20 characters.");
-                        tagsValid = false;
-                        errors++;
-                        break;
-                    }
-                }
-                if (tagsValid) {
-                    product.setTags(tags);
-                }
-            } else {
-                product.setTags(existing.getTags());
-            }
-
-            // Validate price if provided
-            if (priceStr != null && !priceStr.isEmpty()) {
+                // Additional validation for reasonable dimension values
+                String[] dims = dimensions.split("x");
                 try {
-                    BigDecimal price = new BigDecimal(priceStr);
-                    if (price.compareTo(BigDecimal.ZERO) <= 0) {
-                        request.setAttribute("priceError", "Price must be greater than 0.");
+                    int length = Integer.parseInt(dims[0]);
+                    int width = Integer.parseInt(dims[1]);
+                    int height = Integer.parseInt(dims[2]);
+                    
+                    if (length <= 0 || width <= 0 || height <= 0) {
+                        request.setAttribute("dimensionsError", "All dimensions must be greater than 0.");
                         errors++;
-                    } else if (price.compareTo(new BigDecimal("999999.99")) > 0) {
-                        request.setAttribute("priceError", "Price cannot exceed $999,999.99.");
+                    } else if (length > 1000 || width > 1000 || height > 1000) {
+                        request.setAttribute("dimensionsError", "No dimension can exceed 1000 units.");
                         errors++;
                     } else {
-                        product.setPrice(price);
+                        product.setDimensions(dimensions);
                     }
                 } catch (NumberFormatException e) {
-                    request.setAttribute("priceError", "Invalid price format.");
+                    request.setAttribute("dimensionsError", "Invalid dimension values.");
                     errors++;
                 }
-            } else {
-                product.setPrice(existing.getPrice());
             }
 
-            // Validate stock quantity if provided
-            if (stockQuantityStr != null && !stockQuantityStr.isEmpty()) {
-                try {
-                    int stockQuantity = Integer.parseInt(stockQuantityStr);
-                    if (stockQuantity < 0) {
-                        request.setAttribute("stockQuantityError", "Stock quantity cannot be negative.");
-                        errors++;
-                    } else if (stockQuantity > 10000) {
-                        request.setAttribute("stockQuantityError", "Stock quantity cannot exceed 10,000.");
-                        errors++;
-                    } else {
-                        product.setStockQuantity(stockQuantity);
-                    }
-                } catch (NumberFormatException e) {
-                    request.setAttribute("stockQuantityError", "Invalid stock quantity format.");
-                    errors++;
-                }
+            // Validate image URL
+            if (!imageUrl.matches("^(https?://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$")) {
+                request.setAttribute("imageError", "Please enter a valid image URL.");
+                errors++;
             } else {
-                product.setStockQuantity(existing.getStockQuantity());
-            }
-
-            // Validate weight if provided
-            if (weightStr != null && !weightStr.isEmpty()) {
-                try {
-                    BigDecimal weight = new BigDecimal(weightStr);
-                    if (weight.compareTo(BigDecimal.ZERO) <= 0) {
-                        request.setAttribute("weightError", "Weight must be greater than 0.");
-                        errors++;
-                    } else if (weight.compareTo(new BigDecimal("1000")) > 0) {
-                        request.setAttribute("weightError", "Weight cannot exceed 1000 kg.");
-                        errors++;
-                    } else {
-                        product.setWeight(weight);
-                    }
-                } catch (NumberFormatException e) {
-                    request.setAttribute("weightError", "Invalid weight format.");
-                    errors++;
-                }
-            } else {
-                product.setWeight(existing.getWeight());
-            }
-
-            // Validate dimensions if provided
-            if (dimensions != null && !dimensions.isEmpty()) {
-                if (!dimensions.matches("^\\d+x\\d+x\\d+$")) {
-                    request.setAttribute("dimensionsError", "Dimensions must be in format: length x width x height (e.g., 10x10x10)");
-                    errors++;
-                } else {
-                    // Additional validation for reasonable dimension values
-                    String[] dims = dimensions.split("x");
-                    try {
-                        int length = Integer.parseInt(dims[0]);
-                        int width = Integer.parseInt(dims[1]);
-                        int height = Integer.parseInt(dims[2]);
-                        
-                        if (length <= 0 || width <= 0 || height <= 0) {
-                            request.setAttribute("dimensionsError", "All dimensions must be greater than 0.");
-                            errors++;
-                        } else if (length > 1000 || width > 1000 || height > 1000) {
-                            request.setAttribute("dimensionsError", "No dimension can exceed 1000 units.");
-                            errors++;
-                        } else {
-                            product.setDimensions(dimensions);
-                        }
-                    } catch (NumberFormatException e) {
-                        request.setAttribute("dimensionsError", "Invalid dimension values.");
-                        errors++;
-                    }
-                }
-            } else {
-                product.setDimensions(existing.getDimensions());
-            }
-
-            // Validate image URL if provided
-            if (imageUrl != null && !imageUrl.isEmpty()) {
-                if (!imageUrl.matches("^(https?://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$")) {
-                    request.setAttribute("imageError", "Please enter a valid image URL.");
-                    errors++;
-                } else {
-                    product.setImage(imageUrl);
-                }
-            } else {
-                product.setImage(existing.getImage());
+                product.setImage(imageUrl);
             }
 
             // If there are validation errors, preserve form data and return to form
             if (errors > 0) {
                 System.out.println("UpdateProductController - Found " + errors + " validation errors");
+                
+                // Get admin's email from session and set user details
+                String email = (String) SessionUtil.getAttribute(request, "email");
+                if (email != null) {
+                    UserModel adminUser = userService.getUserByEmail(email);
+                    if (adminUser != null) {
+                        request.setAttribute("userDetails", adminUser);
+                    }
+                }
+                
                 // Preserve form data, using existing values as fallback
                 request.setAttribute("product", existing);
                 request.setAttribute("name", name != null && !name.isEmpty() ? name : existing.getName());

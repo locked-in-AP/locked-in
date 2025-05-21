@@ -292,6 +292,15 @@ public class AddProductController extends HttpServlet {
      */
     private void handleError(HttpServletRequest request, HttpServletResponse response, String message)
             throws ServletException, IOException {
+        // Get admin's email from session and set user details
+        String email = (String) SessionUtil.getAttribute(request, "email");
+        if (email != null) {
+            UserModel adminUser = userService.getUserByEmail(email);
+            if (adminUser != null) {
+                request.setAttribute("userDetails", adminUser);
+            }
+        }
+        
         // Preserve form data
         request.setAttribute("name", request.getParameter("name"));
         request.setAttribute("description", request.getParameter("description"));
