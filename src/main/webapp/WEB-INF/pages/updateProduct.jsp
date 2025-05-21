@@ -36,8 +36,9 @@
                 <a href="${pageContext.request.contextPath}/adminProfile" class="logout-btn">
                     <i class="fas fa-user"></i> Profile
                 </a>
-                <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-                    alt="Admin Profile" class="admin-pfp" width="40" height="40">
+               <img
+					src="${pageContext.request.contextPath}/${userDetails.profilePicture != null ? userDetails.profilePicture : 'resources/images/system/userpfp.png'}"
+					alt="Admin Profile" class="admin-pfp">
             </div>
         </div>
         <div class="form-container">

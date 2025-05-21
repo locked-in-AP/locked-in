@@ -43,13 +43,10 @@
 					class="logout-btn"> <i class="fas fa-user"></i> Profile
 				</a>
 				
-
-				
-				<img
-					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-
-				
+				<img src="${pageContext.request.contextPath}/${userDetails.profilePicture != null ? userDetails.profilePicture : 'resources/images/system/userpfp.png'}"
 					alt="Admin Profile" class="admin-pfp">
+				
+				
 			</div>
 		</div>
 

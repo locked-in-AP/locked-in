@@ -1,10 +1,11 @@
 package com.locked_in.controller;
 
 import com.locked_in.model.ProductModel;
+import com.locked_in.model.UserModel;
 import com.locked_in.service.ProductService;
 import com.locked_in.service.UserService;
 import com.locked_in.util.ValidationUtil;
-import com.locked_in.model.UserModel;
+import com.locked_in.util.SessionUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,9 +31,11 @@ import java.util.UUID;
  * admin authentication and product existence before performing updates.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/updateProduct" })
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50) // 50MB
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024, // 1 MB
+    maxFileSize = 1024 * 1024 * 10,  // 10 MB
+    maxRequestSize = 1024 * 1024 * 15 // 15 MB
+)
 public class UpdateProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProductService productService;
@@ -40,8 +43,8 @@ public class UpdateProductController extends HttpServlet {
     private static final String UPLOAD_DIR = "resources/images/products";
 
     /**
-     * Initializes the UpdateProductController with an instance of ProductService.
-     * Sets up the service for handling product update operations.
+     * Initializes the UpdateProductController with instances of required services.
+     * Sets up ProductService and UserService for handling product update operations.
      */
     @Override
     public void init() throws ServletException {
@@ -64,6 +67,19 @@ public class UpdateProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get admin's email from session
+        String email = (String) SessionUtil.getAttribute(request, "email");
+        if (email == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        // Get admin's user details including profile picture
+        UserModel adminUser = userService.getUserByEmail(email);
+        if (adminUser != null) {
+            request.setAttribute("userDetails", adminUser);
+        }
+
         String productIdStr = request.getParameter("id");
         if (productIdStr != null && !productIdStr.isEmpty()) {
             try {

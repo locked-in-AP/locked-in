@@ -71,6 +71,13 @@ public class AdminDashboardController extends HttpServlet {
 			// Get pending deliveries count
 			int pendingDeliveries = orderService.getPendingDeliveriesCount();
 			
+			// Get admin's profile picture
+			String adminEmail = (String) request.getSession().getAttribute("email");
+			UserModel adminUser = userService.getUserByEmail(adminEmail);
+			if (adminUser != null) {
+				request.setAttribute("userDetails", adminUser);
+			}
+			
 			request.setAttribute("products", products);
 			request.setAttribute("users", users);
 			request.setAttribute("totalRevenue", totalRevenue);
@@ -84,9 +91,9 @@ public class AdminDashboardController extends HttpServlet {
                 request.setAttribute("success", successMessage);
             }
 
-            // Check for error message from redirect
+            //Check for error message from redirect
             String errorMessage = request.getParameter("error");
-            if (errorMessage != null && !errorMessage.isEmpty()) {
+           if (errorMessage != null && !errorMessage.isEmpty()) {
                 request.setAttribute("error", errorMessage);
             }
 
