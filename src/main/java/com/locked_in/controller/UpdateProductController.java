@@ -133,13 +133,8 @@ public class UpdateProductController extends HttpServlet {
 
             // Validate name if provided
             if (name != null && !name.isEmpty()) {
-                if (!ValidationUtil.isAlphanumericStartingWithLetter(name)) {
-                    request.setAttribute("nameError", "Product name must start with a letter and contain only letters and numbers.");
-                    System.out.println("UpdateProductController - Validation Error: Product name must start with a letter and contain only letters and numbers");
-                    errors++;
-                } else if (name.length() < 3 || name.length() > 100) {
+                if (name.length() < 3 || name.length() > 100) {
                     request.setAttribute("nameError", "Product name must be between 3 and 100 characters.");
-                    System.out.println("UpdateProductController - Validation Error: Product name length must be between 3 and 100 characters");
                     errors++;
                 } else {
                     product.setName(name);
@@ -152,7 +147,6 @@ public class UpdateProductController extends HttpServlet {
             if (description != null && !description.isEmpty()) {
                 if (description.length() < 10 || description.length() > 1000) {
                     request.setAttribute("descriptionError", "Description must be between 10 and 1000 characters.");
-                    System.out.println("UpdateProductController - Validation Error: Description length must be between 10 and 1000 characters");
                     errors++;
                 } else {
                     product.setDescription(description);
@@ -163,13 +157,8 @@ public class UpdateProductController extends HttpServlet {
 
             // Validate brand if provided
             if (brand != null && !brand.isEmpty()) {
-                if (!ValidationUtil.isAlphanumericStartingWithLetter(brand)) {
-                    request.setAttribute("brandError", "Brand name must start with a letter and contain only letters and numbers.");
-                    System.out.println("UpdateProductController - Validation Error: Brand name must start with a letter and contain only letters and numbers");
-                    errors++;
-                } else if (brand.length() < 2 || brand.length() > 50) {
+                if (brand.length() < 2 || brand.length() > 50) {
                     request.setAttribute("brandError", "Brand name must be between 2 and 50 characters.");
-                    System.out.println("UpdateProductController - Validation Error: Brand name length must be between 2 and 50 characters");
                     errors++;
                 } else {
                     product.setBrand(brand);
@@ -182,7 +171,6 @@ public class UpdateProductController extends HttpServlet {
             if (category != null && !category.isEmpty()) {
                 if (!category.matches("^(equipment|supplement|merchandise)$")) {
                     request.setAttribute("categoryError", "Invalid category selected.");
-                    System.out.println("UpdateProductController - Validation Error: Invalid category selected");
                     errors++;
                 } else {
                     product.setCategory(category);
@@ -196,15 +184,9 @@ public class UpdateProductController extends HttpServlet {
                 String[] tagArray = tags.split(",");
                 boolean tagsValid = true;
                 for (String tag : tagArray) {
-                    if (!ValidationUtil.isAlphanumericStartingWithLetter(tag.trim())) {
-                        request.setAttribute("tagsError", "Each tag must start with a letter and contain only letters and numbers.");
-                        System.out.println("UpdateProductController - Validation Error: Tag must start with a letter and contain only letters and numbers");
-                        tagsValid = false;
-                        errors++;
-                        break;
-                    } else if (tag.trim().length() < 2 || tag.trim().length() > 20) {
+                    String trimmed = tag.trim();
+                    if (trimmed.length() < 2 || trimmed.length() > 20) {
                         request.setAttribute("tagsError", "Each tag must be between 2 and 20 characters.");
-                        System.out.println("UpdateProductController - Validation Error: Tag length must be between 2 and 20 characters");
                         tagsValid = false;
                         errors++;
                         break;
@@ -223,18 +205,15 @@ public class UpdateProductController extends HttpServlet {
                     BigDecimal price = new BigDecimal(priceStr);
                     if (price.compareTo(BigDecimal.ZERO) <= 0) {
                         request.setAttribute("priceError", "Price must be greater than 0.");
-                        System.out.println("UpdateProductController - Validation Error: Price must be greater than 0");
                         errors++;
                     } else if (price.compareTo(new BigDecimal("999999.99")) > 0) {
                         request.setAttribute("priceError", "Price cannot exceed $999,999.99.");
-                        System.out.println("UpdateProductController - Validation Error: Price cannot exceed $999,999.99");
                         errors++;
                     } else {
                         product.setPrice(price);
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("priceError", "Invalid price format.");
-                    System.out.println("UpdateProductController - Validation Error: Invalid price format - " + e.getMessage());
                     errors++;
                 }
             } else {
@@ -247,18 +226,15 @@ public class UpdateProductController extends HttpServlet {
                     int stockQuantity = Integer.parseInt(stockQuantityStr);
                     if (stockQuantity < 0) {
                         request.setAttribute("stockQuantityError", "Stock quantity cannot be negative.");
-                        System.out.println("UpdateProductController - Validation Error: Stock quantity cannot be negative");
                         errors++;
                     } else if (stockQuantity > 10000) {
                         request.setAttribute("stockQuantityError", "Stock quantity cannot exceed 10,000.");
-                        System.out.println("UpdateProductController - Validation Error: Stock quantity cannot exceed 10,000");
                         errors++;
                     } else {
                         product.setStockQuantity(stockQuantity);
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("stockQuantityError", "Invalid stock quantity format.");
-                    System.out.println("UpdateProductController - Validation Error: Invalid stock quantity format - " + e.getMessage());
                     errors++;
                 }
             } else {
@@ -271,18 +247,15 @@ public class UpdateProductController extends HttpServlet {
                     BigDecimal weight = new BigDecimal(weightStr);
                     if (weight.compareTo(BigDecimal.ZERO) <= 0) {
                         request.setAttribute("weightError", "Weight must be greater than 0.");
-                        System.out.println("UpdateProductController - Validation Error: Weight must be greater than 0");
                         errors++;
                     } else if (weight.compareTo(new BigDecimal("1000")) > 0) {
                         request.setAttribute("weightError", "Weight cannot exceed 1000 kg.");
-                        System.out.println("UpdateProductController - Validation Error: Weight cannot exceed 1000 kg");
                         errors++;
                     } else {
                         product.setWeight(weight);
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("weightError", "Invalid weight format.");
-                    System.out.println("UpdateProductController - Validation Error: Invalid weight format - " + e.getMessage());
                     errors++;
                 }
             } else {
@@ -293,10 +266,28 @@ public class UpdateProductController extends HttpServlet {
             if (dimensions != null && !dimensions.isEmpty()) {
                 if (!dimensions.matches("^\\d+x\\d+x\\d+$")) {
                     request.setAttribute("dimensionsError", "Dimensions must be in format: length x width x height (e.g., 10x10x10)");
-                    System.out.println("UpdateProductController - Validation Error: Invalid dimensions format");
                     errors++;
                 } else {
-                    product.setDimensions(dimensions);
+                    // Additional validation for reasonable dimension values
+                    String[] dims = dimensions.split("x");
+                    try {
+                        int length = Integer.parseInt(dims[0]);
+                        int width = Integer.parseInt(dims[1]);
+                        int height = Integer.parseInt(dims[2]);
+                        
+                        if (length <= 0 || width <= 0 || height <= 0) {
+                            request.setAttribute("dimensionsError", "All dimensions must be greater than 0.");
+                            errors++;
+                        } else if (length > 1000 || width > 1000 || height > 1000) {
+                            request.setAttribute("dimensionsError", "No dimension can exceed 1000 units.");
+                            errors++;
+                        } else {
+                            product.setDimensions(dimensions);
+                        }
+                    } catch (NumberFormatException e) {
+                        request.setAttribute("dimensionsError", "Invalid dimension values.");
+                        errors++;
+                    }
                 }
             } else {
                 product.setDimensions(existing.getDimensions());
@@ -306,7 +297,6 @@ public class UpdateProductController extends HttpServlet {
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 if (!imageUrl.matches("^(https?://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$")) {
                     request.setAttribute("imageError", "Please enter a valid image URL.");
-                    System.out.println("UpdateProductController - Validation Error: Invalid image URL format");
                     errors++;
                 } else {
                     product.setImage(imageUrl);
@@ -330,7 +320,41 @@ public class UpdateProductController extends HttpServlet {
                 request.setAttribute("weight", weightStr != null && !weightStr.isEmpty() ? weightStr : existing.getWeight().toString());
                 request.setAttribute("dimensions", dimensions != null && !dimensions.isEmpty() ? dimensions : existing.getDimensions());
                 request.setAttribute("image", imageUrl != null && !imageUrl.isEmpty() ? imageUrl : existing.getImage());
-                request.setAttribute("error", "You have " + errors + " invalid field(s).");
+                
+                // Create a detailed error message
+                StringBuilder errorMessage = new StringBuilder("Validation Errors:<br>");
+                if (request.getAttribute("nameError") != null) {
+                    errorMessage.append("- Name: ").append(request.getAttribute("nameError")).append("<br>");
+                }
+                if (request.getAttribute("descriptionError") != null) {
+                    errorMessage.append("- Description: ").append(request.getAttribute("descriptionError")).append("<br>");
+                }
+                if (request.getAttribute("brandError") != null) {
+                    errorMessage.append("- Brand: ").append(request.getAttribute("brandError")).append("<br>");
+                }
+                if (request.getAttribute("categoryError") != null) {
+                    errorMessage.append("- Category: ").append(request.getAttribute("categoryError")).append("<br>");
+                }
+                if (request.getAttribute("tagsError") != null) {
+                    errorMessage.append("- Tags: ").append(request.getAttribute("tagsError")).append("<br>");
+                }
+                if (request.getAttribute("priceError") != null) {
+                    errorMessage.append("- Price: ").append(request.getAttribute("priceError")).append("<br>");
+                }
+                if (request.getAttribute("stockQuantityError") != null) {
+                    errorMessage.append("- Stock Quantity: ").append(request.getAttribute("stockQuantityError")).append("<br>");
+                }
+                if (request.getAttribute("weightError") != null) {
+                    errorMessage.append("- Weight: ").append(request.getAttribute("weightError")).append("<br>");
+                }
+                if (request.getAttribute("dimensionsError") != null) {
+                    errorMessage.append("- Dimensions: ").append(request.getAttribute("dimensionsError")).append("<br>");
+                }
+                if (request.getAttribute("imageError") != null) {
+                    errorMessage.append("- Image: ").append(request.getAttribute("imageError")).append("<br>");
+                }
+                
+                request.setAttribute("error", errorMessage.toString());
                 request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
                 return;
             }

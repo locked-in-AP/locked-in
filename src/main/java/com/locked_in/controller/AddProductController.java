@@ -92,9 +92,6 @@ public class AddProductController extends HttpServlet {
         if (ValidationUtil.isNullOrEmpty(name)) {
             request.setAttribute("nameError", "Product name is required.");
             errors++;
-        } else if (!ValidationUtil.isAlphanumericStartingWithLetter(name)) {
-            request.setAttribute("nameError", "Product name must start with a letter and contain only letters and numbers.");
-            errors++;
         } else if (name.length() < 3 || name.length() > 100) {
             request.setAttribute("nameError", "Product name must be between 3 and 100 characters.");
             errors++;
@@ -112,9 +109,6 @@ public class AddProductController extends HttpServlet {
         // Validate brand
         if (ValidationUtil.isNullOrEmpty(brand)) {
             request.setAttribute("brandError", "Brand name is required.");
-            errors++;
-        } else if (!ValidationUtil.isAlphanumericStartingWithLetter(brand)) {
-            request.setAttribute("brandError", "Brand name must start with a letter and contain only letters and numbers.");
             errors++;
         } else if (brand.length() < 2 || brand.length() > 50) {
             request.setAttribute("brandError", "Brand name must be between 2 and 50 characters.");
@@ -137,11 +131,8 @@ public class AddProductController extends HttpServlet {
         } else {
             String[] tagArray = tags.split(",");
             for (String tag : tagArray) {
-                if (!ValidationUtil.isAlphanumericStartingWithLetter(tag.trim())) {
-                    request.setAttribute("tagsError", "Each tag must start with a letter and contain only letters and numbers.");
-                    errors++;
-                    break;
-                } else if (tag.trim().length() < 2 || tag.trim().length() > 20) {
+                String trimmed = tag.trim();
+                if (trimmed.length() < 2 || trimmed.length() > 20) {
                     request.setAttribute("tagsError", "Each tag must be between 2 and 20 characters.");
                     errors++;
                     break;
