@@ -69,6 +69,14 @@ public class OrdersController extends HttpServlet {
         processRequest(request, response);
     }
 
+    /**
+     * Processes requests for order actions.
+     * 
+     * @param request  the HTTP request containing order action data
+     * @param response the HTTP response for sending data to the client
+     * @throws ServletException if a servlet-related error occurs
+     * @throws IOException      if an I/O error occurs during processing
+     */
     private void processRequest(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         // Check if user is logged in
