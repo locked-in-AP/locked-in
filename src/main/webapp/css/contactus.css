@@ -55,6 +55,7 @@ form {
 	font-size: 1.1rem;
 }
 
+/* Only target form-group inputs and textareas, not global input/textarea */
 .form-group input, .form-group textarea {
 	font-family: 'Crimson Text', Georgia, Times, serif !important;
 	width: 100%;
