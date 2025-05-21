@@ -27,19 +27,24 @@
 		</ul>
 	</div>
     <div class="main-content">
-        <div class="admin-header">
-            <h1 class="section-title">Update Product</h1>
-            <div class="right-section">
-                <p>Welcome, ${sessionScope.name}</p>
-                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-                
-                
+
+      	<div class="admin-header">
+			<h1 class="section-title">Update Product</h1>
+			<div class="right-section">
+				<p>Welcome, ${sessionScope.name}</p>
+				<a href="${pageContext.request.contextPath}/logout"
+					class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
+				</a> 
+
+				
+
 					<a href="${pageContext.request.contextPath}/adminProfile"
 					class="logout-btn"> <i class="fas fa-user"></i> Profile
 				</a>
 				
+
+				
+			
                 
                 
                 <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
@@ -47,6 +52,11 @@
             </div>
         </div>
 
+
+				
+					alt="Admin Profile" class="admin-pfp">
+			</div>
+		</div>
         <div class="form-container">
             <c:if test="${not empty success}">
                 <p class="alert success-msg">${success}</p>

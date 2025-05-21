@@ -84,6 +84,12 @@ public class AdminDashboardController extends HttpServlet {
                 request.setAttribute("success", successMessage);
             }
 
+            // Check for error message from redirect
+            String errorMessage = request.getParameter("error");
+            if (errorMessage != null && !errorMessage.isEmpty()) {
+                request.setAttribute("error", errorMessage);
+            }
+
 			request.getRequestDispatcher("/WEB-INF/pages/admindashboard.jsp").forward(request, response);
 		} catch (Exception e) {
 			System.out.println("AdminDashboardController - Error: " + e.getMessage());

@@ -10,38 +10,49 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <jsp:include page="header.jsp" />
+   
    <div class="sidebar">
+   <div class="sidebar-title">
+			<span class="main-title">LockedIN</span>
+			<span class="sub-title">Admin Dashboard</span>
+		</div>
 		<ul class="nav">
 			<li><a href="${pageContext.request.contextPath}/admindashboard"><span class="icon"><i class="fas fa-home"></i></span> Dashboard</a></li>
 			<li><a href="${pageContext.request.contextPath}/users"><span class="icon"><i class="fas fa-user"></i></span>Users</a></li>
 			<li><a href="${pageContext.request.contextPath}/admin/orders"><span class="icon"><i class="fas fa-shopping-cart"></i></span> Orders</a></li>
 			<li><a href="${pageContext.request.contextPath}/productList"><span class="icon"><i class="fas fa-box"></i></span> View Product</a></li>
 			<li><a href="${pageContext.request.contextPath}/addProduct"><span class="icon"><i class="fas fa-pen"></i></span> Add Product</a></li>
-			<li><a href="${pageContext.request.contextPath}/updateProduct"><span class="icon"><i class="fas fa-pen"></i></span> Edit Product</a></li>
 			
 			
 		</ul>
 	</div>
     <div class="main-content">
-        <div class="admin-header">
-            <h1 class="section-title">Delete User</h1>
-            <div class="right-section">
-                <p>Welcome, Admin</p>
-                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-                
-                
+
+     	<div class="admin-header">
+			<h1 class="section-title">Delete User</h1>
+			<div class="right-section">
+				<p>Welcome, ${sessionScope.name}</p>
+				<a href="${pageContext.request.contextPath}/logout"
+					class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
+				</a> 
+
+				
+				
+
 					<a href="${pageContext.request.contextPath}/adminProfile"
 					class="logout-btn"> <i class="fas fa-user"></i> Profile
 				</a>
 				
-                
-                <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-                    alt="Admin Profile" class="admin-pfp">
-            </div>
-        </div>
+
+				
+				<img
+					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+
+				
+					alt="Admin Profile" class="admin-pfp">
+			</div>
+		</div>
+
         <c:if test="${not empty success}">
               <p class="alert success-msg">${success}</p>
         </c:if>

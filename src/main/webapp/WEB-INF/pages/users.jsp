@@ -28,24 +28,35 @@
 	</div>
     
     <div class="main-content">
-        <div class="admin-header">
-            <h1 class="section-title">Registered Users</h1>
-            <div class="right-section">
-                <p>Welcome, ${sessionScope.name}</p>
-                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
+
+      	<div class="admin-header">
+			<h1 class="section-title">Users</h1>
+			<div class="right-section">
+				<p>Welcome, ${sessionScope.name}</p>
+				<a href="${pageContext.request.contextPath}/logout"
+					class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
+				</a> 
+
+				
+				
+
+      
                 
                 
+
 					<a href="${pageContext.request.contextPath}/adminProfile"
 					class="logout-btn"> <i class="fas fa-user"></i> Profile
 				</a>
 				
+
+
+
                 
                 <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
                     alt="Admin Profile" class="admin-pfp" width="40" height="40">
             </div>
         </div>
+
        
         <div class="table-container">
             <table>
@@ -59,6 +70,7 @@
                         <th>Date of Birth</th>
                         <th>Date Joined</th>
                         <th>Cart Size</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,6 +84,14 @@
                             <td>${user.dateOfBirth}</td>
                             <td>${user.joinedAt}</td>
                             <td>${user.cartSize}</td>
+                            	<td>
+									<form action="${pageContext.request.contextPath}/deleteUser" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+										<input type="hidden" name="userId" value="${user.userId}">
+										<button type="submit"  class="edit-btn" style="border: none; cursor: pointer;">
+											<i class="fas fa-trash"></i> Remove
+										</button>
+									</form>
+								</td>
                         </tr>
                     </c:forEach>
                 </tbody>

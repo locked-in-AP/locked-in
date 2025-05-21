@@ -133,9 +133,10 @@
     </style>
 </head>
 <body>
-    
 
-    <div class="sidebar">
+  
+	<div class="sidebar">
+
 		<div class="sidebar-title">
 			<span class="main-title">LockedIN</span>
 			<span class="sub-title">Admin Dashboard</span>
@@ -150,25 +151,31 @@
 	</div>
 
     <div class="main-content">
-        <div class="admin-header">
-            <h1 class="section-title">Admin Profile</h1>
-            <div class="right-section">
-               <p>Welcome, ${sessionScope.name} </p>
-                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-                
-                
+
+     	<div class="admin-header">
+			<h1 class="section-title">Admin Profile</h1>
+			<div class="right-section">
+				<p>Welcome, ${sessionScope.name}</p>
+				<a href="${pageContext.request.contextPath}/logout"
+					class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
+				</a> 
+
+				
+				
+
 					<a href="${pageContext.request.contextPath}/adminProfile"
 					class="logout-btn"> <i class="fas fa-user"></i> Profile
 				</a>
 				
-                
-                
-                <img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-                    alt="Admin Profile" class="admin-pfp">
-            </div>
-        </div>
+
+				
+				<img
+					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+
+				
+					alt="Admin Profile" class="admin-pfp">
+			</div>
+		</div>
 
         <div class="profile-container">
             <c:if test="${not empty sessionScope.error}">
@@ -220,6 +227,6 @@
         </div>
     </div>
 
-   
+
 </body>
 </html>
