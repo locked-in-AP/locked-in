@@ -35,15 +35,26 @@
 			<p class="success-msg">${success}</p>
 		</c:if>
 		
-		<div class="admin-header">
-			<h1 class="section-title">All Products</h1>
+			<div class="admin-header">
+			<h1 class="section-title">Products</h1>
 			<div class="right-section">
 				<p>Welcome, ${sessionScope.name}</p>
-				<a href="${pageContext.request.contextPath}/logout" class="logout-btn">
-					<i class="fas fa-sign-out-alt"></i> Logout
+				<a href="${pageContext.request.contextPath}/logout"
+					class="logout-btn"> <i class="fas fa-sign-out-alt"></i> Logout
+				</a> 
+
+				
+				
+					<a href="${pageContext.request.contextPath}/adminProfile"
+					class="logout-btn"> <i class="fas fa-user"></i> Profile
 				</a>
-				<img src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
-					alt="Admin Profile" class="admin-pfp" width="40" height="40">
+				
+				
+				<img
+					src="${pageContext.request.contextPath}/resources/images/system/userpfp.png"
+
+				
+					alt="Admin Profile" class="admin-pfp">
 			</div>
 		</div>
 

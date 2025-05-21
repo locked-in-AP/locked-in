@@ -169,14 +169,70 @@ public class UserService {
             System.out.println("UserService - Connection Error!");
             return false;
         }
-        String query = "DELETE FROM users WHERE user_id = ?";
-        try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            return stmt.executeUpdate() > 0;
+        System.out.println("UserService - Attempting to delete user with ID: " + userId);
+        
+        try {
+            // Start transaction
+            dbConn.setAutoCommit(false);
+            
+            // First check if user exists
+            String checkQuery = "SELECT COUNT(*) FROM users WHERE user_id = ?";
+            try (PreparedStatement checkStmt = dbConn.prepareStatement(checkQuery)) {
+                checkStmt.setInt(1, userId);
+                ResultSet rs = checkStmt.executeQuery();
+                if (rs.next() && rs.getInt(1) == 0) {
+                    System.out.println("UserService - User with ID " + userId + " does not exist");
+                    dbConn.rollback();
+                    return false;
+                }
+            }
+            
+            // Delete from user_product_order first
+            String deleteOrderQuery = "DELETE FROM user_product_order WHERE user_id = ?";
+            try (PreparedStatement stmt = dbConn.prepareStatement(deleteOrderQuery)) {
+                stmt.setInt(1, userId);
+                int orderRowsAffected = stmt.executeUpdate();
+                System.out.println("UserService - Deleted " + orderRowsAffected + " records from user_product_order");
+            }
+            
+            // Delete from user_product
+            String deleteProductQuery = "DELETE FROM user_product WHERE user_id = ?";
+            try (PreparedStatement stmt = dbConn.prepareStatement(deleteProductQuery)) {
+                stmt.setInt(1, userId);
+                int productRowsAffected = stmt.executeUpdate();
+                System.out.println("UserService - Deleted " + productRowsAffected + " records from user_product");
+            }
+            
+            // Finally delete the user
+            String deleteUserQuery = "DELETE FROM users WHERE user_id = ?";
+            try (PreparedStatement stmt = dbConn.prepareStatement(deleteUserQuery)) {
+                stmt.setInt(1, userId);
+                int userRowsAffected = stmt.executeUpdate();
+                System.out.println("UserService - Delete operation affected " + userRowsAffected + " rows in users table");
+                
+                if (userRowsAffected > 0) {
+                    dbConn.commit();
+                    return true;
+                } else {
+                    dbConn.rollback();
+                    return false;
+                }
+            }
         } catch (SQLException e) {
+            try {
+                dbConn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("UserService - Error rolling back transaction: " + rollbackEx.getMessage());
+            }
             System.out.println("UserService - SQL Error deleting user: " + e.getMessage());
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                dbConn.setAutoCommit(true);
+            } catch (SQLException e) {
+                System.out.println("UserService - Error resetting auto-commit: " + e.getMessage());
+            }
         }
     }
 

@@ -31,10 +31,14 @@
 
 	<div class="main-content">
 		<c:if test="${not empty success}">
-			<p class="alert success-msg">${success}</p>
+			<div class="alert success-msg">
+				<i class="fas fa-check-circle"></i> ${success}
+			</div>
 		</c:if>
 		<c:if test="${not empty error}">
-			<p class="alert error-msg">${error}</p>
+			<div class="alert error-msg">
+				<i class="fas fa-exclamation-circle"></i> ${error}
+			</div>
 		</c:if>
 	
 		<div class="admin-header">
@@ -177,6 +181,8 @@
 						<th>Date of Birth</th>
 						<th>Date Joined</th>
 						<th>Cart Size</th>
+						<th>Actions</th>
+						
 					</tr>
 				</thead>
 				<tbody>
@@ -191,6 +197,14 @@
 								<td>${user.dateOfBirth}</td>
 								<td>${user.joinedAt}</td>
 								<td>${user.cartSize}</td>
+								<td>
+									<form action="${pageContext.request.contextPath}/deleteUser" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+										<input type="hidden" name="userId" value="${user.userId}">
+										<button type="submit"  class="edit-btn" style="border: none; cursor: pointer;">
+											<i class="fas fa-trash"></i> Remove
+										</button>
+									</form>
+								</td>
 							</tr>
 						</c:forEach>
 					</c:if>

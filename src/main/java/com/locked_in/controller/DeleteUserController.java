@@ -1,6 +1,5 @@
 package com.locked_in.controller;
 
-import com.locked_in.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -8,25 +7,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.locked_in.service.UserService;
+import com.locked_in.util.SessionUtil;
+import com.locked_in.model.UserModel;
+
 /**
- * DeleteUserController handles HTTP requests for user account deletion.
+ * DeleteUserController handles HTTP requests for user deletion.
  * 
- * It processes requests to remove user accounts from the system, validating
- * admin authentication and user existence before performing the deletion.
+ * It processes requests to remove users from the system, validating
+ * admin authentication before performing the deletion.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/deleteUser" })
 public class DeleteUserController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private UserService userService;
+    private final UserService userService;
 
     /**
      * Initializes the DeleteUserController with an instance of UserService.
      * Sets up the service for handling user deletion operations.
      */
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        userService = new UserService();
+    public DeleteUserController() {
+        super();
+        this.userService = new UserService();
     }
 
     /**
@@ -49,7 +51,7 @@ public class DeleteUserController extends HttpServlet {
      * Handles POST requests for user account deletion.
      * 
      * Validates admin authentication and user existence before removing
-     * the user account from the system. Redirects with appropriate success/error messages.
+     * the user from the system. Redirects with appropriate success/error messages.
      *
      * @param request  the HTTP request containing user ID to delete
      * @param response the HTTP response for sending data to the client
@@ -59,18 +61,56 @@ public class DeleteUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("DeleteUserController - Received delete request");
+        
+        // Check if user is logged in and is admin
+        String email = (String) SessionUtil.getAttribute(request, "email");
+        if (email == null) {
+            System.out.println("DeleteUserController - No user logged in");
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        String role = (String) SessionUtil.getAttribute(request, "role");
+        if (!"admin".equals(role)) {
+            System.out.println("DeleteUserController - User is not admin");
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
+
+        // Get user ID from request
         String userIdStr = request.getParameter("userId");
+        System.out.println("DeleteUserController - Attempting to delete user with ID: " + userIdStr);
+        
         try {
             int userId = Integer.parseInt(userIdStr);
-            boolean deleted = userService.deleteUser(userId);
-            if (deleted) {
-                request.setAttribute("success", "User deleted successfully!");
-            } else {
-                request.setAttribute("error", "Failed to delete user. Please check the ID and try again.");
+            
+            // Get the current admin's user ID
+            UserModel currentAdmin = userService.getUserByEmail(email);
+            if (currentAdmin != null && currentAdmin.getUserId() == userId) {
+                System.out.println("DeleteUserController - Admin attempting to delete their own account");
+                response.sendRedirect(request.getContextPath() + "/admindashboard?error=Cannot delete the account you are logged in as");
+                return;
             }
+            
+            // Delete the user
+            boolean deleted = userService.deleteUser(userId);
+            System.out.println("DeleteUserController - Delete operation result: " + deleted);
+            
+            if (deleted) {
+                // Redirect back to admin dashboard with success message
+                response.sendRedirect(request.getContextPath() + "/admindashboard?success=User deleted successfully");
+            } else {
+                // Redirect back to admin dashboard with error message
+                response.sendRedirect(request.getContextPath() + "/admindashboard?error=Failed to delete user");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("DeleteUserController - Invalid user ID format: " + userIdStr);
+            response.sendRedirect(request.getContextPath() + "/admindashboard?error=Invalid user ID");
         } catch (Exception e) {
-            request.setAttribute("error", "An error occurred: " + e.getMessage());
+            System.out.println("DeleteUserController - Error during deletion: " + e.getMessage());
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/admindashboard?error=An error occurred: " + e.getMessage());
         }
-        request.getRequestDispatcher("/WEB-INF/pages/deleteUser.jsp").forward(request, response);
     }
 } 

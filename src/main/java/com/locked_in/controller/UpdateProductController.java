@@ -3,6 +3,7 @@ package com.locked_in.controller;
 import com.locked_in.model.ProductModel;
 import com.locked_in.service.ProductService;
 import com.locked_in.service.UserService;
+import com.locked_in.util.ValidationUtil;
 import com.locked_in.model.UserModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;

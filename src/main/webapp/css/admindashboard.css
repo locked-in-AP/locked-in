@@ -476,20 +476,28 @@ th {
     display: block;
 }
 
-.error-msg {
-    color: #dc3545;
-    background: #f8d7da;
-    padding: 10px;
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
     border-radius: 4px;
-    margin-bottom: 15px;
-    border: 1px solid #f5c6cb;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.error-msg {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
 }
 
 .success-msg {
-    color: #155724;
-    background: #d4edda;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    border: 1px solid #c3e6cb;
+    background-color: #dcfce7;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+}
+
+.alert i {
+    margin-right: 10px;
+    font-size: 1.2em;
 }
