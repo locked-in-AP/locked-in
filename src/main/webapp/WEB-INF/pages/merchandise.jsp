@@ -114,11 +114,26 @@
 							</div>
 							<div class="product-info">
 								<div class="product-rating">
-									<span class="star"></span>
-									<span class="star"></span>
-									<span class="star"></span>
-									<span class="star"></span>
-									<span class="rating-text">4.3</span>
+									<c:forEach begin="1" end="5" var="i">
+										<c:choose>
+											<c:when test="${product.averageRating != null && i <= product.averageRating}">
+												<span class="star filled">★</span>
+											</c:when>
+											<c:otherwise>
+												<span class="star">☆</span>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+									<span class="rating-text">
+										<c:choose>
+											<c:when test="${product.averageRating != null}">
+												${String.format("%.1f", product.averageRating)}
+											</c:when>
+											<c:otherwise>
+												No ratings
+											</c:otherwise>
+										</c:choose>
+									</span>
 								</div>
 								<h3 class="product-title">${product.name}</h3>
 								<p class="product-color">${product.brand}</p>
