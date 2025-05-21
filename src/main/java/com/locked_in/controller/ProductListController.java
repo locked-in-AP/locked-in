@@ -1,5 +1,8 @@
 package com.locked_in.controller;
 import com.locked_in.service.ProductService;
+import com.locked_in.service.UserService;
+import com.locked_in.model.UserModel;
+import com.locked_in.util.SessionUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import com.locked_in.service.ProductService;
 import com.locked_in.model.ProductModel;
-import com.locked_in.model.UserModel;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ import java.util.List;
 public class ProductListController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProductService productService;
+    private UserService userService;
 
     /**
      * Initializes the ProductListController with an instance of ProductService.
@@ -31,6 +34,7 @@ public class ProductListController extends HttpServlet {
     public ProductListController() {
         super();
         productService = new ProductService();
+        userService = new UserService();
     }
 
     /**
@@ -47,6 +51,16 @@ public class ProductListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get admin's email from session
+        String email = (String) SessionUtil.getAttribute(request, "email");
+        if (email != null) {
+            // Get admin's user details including profile picture
+            UserModel adminUser = userService.getUserByEmail(email);
+            if (adminUser != null) {
+                request.setAttribute("userDetails", adminUser);
+            }
+        }
+
         List<ProductModel> allProducts = productService.getAllProducts("newest");
         request.setAttribute("products", allProducts);
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);

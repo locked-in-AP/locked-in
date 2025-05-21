@@ -44,6 +44,19 @@ public class DeleteUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get admin's email from session
+        String email = (String) SessionUtil.getAttribute(request, "email");
+        if (email == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        // Get admin's user details including profile picture
+        UserModel adminUser = userService.getUserByEmail(email);
+        if (adminUser != null) {
+            request.setAttribute("userDetails", adminUser);
+        }
+
         request.getRequestDispatcher("/WEB-INF/pages/deleteUser.jsp").forward(request, response);
     }
 

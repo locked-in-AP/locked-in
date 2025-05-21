@@ -58,8 +58,6 @@
 				
 				<img
 					src="${pageContext.request.contextPath}/${userDetails.profilePicture != null ? userDetails.profilePicture : 'resources/images/system/userpfp.png'}"
-
-				
 					alt="Admin Profile" class="admin-pfp">
 			</div>
 		</div>

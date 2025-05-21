@@ -1,6 +1,9 @@
 package com.locked_in.controller;
 
 import com.locked_in.service.ProductService;
+import com.locked_in.service.UserService;
+import com.locked_in.model.UserModel;
+import com.locked_in.util.SessionUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,15 +21,17 @@ import java.io.IOException;
 public class DeleteProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProductService productService;
+    private UserService userService;
 
     /**
-     * Initializes the DeleteProductController with an instance of ProductService.
-     * Sets up the service for handling product deletion operations.
+     * Initializes the DeleteProductController with instances of required services.
+     * Sets up ProductService and UserService for handling product deletion operations.
      */
     @Override
     public void init() throws ServletException {
         super.init();
         productService = new ProductService();
+        userService = new UserService();
     }
 
     /**
@@ -42,6 +47,19 @@ public class DeleteProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get admin's email from session
+        String email = (String) SessionUtil.getAttribute(request, "email");
+        if (email == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        // Get admin's user details including profile picture
+        UserModel adminUser = userService.getUserByEmail(email);
+        if (adminUser != null) {
+            request.setAttribute("userDetails", adminUser);
+        }
+
         request.getRequestDispatcher("/WEB-INF/pages/deleteProduct.jsp").forward(request, response);
     }
 

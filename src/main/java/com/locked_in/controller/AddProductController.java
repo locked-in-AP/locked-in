@@ -9,8 +9,11 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 import com.locked_in.model.ProductModel;
+import com.locked_in.model.UserModel;
 import com.locked_in.service.ProductService;
+import com.locked_in.service.UserService;
 import com.locked_in.util.ValidationUtil;
+import com.locked_in.util.SessionUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -34,6 +37,7 @@ import jakarta.servlet.http.Part;
 public class AddProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final ProductService productService;
+    private final UserService userService;
     private static final String UPLOAD_DIR = "resources/images/products";
 
     /**
@@ -42,6 +46,7 @@ public class AddProductController extends HttpServlet {
      */
     public AddProductController() {
         this.productService = new ProductService();
+        this.userService = new UserService();
     }
 
     /**
@@ -57,6 +62,16 @@ public class AddProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get admin's email from session
+        String email = (String) SessionUtil.getAttribute(request, "email");
+        if (email != null) {
+            // Get admin's user details including profile picture
+            UserModel adminUser = userService.getUserByEmail(email);
+            if (adminUser != null) {
+                request.setAttribute("userDetails", adminUser);
+            }
+        }
+
         request.getRequestDispatcher("/WEB-INF/pages/addProduct.jsp").forward(request, response);
     }
 

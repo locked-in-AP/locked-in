@@ -2,6 +2,7 @@ package com.locked_in.controller;
 
 import com.locked_in.service.UserService;
 import com.locked_in.model.UserModel;
+import com.locked_in.util.SessionUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -44,6 +45,19 @@ public class UsersController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get admin's email from session
+        String email = (String) SessionUtil.getAttribute(request, "email");
+        if (email == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        // Get admin's user details including profile picture
+        UserModel adminUser = userService.getUserByEmail(email);
+        if (adminUser != null) {
+            request.setAttribute("userDetails", adminUser);
+        }
+
         List<UserModel> users = userService.getAllUsers();
         request.setAttribute("users", users);
         request.getRequestDispatcher("/WEB-INF/pages/users.jsp").forward(request, response);

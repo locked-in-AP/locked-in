@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.locked_in.model.OrderModel;
+import com.locked_in.model.UserModel;
 import com.locked_in.service.OrderService;
 import com.locked_in.service.UserService;
 import com.locked_in.util.SessionUtil;
@@ -59,11 +60,14 @@ public class AdminOrdersController extends HttpServlet {
 
         try {
             // Check if user is admin
-            String role = userService.getUserByEmail(email).getRole();
-            if (!"admin".equals(role)) {
+            UserModel adminUser = userService.getUserByEmail(email);
+            if (adminUser == null || !"admin".equals(adminUser.getRole())) {
                 response.sendRedirect(request.getContextPath() + "/");
                 return;
             }
+
+            // Set admin's user details including profile picture
+            request.setAttribute("userDetails", adminUser);
 
             // Get not completed and completed orders
             List<OrderModel> notCompletedOrders = orderService.getNotCompletedOrders();
