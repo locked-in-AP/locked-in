@@ -26,7 +26,7 @@
 		</c:if>
 
 		<form action="${pageContext.request.contextPath}/register"
-			method="post"  enctype="multipart/form-data">
+			method="post"  enctype="multipart/form-data" novalidate>
 			<div class="input-box">
 				<input type="text" name="name" placeholder="Enter your Name"
 					class="${not empty nameError ? 'error-border' : ''}"

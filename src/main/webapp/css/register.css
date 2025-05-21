@@ -98,54 +98,52 @@ body {
 	font-size: 16px;
 }
 
-/* Add these styles to your register.css */
+/* Error and Success Message Styles */
 .error-msg {
-	color: #dc3545;
-	background: #f8d7da;
-	padding: 10px;
-	border-radius: 4px;
-	margin-bottom: 15px;
-	border: 1px solid #f5c6cb;
-}
-
-.field-error {
-	color: #dc3545;
-	font-size: 12px;
-	margin-top: 5px;
-	display: block;
-	padding: 5px 0;
-}
-
-.input-container {
-	margin-bottom: 20px;
-}
-
-.input-box {
-	position: relative;
-	margin-bottom: 5px; /* Reduced from 20px to make room for errors */
-}
-
-.error-border {
-	border: 2px solid #dc3545 !important;
-}
-
-.field-error {
-	color: #ff0000;
-	font-size: 0.8em;
-	margin-top: 5px;
-	padding-left: 5px;
-}
-
-.error-msg {
-	color: #ff0000;
-	background: #ffeeee;
-	padding: 10px;
+	background-color: #fee2e2;
+	color: #dc2626;
+	padding: 12px;
 	border-radius: 5px;
+	margin: 10px 0;
+	text-align: left;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	border: 1px solid #fecaca;
+}
+
+.error-msg i {
+	font-size: 16px;
+}
+
+.field-error {
+	color: #dc2626;
+	font-size: 12px;
+	margin-top: 4px;
+	padding-left: 4px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.field-error i {
+	font-size: 14px;
+}
+
+.input-box input.error {
+	border-color: #dc2626;
+}
+
+.input-box input.error:focus {
+	border-color: #dc2626;
+	box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
 }
 
 .success-msg {
-	color: #008000;
-	background: #eeffee;
+	background-color: #dcfce7;
+	border: 1px solid #bbf7d0;
+	color: #16a34a;
 	padding: 10px;
 	border-radius: 5px;
 }

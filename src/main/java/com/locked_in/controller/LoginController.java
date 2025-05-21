@@ -8,6 +8,7 @@ import com.locked_in.service.LoginService;
 import com.locked_in.service.CartService;
 import com.locked_in.util.CookieUtil;
 import com.locked_in.util.SessionUtil;
+import com.locked_in.util.ValidationUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -67,6 +68,30 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		
+		// Validate email and password
+		int errors = 0;
+		
+		// Validate email
+		if (ValidationUtil.isNullOrEmpty(email)) {
+			request.setAttribute("emailError", "Email is required.");
+			errors++;
+		} else if (!ValidationUtil.isValidEmail(email)) {
+			request.setAttribute("emailError", "Please enter a valid email address.");
+			errors++;
+		}
+		
+		// Validate password
+		if (ValidationUtil.isNullOrEmpty(password)) {
+			request.setAttribute("passwordError", "Password is required.");
+			errors++;
+		}
+		
+		// If there are validation errors, return to login page
+		if (errors > 0) {
+			request.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(request, response);
+			return;
+		}
 
 		UserModel userModel = new UserModel(email, password);
 		Boolean loginStatus = loginService.loginUser(userModel);

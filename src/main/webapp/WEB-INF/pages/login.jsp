@@ -19,7 +19,7 @@
 			<p class="success-msg">${success}</p>
 		</c:if>
 
-		<form action="${pageContext.request.contextPath}/login" method="post">
+		<form action="${pageContext.request.contextPath}/login" method="post" novalidate>
 			<div class="header">
 				<img
 					src="${pageContext.request.contextPath}/resources/images/system/logo.png"
@@ -30,18 +30,27 @@
 			</div>
 
 			<c:if test="${not empty error}">
-				<div class="error-message">${error}</div>
+				<div class="error-message">
+					<i class="fas fa-exclamation-circle"></i>
+					${error}
+				</div>
 			</c:if>
 
 			<div class="input-box">
-				<input type="email" placeholder="Email" name="email" required>
+				<input type="email" placeholder="Email" name="email" value="${param.email}">
 				<i class="fa-solid fa-user"></i>
 			</div>
+			<c:if test="${not empty emailError}">
+				<p class="field-error"><i class="fas fa-times-circle"></i> ${emailError}</p>
+			</c:if>
 
 			<div class="input-box">
-				<input type="password" placeholder="Password" name="password"
-					required> <i class="fa-solid fa-eye toggle-password"></i>
+				<input type="password" placeholder="Password" name="password">
+				<i class="fa-solid fa-eye toggle-password"></i>
 			</div>
+			<c:if test="${not empty passwordError}">
+				<p class="field-error"><i class="fas fa-times-circle"></i> ${passwordError}</p>
+			</c:if>
 
 			<div class="forgot-box">
 				<a href="#">Forgot password?</a>

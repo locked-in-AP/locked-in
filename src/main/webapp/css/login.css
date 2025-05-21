@@ -40,13 +40,44 @@ body {
 }
 
 .error-message {
-	background-color: #ffebee;
-	color: #c62828;
-	padding: 10px;
+	background-color: #fee2e2;
+	color: #dc2626;
+	padding: 12px;
 	border-radius: 5px;
 	margin: 10px 0;
-	text-align: center;
+	text-align: left;
 	font-size: 14px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	border: 1px solid #fecaca;
+}
+
+.error-message i {
+	font-size: 16px;
+}
+
+.field-error {
+	color: #dc2626;
+	font-size: 12px;
+	margin-top: 4px;
+	padding-left: 4px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.field-error i {
+	font-size: 14px;
+}
+
+.input-box input.error {
+	border-color: #dc2626;
+}
+
+.input-box input.error:focus {
+	border-color: #dc2626;
+	box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
 }
 
 .login-container .input-box {
