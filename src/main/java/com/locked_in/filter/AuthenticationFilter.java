@@ -62,6 +62,10 @@ public class AuthenticationFilter implements Filter {
 	private static final String USER_PROFILE = "/userProfile";
 	private static final String UPDATE_PROFILE = "/updateProfile";
 	private static final String SEARCH = "/search";
+	private static final String ADMINPROFILE = "/adminProfile";
+	private static final String UPDATEADMIN = "/updateAdminProfile";
+
+	
 
 	/**
 	 * Initializes the AuthenticationFilter with the given filter configuration.
@@ -144,7 +148,7 @@ public class AuthenticationFilter implements Filter {
 				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
 			} else if (path.endsWith(ADMIN_DASHBOARD) || path.endsWith(ADMIN_ORDER)
 					|| path.endsWith(ROOT) || path.endsWith(LOGOUT) || path.endsWith(ADD) || path.endsWith(DELETE) || path.endsWith(USER) || path.endsWith(DELETEUSER)
-					|| path.endsWith(UPDATE_PRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS)) {
+					|| path.endsWith(UPDATE_PRODUCT) || path.endsWith(PRODUCTLIST) || path.endsWith(UPDATE_ORDER_STATUS) || path.endsWith(ADMINPROFILE) || path.endsWith(UPDATEADMIN)) {
 				chain.doFilter(request, response);
 			} else {
 				res.sendRedirect(contextPath + ADMIN_DASHBOARD);
