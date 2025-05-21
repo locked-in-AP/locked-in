@@ -3,6 +3,7 @@ package com.locked_in.controller;
 import com.locked_in.model.ProductModel;
 import com.locked_in.service.ProductService;
 import com.locked_in.service.UserService;
+import com.locked_in.util.ValidationUtil;
 import com.locked_in.model.UserModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -96,6 +97,7 @@ public class UpdateProductController extends HttpServlet {
             throws ServletException, IOException {
         String productIdStr = request.getParameter("productId");
         if (productIdStr == null || productIdStr.isEmpty()) {
+            System.out.println("UpdateProductController - Error: Product ID is required");
             request.setAttribute("error", "Product ID is required.");
             request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
             return;
@@ -105,6 +107,7 @@ public class UpdateProductController extends HttpServlet {
             int productId = Integer.parseInt(productIdStr);
             ProductModel existing = productService.getProductById(productId);
             if (existing == null) {
+                System.out.println("UpdateProductController - Error: Product with ID " + productId + " does not exist");
                 request.setAttribute("error", "Product with the given ID does not exist.");
                 request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
                 return;
@@ -132,46 +135,60 @@ public class UpdateProductController extends HttpServlet {
             if (name != null && !name.isEmpty()) {
                 if (!ValidationUtil.isAlphanumericStartingWithLetter(name)) {
                     request.setAttribute("nameError", "Product name must start with a letter and contain only letters and numbers.");
+                    System.out.println("UpdateProductController - Validation Error: Product name must start with a letter and contain only letters and numbers");
                     errors++;
                 } else if (name.length() < 3 || name.length() > 100) {
                     request.setAttribute("nameError", "Product name must be between 3 and 100 characters.");
+                    System.out.println("UpdateProductController - Validation Error: Product name length must be between 3 and 100 characters");
                     errors++;
                 } else {
                     product.setName(name);
                 }
+            } else {
+                product.setName(existing.getName());
             }
 
             // Validate description if provided
             if (description != null && !description.isEmpty()) {
                 if (description.length() < 10 || description.length() > 1000) {
                     request.setAttribute("descriptionError", "Description must be between 10 and 1000 characters.");
+                    System.out.println("UpdateProductController - Validation Error: Description length must be between 10 and 1000 characters");
                     errors++;
                 } else {
                     product.setDescription(description);
                 }
+            } else {
+                product.setDescription(existing.getDescription());
             }
 
             // Validate brand if provided
             if (brand != null && !brand.isEmpty()) {
                 if (!ValidationUtil.isAlphanumericStartingWithLetter(brand)) {
                     request.setAttribute("brandError", "Brand name must start with a letter and contain only letters and numbers.");
+                    System.out.println("UpdateProductController - Validation Error: Brand name must start with a letter and contain only letters and numbers");
                     errors++;
                 } else if (brand.length() < 2 || brand.length() > 50) {
                     request.setAttribute("brandError", "Brand name must be between 2 and 50 characters.");
+                    System.out.println("UpdateProductController - Validation Error: Brand name length must be between 2 and 50 characters");
                     errors++;
                 } else {
                     product.setBrand(brand);
                 }
+            } else {
+                product.setBrand(existing.getBrand());
             }
 
             // Validate category if provided
             if (category != null && !category.isEmpty()) {
                 if (!category.matches("^(equipment|supplement|merchandise)$")) {
                     request.setAttribute("categoryError", "Invalid category selected.");
+                    System.out.println("UpdateProductController - Validation Error: Invalid category selected");
                     errors++;
                 } else {
                     product.setCategory(category);
                 }
+            } else {
+                product.setCategory(existing.getCategory());
             }
 
             // Validate tags if provided
@@ -181,11 +198,13 @@ public class UpdateProductController extends HttpServlet {
                 for (String tag : tagArray) {
                     if (!ValidationUtil.isAlphanumericStartingWithLetter(tag.trim())) {
                         request.setAttribute("tagsError", "Each tag must start with a letter and contain only letters and numbers.");
+                        System.out.println("UpdateProductController - Validation Error: Tag must start with a letter and contain only letters and numbers");
                         tagsValid = false;
                         errors++;
                         break;
                     } else if (tag.trim().length() < 2 || tag.trim().length() > 20) {
                         request.setAttribute("tagsError", "Each tag must be between 2 and 20 characters.");
+                        System.out.println("UpdateProductController - Validation Error: Tag length must be between 2 and 20 characters");
                         tagsValid = false;
                         errors++;
                         break;
@@ -194,6 +213,8 @@ public class UpdateProductController extends HttpServlet {
                 if (tagsValid) {
                     product.setTags(tags);
                 }
+            } else {
+                product.setTags(existing.getTags());
             }
 
             // Validate price if provided
@@ -202,17 +223,22 @@ public class UpdateProductController extends HttpServlet {
                     BigDecimal price = new BigDecimal(priceStr);
                     if (price.compareTo(BigDecimal.ZERO) <= 0) {
                         request.setAttribute("priceError", "Price must be greater than 0.");
+                        System.out.println("UpdateProductController - Validation Error: Price must be greater than 0");
                         errors++;
                     } else if (price.compareTo(new BigDecimal("999999.99")) > 0) {
                         request.setAttribute("priceError", "Price cannot exceed $999,999.99.");
+                        System.out.println("UpdateProductController - Validation Error: Price cannot exceed $999,999.99");
                         errors++;
                     } else {
                         product.setPrice(price);
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("priceError", "Invalid price format.");
+                    System.out.println("UpdateProductController - Validation Error: Invalid price format - " + e.getMessage());
                     errors++;
                 }
+            } else {
+                product.setPrice(existing.getPrice());
             }
 
             // Validate stock quantity if provided
@@ -221,17 +247,22 @@ public class UpdateProductController extends HttpServlet {
                     int stockQuantity = Integer.parseInt(stockQuantityStr);
                     if (stockQuantity < 0) {
                         request.setAttribute("stockQuantityError", "Stock quantity cannot be negative.");
+                        System.out.println("UpdateProductController - Validation Error: Stock quantity cannot be negative");
                         errors++;
                     } else if (stockQuantity > 10000) {
                         request.setAttribute("stockQuantityError", "Stock quantity cannot exceed 10,000.");
+                        System.out.println("UpdateProductController - Validation Error: Stock quantity cannot exceed 10,000");
                         errors++;
                     } else {
                         product.setStockQuantity(stockQuantity);
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("stockQuantityError", "Invalid stock quantity format.");
+                    System.out.println("UpdateProductController - Validation Error: Invalid stock quantity format - " + e.getMessage());
                     errors++;
                 }
+            } else {
+                product.setStockQuantity(existing.getStockQuantity());
             }
 
             // Validate weight if provided
@@ -240,41 +271,53 @@ public class UpdateProductController extends HttpServlet {
                     BigDecimal weight = new BigDecimal(weightStr);
                     if (weight.compareTo(BigDecimal.ZERO) <= 0) {
                         request.setAttribute("weightError", "Weight must be greater than 0.");
+                        System.out.println("UpdateProductController - Validation Error: Weight must be greater than 0");
                         errors++;
                     } else if (weight.compareTo(new BigDecimal("1000")) > 0) {
                         request.setAttribute("weightError", "Weight cannot exceed 1000 kg.");
+                        System.out.println("UpdateProductController - Validation Error: Weight cannot exceed 1000 kg");
                         errors++;
                     } else {
                         product.setWeight(weight);
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("weightError", "Invalid weight format.");
+                    System.out.println("UpdateProductController - Validation Error: Invalid weight format - " + e.getMessage());
                     errors++;
                 }
+            } else {
+                product.setWeight(existing.getWeight());
             }
 
             // Validate dimensions if provided
             if (dimensions != null && !dimensions.isEmpty()) {
                 if (!dimensions.matches("^\\d+x\\d+x\\d+$")) {
                     request.setAttribute("dimensionsError", "Dimensions must be in format: length x width x height (e.g., 10x10x10)");
+                    System.out.println("UpdateProductController - Validation Error: Invalid dimensions format");
                     errors++;
                 } else {
                     product.setDimensions(dimensions);
                 }
+            } else {
+                product.setDimensions(existing.getDimensions());
             }
 
             // Validate image URL if provided
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 if (!imageUrl.matches("^(https?://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$")) {
                     request.setAttribute("imageError", "Please enter a valid image URL.");
+                    System.out.println("UpdateProductController - Validation Error: Invalid image URL format");
                     errors++;
                 } else {
                     product.setImage(imageUrl);
                 }
+            } else {
+                product.setImage(existing.getImage());
             }
 
             // If there are validation errors, preserve form data and return to form
             if (errors > 0) {
+                System.out.println("UpdateProductController - Found " + errors + " validation errors");
                 // Preserve form data, using existing values as fallback
                 request.setAttribute("product", existing);
                 request.setAttribute("name", name != null && !name.isEmpty() ? name : existing.getName());
@@ -295,13 +338,16 @@ public class UpdateProductController extends HttpServlet {
             // Update product in database
             boolean success = productService.updateProduct(product);
             if (success) {
+                System.out.println("UpdateProductController - Product updated successfully");
                 response.sendRedirect(request.getContextPath() + "/admindashboard?success=Product updated successfully");
             } else {
+                System.out.println("UpdateProductController - Failed to update product in database");
                 request.setAttribute("error", "Failed to update product. Please try again.");
                 request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
             }
 
         } catch (NumberFormatException e) {
+            System.out.println("UpdateProductController - Error: Invalid product ID format - " + e.getMessage());
             request.setAttribute("error", "Invalid product ID format.");
             request.getRequestDispatcher("/WEB-INF/pages/updateProduct.jsp").forward(request, response);
         }
