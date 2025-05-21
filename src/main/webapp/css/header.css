@@ -105,24 +105,6 @@ body {
 	gap: 20px;
 }
 
-.search-box {
-	display: flex;
-	align-items: center;
-	border: none;
-	background: #f5f5f5;
-	border-radius: 20px;
-	padding: 8px 15px;
-	width: 250px;
-}
-
-.search-input {
-	border: none;
-	background: transparent;
-	width: 100%;
-	outline: none;
-	font-size: 16px;
-}
-
 /* Icon Definitions */
 .search-icon {
 	background-image:
@@ -299,4 +281,40 @@ body {
 	.cart-panel {
 		width: 100%;
 	}
+}
+
+/* Scoped Search Box Styles for header only */
+.header .search-box {
+	position: relative;
+	display: flex;
+	align-items: center;
+	background-color: #f5f5f5;
+	border-radius: 20px;
+	padding: 5px 15px;
+	margin-right: 20px;
+}
+
+.header .search-form {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.header .search-input {
+	border: none;
+	background: none;
+	padding: 5px 10px;
+	width: 200px !important;
+	font-size: 14px;
+	color: #333;
+	outline: none;
+}
+
+.header .search-input::placeholder {
+	color: #8E9196;
+}
+
+.header .search-icon {
+	color: #8E9196;
+	margin-right: 5px;
 }

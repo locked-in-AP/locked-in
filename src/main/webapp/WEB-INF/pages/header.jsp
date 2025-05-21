@@ -47,7 +47,7 @@
 		<div class="search-box">
 			<span class="icon search-icon"></span>
 			<form action="${pageContext.request.contextPath}/search" method="get" class="search-form">
-				<input type="text" name="q" class="search-input" placeholder="What are you looking for to..." 
+				<input type="text" name="q" class="search-input" placeholder="What are you looking for..." 
 					value="${param.q}" required>
 			</form>
 		</div>
