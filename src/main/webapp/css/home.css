@@ -23,12 +23,10 @@
 	justify-content: center;
 	min-height: 60vh;
 	padding: 0 10%;
-	background: linear-gradient(135deg, #000000 0%, #434343 100%);
 	color: white;
 	position: relative;
 	overflow: hidden;
 }
-
 
 .brand-tag {
 	font-size: 1rem;

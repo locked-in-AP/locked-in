@@ -16,7 +16,7 @@
 		<p class="success-msg">You are logged in!</p>
 	</c:if>
 	
-	<div class="endurance-hero">
+	<div class="endurance-hero" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(67, 67, 67, 0.7) 100%), url('${pageContext.request.contextPath}/resources/images/system/aston.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 		<div class="hero-accent"></div>
 		<span class="brand-tag">Locked in</span>
 		<h1 class="collection-title">BEST GYM</h1>
@@ -40,7 +40,7 @@
 
 			<div class="product-card">
 				<img
-					src="${pageContext.request.contextPath}/resources/images/system/merch.png"
+					src="${pageContext.request.contextPath}/resources/images/system/merchandise.png"
 					alt="Card Background" class="card-bg-image">
 
 				<div class="card-content">

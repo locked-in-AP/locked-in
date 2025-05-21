@@ -14,7 +14,7 @@
 	<jsp:include page="header.jsp" />
 
 	<!-- Hero Banner -->
-	<div class="hero-banner">
+	<div class="hero-banner" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(67, 67, 67, 0.7) 100%), url('${pageContext.request.contextPath}/resources/images/system/supplementbanner.jpg'); background-size: cover; background-position: center;">
 		<h1 class="hero-title">SUPPLEMENTS</h1>
 		<p class="hero-subtitle">Premium supplements for serious athletes</p>
 	</div>
