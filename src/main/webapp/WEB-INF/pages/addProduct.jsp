@@ -52,7 +52,7 @@
 					<label for="name">Product Name</label>
 					<input type="text" id="name" name="name" 
 						class="${not empty nameError ? 'error-border' : ''}"
-						value="${name != null ? name : ''}"
+						value="${requestScope.name != null ? requestScope.name : ''}"
 						placeholder="Enter product name">
 					<c:if test="${not empty nameError}">
 						<p class="field-error">${nameError}</p>
