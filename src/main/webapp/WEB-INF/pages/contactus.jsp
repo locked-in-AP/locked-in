@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Contact Locked In fitness for customer support, questions, feedback or business inquiries">
+<meta name="keywords" content="fitness, contact, support, locked in, customer service">
 <title>Contact Us - Locked In</title>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/header.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/contactus.css">
 </head>
@@ -17,7 +22,7 @@
 			any questions, feedback, or suggestions. Use the form below or
 			contact us directly using the information provided.</p>
 
-		<form action="${pageContext.request.contextPath}/contact-us"
+		<form class="contact-form" action="${pageContext.request.contextPath}/contact-us"
 			method="post">
 			<div class="form-group">
 				<label for="name">Your Name</label> <input type="text" id="name"
